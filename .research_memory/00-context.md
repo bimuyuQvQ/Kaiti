@@ -6,12 +6,48 @@
 
 - 硕士研究生，正在准备**开题（论文方向选定 + 开题报告）**
 - 之前的研究背景：**关系抽取（RE）、事件抽取（EE）**
+- **已有发表**：1 篇 B 类会议（用户自评"水 B 会"），方向是"用 ICL 做 RE，训了个检索器，推理阶段改了改模型"
+  - **论文标题**：From Implicit Heuristics to Explicit Optimization: A Unified Framework for In-Context Relation Extraction
+  - **方法名**：CLARE = PCE + AIM
+    - **PCE（Predictive Contribution Estimation）**：用 LLM 一次前向打分（1-shot vs 0-shot 概率差）作为"预测增益"信号，训 RoBERTa-large 检索器（对比学习 InfoNCE），替代 SimCSE 的语义相似度
+    - **AIM（Adaptive Inference Modulation）**：推理时直接修改 attention pre-softmax 分数，对"高 PCE 分的示例"加权引导，按位置衰减
+  - **数据集**：SemEval-2010、TACRED、SciERC、ACE05（4 个标准句子级 RE benchmark，**不是文档级**）
+  - **Backbone**：Llama-3-8B-Instruct + RoBERTa-large
+  - **结果**：CLARE 平均 F1 61.91，比 SimCSE/GPT-RE/SRVF/DSARE 略高（约 +0.3 ~ +0.5），ACE05 上反而输给 SimCSE
+  - **作者署名**：第二作者（共一），第一单位：北京理工大学计算机学院
+  - **用户对自己 B 会论文的评价**："水 B 会"、"在师姐基础上改的，后来再优化感觉不太顺"
+  - **⚠️ 重大约束（2026-05-11 用户明确）**：**这篇论文不能用作毕业论文内容**，因为很多是师姐的工作，不是用户独立做的。毕业论文必须是用户独立可以讲清的工作。
+  - **B 会工作的具体分工（2026-05-11 用户澄清）**：
+    - **PCE（检索器训练）**：师姐做的，用户没动训练流程
+    - **AIM（attention 修改）**：用户独立做的，但提升很小（消融里 +0.2 F1）
+    - **整体方法设计**：师姐主导
+  - **师姐状态（2026-05-11 用户澄清）**：师姐已毕业 2 年，不混学术——**不构成方向冲突约束**
+  - **B 会"资产"清单（用户确认可用）**：
+    - ✅ 代码：能独立 clone、跑通、改
+    - ✅ 方法细节：用户亲手调试过 AIM，对 PCE 也熟（虽然没动训练）
+    - ✅ 算力：8×3090 Ti，毕业前可用
+    - ❌ 领域数据/项目：实验室没有横向项目数据可挖（用户确认）
+  - **⚠️ 对 AIM 路线的真实评估（2026-05-11 用户自我判断，AI 认同）**：
+    - AIM 提升只有 +0.2 F1，是反复调参调出来的
+    - **换 backbone 模型大概率失效**——这是关键风险，attention 修改对模型层数/头数/初始化敏感
+    - **结论：AIM 不能作为毕业论文的核心方法，鲁棒性/可推广性都不够**
+  - **方法局限性**（用户毕业论文是否要延续 CLARE 路线时必须考虑）：
+    1. PCE 计算成本高（每 query 跑 2000 次 LLM 前向），难以扩到大数据集/文档级
+    2. AIM 改 attention pre-softmax score——闭源模型完全做不了，绑死开源 SLM
+    3. ACE05 上 PCE 输给 SimCSE，方法的"语义≠效用"假设不普适
+    4. 提升幅度小（vs SimCSE +2.28，vs GPT-RE/DSARE 仅 +0.3~0.5）
 
-## 当前焦虑与触发动机
+## 真实目标（2026-05-11 用户明确，必须严格遵守）
 
-- 看到有审稿人评论"很意外现在还有人做 NER"，**担心 RE/EE 是否还能继续做**
-- 已经被 AI 助手说服：传统固定 benchmark IE 已死，**问题驱动的 LLM 时代 IE 仍活跃**
-- 已经选定 3 个候选大方向（详见 `01-directions.md`）
+- **核心目标：能毕业，仅此而已**
+- **毕业要求已经满足**（已有 1 篇 B 会）
+- **不打算投会议**——开题之后到毕业的工作不再以发表为目标
+- **就业方向：央国企**——不读博、不去大厂、不搞学术
+- **隐含约束**：
+  - 工作量必须可控，能在硕士剩余时间内完成
+  - 不必追求方法论新颖性的"卷"
+  - 不必追求顶会/顶刊
+  - 评价标准从"会议层级"切换到"开题报告 + 毕业论文能过审"
 
 ## 沟通偏好（从用户规则中提取）
 
@@ -27,11 +63,35 @@
 
 ## 工作环境
 
-- macOS
-- 工作目录：`/Users/bytedance/projects/kait`
+### ⚠️ 环境即将切换（2026-05-11）
+
+用户**即将离职字节**，当前 macOS 机器（字节公司机器）**马上停用**。未来环境：
+
+- **个人 Windows 笔记本**：日常调研、写作、跟 AI 对话的终端
+- **实验室 Linux 服务器**（8×3090 Ti，SSH 连接）：所有训练、推理、GPU 任务的真实执行环境
+- **git 仓库**：`git@github.com:bimuyuQvQ/Kaiti.git`——两个环境的同步媒介
+
+### 环境分工原则（所有 agent 必读）
+
+| 任务类型 | 跑在哪 |
+|---|---|
+| 文献调研、记忆库更新、写作、讨论方向 | Windows 笔记本 |
+| clone 代码、跑训练、跑推理、GPU 相关一切 | 实验室 Linux 服务器（SSH） |
+| git push / pull | 两边都做 |
+
+**不要在 Windows 笔记本上尝试跑 GPU 任务**——机器上没卡。
+**不要在实验室服务器上做需要 IDE 交互的轻量活**——SSH 终端不适合。
+
+### 历史环境（已废弃，保留参考）
+
+- macOS / `/Users/bytedance/projects/kait`（字节机器，2026-05-11 之后停用）
 - 已配置 arxiv-mcp-server，存储路径：`/Users/bytedance/projects/kait/.arxiv_papers`
-- arxiv-mcp-server 缺少 PDF 依赖（`[pdf]` 没装）和 pro 依赖（`[pro]` 没装）→ 只能下载 HTML 版本，不能用语义搜索
-- Semantic Scholar 公开 API 经常 429 限流，**OpenAlex API 是更稳的备选**
+- arxiv-mcp-server 缺少 PDF 依赖（`[pdf]` 没装）和 pro 依赖（`[pro]` 没装）
+
+### API 限制
+
+- Semantic Scholar 公开 API 经常 429 限流
+- **OpenAlex API 是更稳的备选**（但查询口径要严，见 `03-trends.md` 顶部的口径警告）
 
 ## 学术质量标准（用户认同）
 

@@ -1,19 +1,28 @@
 # 项目规则
 
+## 🚪 新会话第一动作（强制）
+
+**第一轮回复之前，必须先读 `.research_memory/06-handoff.md`**，它是 agent 入口文件，5 分钟内拿到完整上下文。
+
+然后按其中的"阅读顺序"章节读剩余的记忆库文件。
+
+> 项目可能在多台机器之间跨机接续（Windows 笔记本 ↔ 实验室 Linux 服务器，通过 git 仓库 `git@github.com:bimuyuQvQ/Kaiti.git` 同步）。06-handoff.md 会告诉你在哪台机器上应该做什么。
+
 ## 研究记忆库（强制规则）
 
-本项目存在长期研究记忆库 `/Users/bytedance/projects/kait/.research_memory/`，包含 6 个分类 md 文件：
+本项目存在长期研究记忆库 `.research_memory/`（相对于仓库根目录，因为跨机路径不同），包含 7 个 md 文件：
 
+- `06-handoff.md` **⬅️ Agent 入口（新会话先读这个）**
 - `00-context.md` 研究者背景、目标、约束、偏好
-- `01-directions.md` 候选研究方向 + 可行性判断
-- `02-papers.md` 论文池（必读/可读/备查 + 引用数 + 已下载状态）
-- `03-trends.md` 2025-2026 方法学趋势观察
-- `04-decisions.md` 关键决策日志
+- `01-directions.md` 候选研究方向 + 可行性判断（已锁定方向置顶）
+- `02-papers.md` 论文池（底座 TTM-RE + 候选清单 + 必读论文 + 引用数）
+- `03-trends.md` 方法学趋势观察（注意顶部口径警告）
+- `04-decisions.md` 关键决策日志（按时间倒序）
 - `05-next-steps.md` 当前待办与下次切入点
 
 ### 会话开始时必做
 
-每次新会话的第一轮回复**之前**，必须先读取 `.research_memory/README.md` 和 6 个分类 md 文件，建立完整上下文，避免让用户重复交代背景。
+每次新会话的第一轮回复**之前**，必须先读 `.research_memory/06-handoff.md` 和 README，再按 handoff 指示读其余文件。
 
 ### 每轮对话结束前必做（自检清单）
 

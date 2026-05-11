@@ -1,0 +1,855 @@
+
+=== PAGE 1 ===
+From Implicit Heuristics to Explicit
+Optimization: A Unified Framework for
+In-Context Relation Extraction
+Xin Sun1,2⋆(B), Muyu Li1,2⋆, Jianfei Zhao1,2, and Xinyang Liu1,2
+1 School of Computer Science and Technology, Beijing Institute of Technology,
+Beijing, China
+2 Beijing Engineering Applications Research Center on High Volume Language
+Information Processing and Cloud Computing, Beijing, China
+{sunxin, 3220241366, zhqingan, 3220220944}@bit.edu.cn
+Abstract. In-context learning (ICL) for relation extraction is often un-
+dermined by its reliance on implicit heuristics. This weakness is critical
+in two stages: (1) example selection, where semantic similarity serves
+as a poor proxy for utility; (2) model reasoning, which depends on un-
+guided attention mechanisms. This reliance on non-optimizable strate-
+gies leads to unreliable performance and hinders interpretability. This
+paper advocates for a fundamental shift from implicit heuristics to ex-
+plicit optimization and guidance. We introduce CLARE (Contribution-
+driven Learning and Adaptive REasoning), a unified framework that
+introduces core innovations to both the example selection and model
+reasoning stages. For example selection, we propose Predictive Con-
+tribution Estimation (PCE), a novel method that trains a retriever
+to directly optimize for an example’s utility by quantifying its impact
+on the model’s prediction confidence. For model reasoning, we introduce
+Adaptive Inference Modulation (AIM), which transforms the un-
+guided inference process into a steerable one by dynamically modulating
+the model’s internal attention scores. This ensures that the most valu-
+able demonstration information is precisely leveraged. Experiments on
+four challenging datasets validate that CLARE significantly outperforms
+mainstream ICL baselines by leveraging explicit contribution estimation
+and guided inference.
+Keywords: Relation Extraction · In-context Learning · Contrastive Learn-
+ing · Attention.
+1
+Introduction
+In-Context Learning (ICL) has revolutionized few-shot Relation Extraction (RE)
+by enabling large language models (LLMs) to perform complex tasks without
+parameter updates [18,1]. However, the success of this paradigm is built on a
+fragile foundation: a heavy reliance on implicit heuristics. This dependency is
+⋆These authors contributed equally to this work.
+
+=== PAGE 2 ===
+2
+X. Sun et al.
+Fig. 1: Illustration of the core problem. (left) Conventional retrieval, relying on
+semantic similarity, selects a misleading example. Although topically similar—
+sharing terms like pollution and factories vs. chemicals and atmosphere—its
+relational pattern, Effect-from-Cause, fundamentally mismatches the query’s
+Entity-released_into-Destination pattern, leading to an incorrect Cause-Effect
+prediction. (right) Our PCE approach, optimizing for contribution, identifies
+a semantically distant example, "packed saltpetre into... sticks", that precisely
+shares the query’s core Entity-<verb>-into-Destination relational pattern, en-
+suring correct inference.
+particularly detrimental in RE, where identifying relationships often hinges on
+subtle relational patterns rather than superficial semantic similarity. As illus-
+trated in Figure 1, an example that is semantically close but demonstrates an
+irrelevant relational pattern can inject noise and mislead the model [8]. This
+leads to an ICL process for RE that is unguided and unstable at its two most
+critical stages: example selection and model inference.
+Currently, many studies on example selection rely on semantic similarity
+(e.g., SimCSE [5], GPT-RE [18], C-ICL [13]), an indirect proxy for an example’s
+true utility, often failing as demonstrated in Figure 1 (left). Simultaneously,
+the inference process operates as a black box, relying on the LLM’s unguided
+attention mechanisms. This process is inherently unguided, making it difficult
+for the model to precisely leverage the most critical information within the
+provided examples, even if those examples are high-quality [2].
+Motivated by the need to replace these implicit bottlenecks with transpar-
+ent, objective-driven mechanisms, we introduce CLARE (Contribution-driven
+Learning and Adaptive REasoning), a unified framework that pioneers a shift
+from implicit heuristics to explicit optimization and guidance. First, to over-
+come unreliable example selection, CLARE introduces a Predictive Contribution
+Estimation (PCE) module. We quantify an example’s true value by its direct im-
+pact on prediction accuracy—its "predictive gain"—and use this explicit signal
+
+=== PAGE 3 ===
+Title Suppressed Due to Excessive Length
+3
+to train a lightweight contrastive retriever, enabling the selection of truly rele-
+vant examples even if they appear semantically distant (Figure 1, right). Second,
+to address the black-box inference process, CLARE incorporates an Adaptive In-
+ference Modulation (AIM) module. AIM replaces the model’s implicit, unguided
+reasoning with a transparent and steerable process that explicitly guides the
+model’s internal attention, ensuring that the most valuable information from
+the selected examples is effectively leveraged.
+We conduct extensive experiments on four widely-used RE benchmarks (Se-
+mEval, SciERC, ACE05, and TACRED). The results validate that our explicit
+framework allows CLARE to consistently and significantly outperform main-
+stream ICL-based methods. Our main contributions are:
+– We identify and articulate a core limitation of the current ICL paradigm
+for RE: its dependence on unguided, implicit heuristics for both example
+selection and model reasoning, illustrated by concrete failure cases (Figure
+1).
+– We propose Predictive Contribution Estimation (PCE), a novel method to
+train a retriever that explicitly optimizes for an example’s utility, moving
+beyond simple semantic similarity.
+– We design Adaptive Inference Modulation (AIM), a mechanism that makes
+the LLM’s reasoning process controllable by explicitly guiding its internal
+attention.
+2
+Related Work
+In-Context Learning (ICL) for relation extraction is powerful yet fragile, with
+its performance critically dependent on two stages still governed by implicit
+heuristics: example selection and model inference [8]. Our work challenges this
+paradigm by introducing explicit, optimization-driven mechanisms for both.
+2.1
+From Heuristic to Optimized Example Selection.
+The dominant strategy for example selection relies on semantic similarity, ex-
+emplified by SimCSE [5], an unreliable proxy for an example’s true utility. Rec-
+ognizing this limitation, more sophisticated heuristics have emerged. These in-
+clude designing task-aware retrievers (GPT-RE [18]), employing dual-systems
+(DSARE [9]), or using complex feedback loops to verify reasoning and re-select
+examples (SRVF [7]). Other methods, like GL [14], augment the prompt with
+learned guidelines. Despite their ingenuity, these approaches remain fundamen-
+tally heuristic. Even more advanced paradigms that train a dedicated retriever
+[16,21] or leverage direct LLM feedback for preference learning (GenICL [23])
+still rely on indirect, coarse-grained, or relative optimization signals (e.g., ’A is
+better than B’). These approaches fail to directly quantify an individual exam-
+ple’s intrinsic, absolute utility for a given query.
+Our work proposes a different, non-preference-based approach. Our Predic-
+tive Contribution Estimation (PCE) module is designed to quantify an example’s
+
+=== PAGE 4 ===
+4
+X. Sun et al.
+absolute, quantifiable utility (its predictive gain). This allows us to train a re-
+triever using a supervised, contrastive framework that explicitly distinguishes
+between demonstrably helpful and harmful examples, rather than just learning
+their relative order.
+2.2
+From Black-Box to Steerable Inference.
+The second critical weakness of ICL is treating the LLM’s inference process as
+a black box. The standard approach of simply concatenating examples relies
+on the model’s unguided attention mechanisms to distill relevant information
+[18,13]. This is often suboptimal, as noisy demonstrations can mislead the model,
+sometimes resulting in performance worse than a zero-shot baseline [15]. While
+frameworks like SRVF [7] attempt to verify the model’s reasoning post-hoc, they
+do not make the internal inference process itself transparent or steerable. A key
+research gap remains in developing methods that can actively guide the model’s
+focus on salient information within examples [19].
+Our Adaptive Inference Modulation (AIM) module directly addresses this
+gap. It transforms the unguided inference process into a transparent and control-
+lable one by explicitly modulating the model’s internal attention scores, ensuring
+that the most valuable demonstration information is precisely leveraged.
+3
+Methodology
+In-context learning (ICL) for relation extraction is fundamentally constrained
+by its reliance on two implicit and unguided processes: example selection and
+inference. To address these limitations, we propose CLARE, a unified frame-
+work designed to systematically replace these implicit heuristics with explicit,
+optimizable modules. As illustrated in Figure 2, our framework consists of two
+key stages: (1) Explicit Modeling of Example Contribution for retrieval, and (2)
+Explicit Guidance of the Inference Process.
+3.1
+Task Formulation
+We first formulate the standard ICL-based RE task. Given a query xq and a large
+candidate pool of available examples C, the initial goal is to select an ordered set
+of N demonstrations E = {e1, . . . , eN} where ei ∈C. These demonstrations are
+then formatted and concatenated with the query to form a single prompt, P =
+(e1, . . . , eN, xq). This prompt is fed to a pre-trained LLM, which autoregressively
+generates the relation y. The objective is to maximize the conditional probability
+of the true relation ytrue:
+argmax P(ytrue|e1, . . . , eN, xq)
+(1)
+The overall performance critically depends on two independent sub-problems: (1)
+the selection mechanism for choosing the optimal set E, and (2) the inference
+process by which the model utilizes E to compute the probability. Our work
+introduces explicit optimization for both.
+
+=== PAGE 5 ===
+Title Suppressed Due to Excessive Length
+5
+Fig. 2: The overall architecture of our proposed CLARE framework.
+3.2
+Predictive Contribution Estimation (PCE)
+The effectiveness of ICL hinges on example quality, but this process is typically
+governed by the implicit heuristic of semantic similarity—an unreliable proxy
+for an example’s true utility. To replace this heuristic with a principled opti-
+mization target, we introduce Predictive Contribution Estimation (PCE),
+a framework for training a retriever on an explicit objective. The core idea is to
+directly measure an example’s value by its quantifiable impact on the model’s
+predictive performance, as detailed in Figure 2 (left).
+Quantifying Example Contribution. Conventional heuristics like relation
+label consistency are flawed, as they fail to capture an example’s true utility.
+To overcome this, we propose quantifying contribution based on its direct impact
+on the LLM’s predictive behavior. We introduce the Predictive Contribution
+Score (PCS), an explicit metric measuring the change in the model’s confidence
+in the correct label ytrue when presented with a candidate example ec.
+Formally, for a given query xq, its PCS is defined as:
+PCS(ec, xq) = P(ytrue|ec, xq) −P(ytrue|xq)
+(2)
+where:
+– P(ytrue|xq) is the baseline probability (zero-shot).
+– P(ytrue|ec, xq) is the probability (one-shot) with ec as context.
+
+=== PAGE 6 ===
+6
+X. Sun et al.
+In cases where a label ytrue consists of multiple tokens (e.g., "Cause-Effect"),
+P(ytrue|...) is defined as the length-normalized average log-probability of the
+token sequence y = (y1, ..., yT ):
+log P(ytrue|...) = 1
+T
+T
+X
+t=1
+log P(yt|y<t, ...)
+(3)
+This normalization ensures that the probabilities of labels with different lengths
+are comparable.
+This score provides an explicit measure of utility: a positive PCS identifies
+a positive contributor, while a negative PCS identifies a negative contrib-
+utor. While PCS is defined in 1-shot to isolate individual contribution, we find
+this utility signal generalizes effectively to n-shot scenarios (see Experiments).
+Contrastive Pair Construction. Armed with the PCS metric, we devise
+an automated pipeline to construct a training dataset (xq, E+, E−). As shown
+in Figure 2 step 1 & 2, we first identify low confidence queries xq from the
+development set, defined as those where the 0-shot prediction is either incorrect
+or correct but with low confidence (P(ytrue|xq) < δconf). For each xq, we pair it
+with a candidate pool ec sampled from the training set. To ensure computational
+scalability, we do not iterate over the entire corpus; instead, we construct a
+representative subset C′ ⊂C for each query (details in Sec. 4.1).
+A threshold δ > 0 is then applied to create the explicit Positive Set (E+),
+defined by examples where PCS > δ, and the Negative Set (E−), defined by
+examples where PCS < −δ. This process discards negligible examples.
+Training. We train a contribution-aware retriever, fθ, using the constructed
+pairs. Our approach employs a supervised contrastive objective, InfoNCE loss.
+This is superior to standard methods because our negative samples E−are
+explicitly identified as harmful, providing a stronger, task-relevant signal than
+random in-batch negatives.
+Lcl = −log
+PN
+i=1 exp(sim(hq, h+
+i )/τ)
+PN
+i=1 exp(sim(hq, h+
+i )/τ) + PM
+j=1 exp(sim(hq, h−
+j )/τ)
+(4)
+Upon training, the PCE retriever is equipped to select the top-k most beneficial
+examples for the next stage: inference.
+3.3
+Adaptive Inference Modulation (AIM)
+PCE provides high-quality examples, but the LLM’s reasoning remains an un-
+guided black box. To fix this, we introduce the Adaptive Inference Modula-
+tion (AIM) module, which transforms inference into a guided procedure. AIM’s
+core principle is to dynamically modulate self-attention scores. This modulation
+is not uniform; it is intelligently weighted using the relevance scores from the
+
+=== PAGE 7 ===
+Title Suppressed Due to Excessive Length
+7
+same PCE retriever, creating a synergistic framework where the explicit utility
+signal is used for both selection and inference. The process unfolds in three key
+steps:
+Key Attention Head Selection. Given the known functional specializa-
+tion of attention heads [4,20], modifying all of them uniformly is suboptimal.
+AIM therefore performs a targeted intervention. To identify the most critical
+heads, we first quantify each head’s contribution to the information flow be-
+tween the query (token indices Tq) and the context (token indices Tc) within a
+target layer l. We calculate its Query-Context Interaction Score, S(l)(h),
+using the post-softmax attention probabilities, ¯A(l)
+h :
+S(l)(h) =
+1
+|Tq| · |Tc|
+X
+j∈Tq
+X
+k∈Tc
+¯A(l)
+h,j→k
+(5)
+where ¯A(l)
+h,j→k is the normalized probability computed from the pre-softmax
+scores A(l)
+h :
+¯A(l)
+h,j→k = Softmaxk′
+
+A(l)
+h,j→k′
+
+k
+(6)
+where A(l)
+h,j→k is the attention score from token j to token k, in head h of layer
+l.
+We then select the set H(l)
+qc , which comprises the top-k percent of heads based
+on this score. This ensures that our modulation is applied only to the heads most
+active in integrating query-context information.
+Relevance-Weighted Guidance Scoring. Next, to determine the magnitude
+of modulation for each example, we quantify the relevance of each selected ex-
+ample ei to the query xq. We directly leverage the PCE retriever fθ for this task,
+which establishes the synergy between our selection and inference modules:
+si = sim(fθ(xq), fθ(ei))
+(7)
+These raw similarity scores, collected into a vector s = (s1, . . . , sN), are then nor-
+malized via softmax to produce the final guidance weight vector w = (w1, . . . , wN):
+w = Softmax(s)
+(8)
+Explicit Attention Score Modulation. Finally, with the target heads H(l)
+qc
+identified and the guidance weights W computed, we apply the modulation. We
+compute a specific modulation value ∆Ai for each example ei. This value incor-
+porates its guidance weight wi, a positional decay term
+  N−i
+N
+
+that prioritizes
+earlier examples, and a strength hyperparameter αAIM:
+∆Ai = αAIM · wi ·
+N −i
+N
+
+(9)
+
+=== PAGE 8 ===
+8
+X. Sun et al.
+This modulation value is then directly added to the pre-softmax attention scores
+of the targeted heads H(l)
+qc . Specifically, for any head h ∈H(l)
+qc , the score from any
+token tj to any token tk within the span of example ei (denoted Tei) is updated
+as:
+A′(l)
+h,j→k = A(l)
+h,j→k + ∆Ai,
+∀k ∈Tei and ∀j where j > k
+(10)
+This rule forces the model to "look back" more strongly at the demonstrations
+PCE identified as most valuable, completing our shift to an explicit guidance
+pipeline.
+4
+Experiment
+4.1
+Experimental Setup
+Datasets. We conduct experiments on four widely-recognized relation extrac-
+tion benchmarks: SemEval-2010 Task 8 [6], SciERC [12], ACE05 [17], and TA-
+CRED [22]. We use Micro-F1 as the primary evaluation metric across all datasets.
+– SemEval-2010 Task 8 is a seminal benchmark for sentence-level relation
+extraction, containing 9 directed semantic relations and an "Other" category.
+– SciERC is sourced from scientific abstracts, featuring 7 relation types and
+presenting the challenge of cross-sentence relations.
+– ACE05 is a complex dataset derived from diverse sources, defining 7 coarse-
+grained entity relation types.
+– TACRED is a large-scale dataset with 41 fine-grained relation types from
+the political domain. Since over 80% of instances are negative ("no_relation"),
+we follow standard protocols and report Micro-F1 scores exclusively on pos-
+itive relation types.
+The statistics for each dataset are summarized in Table 1.
+Table 1: Statistics of the datasets used in our experiments. The ’+1’ in SemEval-
+2010 denotes the "Other" relation type.
+Dataset
+Train
+Dev
+Test
+Total
+#Relations
+SemEval-2010
+6,507
+1,493
+2,717
+10,717
+9+1
+SciERC
+1,861
+275
+551
+2,687
+7
+ACE05
+10,051
+2,050
+2,420
+14,521
+7
+TACRED
+68,124
+15,509
+22,631
+106,264
+41
+Baselines. We select the following models as our baselines. For fairness and due
+to experimental costs, we reproduced the models that originally used GPT with
+Llama-3-8B-Instruct, and all experiments for both reproduced baselines and our
+method were conducted under a unified 10-shot setting.
+
+=== PAGE 9 ===
+Title Suppressed Due to Excessive Length
+9
+– Random selects in-context demonstrations from the labeled samples, serv-
+ing as a foundational baseline without any specific retrieval strategy.
+– GL [14] proposes Guideline Learning (GL), which learns from errors to create
+guidelines that are retrieved at inference time to mitigate underspecified task
+descriptions.
+– SimCSE [5] is a strong baseline that uses a simple contrastive learning
+framework to learn robust sentence embeddings.
+– GPT-RE [18] enhances in-context learning through task-aware retrieval and
+gold label-induced reasoning.
+– SRVF [7] trains a rationale supervisor to verify the LLM’s reasoning and
+provides re-selected demonstrations as feedback to correct biased predictions.
+– DSARE [9] introduces a dual-system approach to mutually enhance a tra-
+ditional RE model and an LLM, where the LLM augments training data and
+the RE model retrieves valuable demonstrations for in-context learning.
+Implementation Details. We employ Meta-Llama-3-8B-Instruct [3] as our
+backbone model for the final relation prediction. For the retriever, we initialize
+its encoder with RoBERTa-large [10]. All experiments are conducted on a server
+equipped with eight NVIDIA RTX 3090 Ti GPUs. The retriever is trained for
+400 epochs using the AdamW [11] optimizer with a learning rate of 1e-6. We use
+a batch size of 1 and 4 gradient accumulation steps.
+To build the PCE training set, we identified low-confidence queries and com-
+puted their PCS scores against a candidate pool. To address the computational
+cost of this initial phase, we applied a downsampling strategy: for each query, we
+computed scores against 2,000 randomly sampled candidates rather than the full
+dataset. We opted for random sampling over coarse semantic filtering to ensure
+the retriever learns from a diverse range of utility distributions, preventing bias
+towards semantic similarity. Although building this set requires LLM forward
+passes, it is a one-time offline cost that enables a lightweight, highly efficient re-
+triever for all future inference, ensuring practical scalability. The threshold δ for
+constructing positive and negative samples is set to 0.01, and the temperature
+parameter τ for contrastive learning is 0.05.
+To constrain the output format and improve prediction reliability, we append
+the template The correct answer is: ** to the model’s input. The model’s pre-
+diction is then determined by the logits of the token immediately following this
+template. To compute label probabilities for PCS, we apply a softmax function
+over the logits of only the valid relation label tokens for that specific task.
+During inference, we generate 3 randomly shuffled candidate example orders
+for each sample, and the final prediction is derived from the mean of these logits
+across the 3 orders. For a fair comparison, this 3-shuffle ensembling strategy was
+applied to all methods. For CLARE, the AIM module, including its positional
+decay, was re-computed independently for each of the 3 permutations.
+
+=== PAGE 10 ===
+10
+X. Sun et al.
+Table 2: Main results.
+Methods
+SemEval
+TACRED
+SciERC
+ACE05
+Avg.
+Random
+49.91
+59.58
+60.16
+38.58
+52.06
+GL [14]
+65.90
+63.60
+65.55
+52.28
+61.83
+SimCSE [5]
+58.30
+62.74
+63.35
+54.13
+59.63
+GPT-RE [18]
+64.93
+63.45
+65.57
+51.92
+61.47
+SRVF [7]
+64.13
+62.58
+65.49
+52.02
+61.06
+DSARE [9]
+65.25
+63.38
+65.62
+52.20
+61.61
+CLARE (ours)
+65.62
+64.02
+65.71
+52.30
+61.91
+4.2
+Main Results
+Table 2 presents the main experimental results on four benchmark datasets. Our
+proposed framework, CLARE, consistently demonstrates superior performance,
+achieving the highest average Micro-F1 score of 61.91 across all benchmarks. This
+result validates the effectiveness of our explicit, optimization-driven approach for
+in-context relation extraction.
+Compared to the baselines, CLARE shows significant improvements. It sur-
+passes the Random selection strategy by a large margin (an average of +9.85
+F1 points), underscoring the necessity of a principled example selection method.
+More importantly, CLARE outperforms SimCSE, a strong baseline relying on
+semantic similarity, on three out of four datasets. This highlights the core limi-
+tation of using similarity as a proxy for utility and validates our hypothesis that
+directly optimizing for predictive contribution yields more effective demonstra-
+tions. Notably, SimCSE is the top performer on ACE05, outperforming all other
+methods including ours. We hypothesize this is due to the unique characteristics
+of the dataset itself. ACE05 defines only 7 coarse-grained relation types (e.g.,
+PHYS for physical, PER-SOC for personal-social), where high semantic or top-
+ical similarity—which SimCSE excels at capturing—is often a reliable proxy for
+an example’s true utility.
+This scenario, where the proxy heuristic (similarity) aligns well with the
+true objective (utility), may explain why SimCSE excels. However, CLARE’s
+superior and consistent performance on the other three datasets, especially its
+state-of-the-art results on the fine-grained TACRED (64.02) and SciERC (65.71),
+validates its robustness. It demonstrates that CLARE excels precisely on tasks
+where the semantic heuristic fails and a more explicit, contribution-driven model
+is necessary.
+4.3
+Ablation Study
+To isolate the contributions of our core components, we conducted a comprehen-
+sive ablation study, with results presented in Table 3. The analysis reveals that
+the Predictive Contribution Estimation (PCE) retriever is the primary driver of
+performance. Replacing the standard SimCSE retriever with our PCE module
+
+=== PAGE 11 ===
+Title Suppressed Due to Excessive Length
+11
+Table 3: Ablation study of CLARE’s components. CLARE (Full Model) com-
+bines our PCE Retriever with AIM Inference. The ablations replace one
+component with a baseline: CLARE w/o AIM uses our PCE Retriever with
+Standard Inference; CLARE w/o PCE uses Random Selection with our
+AIM Inference. Baselines include Standard ICL (SimCSE Retriever +
+Standard Inference) and Random Selection (Random Selection + Stan-
+dard Inference).
+Configuration
+SemEval TACRED SciERC ACE05
+CLARE (Full Model)
+65.62
+64.02
+65.71
+52.30
+CLARE w/o AIM
+65.37
+63.66
+65.40
+52.13
+CLARE w/o PCE
+50.61
+59.44
+60.37
+39.01
+Standard ICL
+58.30
+62.74
+63.35
+54.13
+Random Selection
+49.91
+59.58
+60.16
+38.58
+(CLARE w/o AIM) yields a substantial F1 score improvement across all datasets
+(e.g., from 58.30 to 65.37 on SemEval), powerfully validating that directly op-
+timizing for predictive utility is superior to the heuristic of semantic similarity.
+While PCE provides the foundational boost, the Adaptive Inference Modulation
+(AIM) module offers further, consistent gains by refining the reasoning process.
+Adding AIM to the PCE retriever (CLARE (Full Model)) consistently elevates
+performance, confirming that explicitly guiding the model’s attention helps it
+leverage the high-quality demonstrations more effectively. Crucially, the synergy
+between the two is vital: AIM offers minimal benefit when paired with random
+selection (CLARE w/o PCE), proving that an advanced inference mechanism
+cannot compensate for low-quality inputs. This underscores the success of our
+two-stage explicit optimization strategy, where PCE first identifies valuable ex-
+amples and AIM then ensures their influence is maximized.
+4.4
+Analysis on AIM and PCE
+To validate the explicit optimization strategies of our two core modules, we
+conducted detailed component analyses for both PCE and AIM.
+Analysis of PCE (Case Study). To provide a qualitative understanding of PCE’s
+superiority over semantic heuristics, we analyze its selections for a challenging
+query, as shown in Table 4. The query requires an Entity-Destination relation
+for ...stored the seeds in a... unit. A semantic retriever like SimCSE would fail
+here, as it would search for topically-related "planting" examples and miss the
+high-utility candidates shown, both of which have very low semantic similarity
+(0.185 and 0.177).
+Our PCE module, optimizing for predictive contribution, demonstrates two
+key advantages. First, as seen in Example 1, it successfully discovers a semanti-
+cally distant example (...residents... moved into... home) that SimCSE would
+
+=== PAGE 12 ===
+12
+X. Sun et al.
+Table 4: Case Study: PCE vs. Semantic Simi-
+larity (SimCSE). We analyze two examples se-
+lected by PCE for a single query, both of which
+SimCSE would miss. The head and tail entities
+are bolded.
+Example
+PCE & Sim
+Query (GT: Entity-Destination)
+Fall planting can not be completed
+before the ground freezes, so I
+stored the seeds in a
+stratification unit until spring.
+Example 1 (Label: Entity-Destination)
+The new residents have been
+moved into their brand new
+home.
+PCE: 0.632
+Sim: 0.185
+Example 2 (Label: Origin-Entity)
+The program featured clips from
+1950’s television and interviews
+with game show stars.
+PCE: 0.648
+Sim: 0.177
+Table 5: Ablation study of the
+Adaptive Inference Modulation
+(AIM) module on the SemEval
+dataset. We ablated each of the
+three components in turn: the
+Weighted Guidance, the Tar-
+geted Heads modulation, and
+the Positional Decay.
+AIM Configuration F1 Score
+Full AIM (in
+CLARE)
+65.62
+Ablation of AIM Components
+w/o Weighted
+Guidance
+65.44
+(Uniform Modulation)
+w/o Targeted Heads
+65.39
+(Untargeted
+Modulation)
+w/o Positional Decay
+65.44
+(No Positional Factor)
+have missed. PCE identifies it as valuable (Score: 0.63) because it shares the
+identical Entity-Destination label and a similar relational structure.
+More powerfully, Example 2 validates our hypothesis that predictive util-
+ity is superior to simple label consistency. This example (...clips from... tele-
+vision...) has a completely different relation label (Origin-Entity). Yet, PCE
+assigns it an even higher contribution score (0.65). This indicates that this ex-
+ample’s relational pattern, despite its label mismatch, provides a more potent
+signal for boosting the model’s confidence on the query than Example 1. This
+case strongly demonstrates that PCE’s explicit optimization allows it to uncover
+a more diverse and effective set of examples, including those that are semanti-
+cally distant and even those with different labels, which traditional methods
+would erroneously discard.
+Analysis of AIM. Table 5 presents a component-wise ablation of the AIM mod-
+ule on the SemEval dataset. The full CLARE model, equipped with the complete
+AIM, achieves an F1 score of 65.62. Removing any single component results in
+a performance drop, validating their contribution. The most significant drop
+(to 65.39) occurs when we remove “Targeted Heads” and apply modulation uni-
+formly. This result strongly supports our hypothesis of functional specialization,
+confirming that strategically intervening on the specific heads responsible for
+query-context interaction is far more effective than a naive, untargeted boost.
+Removing the "Weighted Guidance" (using uniform modulation instead of PCE
+
+=== PAGE 13 ===
+Title Suppressed Due to Excessive Length
+13
+scores) or the "Positional Decay" (treating all positions equally) also degrades
+performance to 65.44. This shows that both leveraging the retriever’s relevance
+scores and prioritizing examples earlier in the context are valuable strategies. In
+summary, all three components of AIM are integral to its success.
+4.5
+Analysis of Positive Example Composition
+To validate our 1-shot-based sample construction, we evaluated whether the pos-
+itive effect of examples generalizes when they are composed in n-shot contexts.
+We conducted an experiment on the SemEval dataset, measuring the consistency
+of prompts composed of 2, 5, 10, and 20 examples previously identified as posi-
+tive. Consistency is defined as the combined prompt still improving the correct
+label’s logit score.
+The results demonstrate remarkable robustness. The consistency rate de-
+clines gracefully from 94.7% (2-shot) to a strong 80.9% even in a dense 20-shot
+scenario. This gradual and expected decrease, caused by rising inter-example
+noise in larger contexts, confirms that our 1-shot identification strategy is fun-
+damentally sound. It successfully provides a reliable data foundation for training
+a retriever that identifies examples robustly beneficial in realistic, multi-example
+settings.
+0
+10
+20
+30
+Head
+0
+5
+10
+15
+20
+25
+30
+Layer
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Selection Frequency
+(a) Frequency of key attention head selec-
+tion on the SemEval test set.
+2-shot
+5-shot
+10-shot
+20-shot
+N-shot Setting
+0
+20
+40
+60
+80
+100
+Percentage (%)
+94.7
+91.4
+86.8
+80.9
+5.3
+8.6
+13.2
+19.1
+Consistent
+Inconsistent
+(b) Consistency Statistics of Reasoning
+Results under different n-shot settings.
+Fig. 3: Comprehensive analysis of model behavior under In-Context Learning
+(ICL). (a) Frequency of key attention head selection on the SemEval test set.
+(b) Reasoning Consistency Statistics detail the percentage of consistent and
+inconsistent results across various shot settings.
+
+=== PAGE 14 ===
+14
+X. Sun et al.
+4.6
+Empirical Validation of Targeted Head Identification
+To validate our data-driven approach for identifying critical attention heads, we
+analyzed their selection frequency on the SemEval test set using Llama3-8B-Instruct.
+We designated the top 10% of heads in each layer as critical based on their Query-
+Context Interaction Scores and aggregated the counts across all test cases.
+The resulting heatmap (Figure 3a) reveals two crucial patterns. First, within
+any given layer, selection is highly concentrated on a small, consistent subset of
+heads, confirming functional specialization. Second, and more critically, this set
+of important heads is dynamic and changes across different layers. This strongly
+indicates a hierarchical specialization, where the model leverages different heads
+for reasoning at different processing depths.
+This finding powerfully justifies AIM’s core design: a targeted, layer-specific
+intervention is not merely an optimization but a necessity to adapt to the evolv-
+ing functional roles of attention heads throughout the network.
+5
+Conclusion
+In-context learning (ICL) for relation extraction is often undermined by its re-
+liance on implicit heuristics. This paper identified two critical bottlenecks—heuristic
+example selection based on flawed proxies like semantic similarity, and unguided
+model reasoning. We argued for a paradigm shift from these implicit heuristics
+to explicit modeling and guidance.
+To this end, we introduced CLARE, a unified framework with two syn-
+ergistic components. First, Predictive Contribution Estimation (PCE) trains a
+retriever to directly optimize for an example’s true utility by quantifying its
+predictive gain. Second, Adaptive Inference Modulation (AIM) transforms the
+black-box inference process into a steerable one by dynamically modulating the
+model’s internal attention, ensuring that the high-quality examples selected by
+PCE are precisely leveraged.
+Extensive experiments on four datasets demonstrated that our explicit, op-
+timization and guidance approach allows CLARE to consistently outperform
+strong ICL baselines. This work validates the effectiveness of replacing fragile
+heuristics with principled, optimizable mechanisms and opens new avenues for
+building more robust, controllable, and interpretable in-context learning systems.
+Acknowledgments. This paper is supported by the Monitoring and Early Warning
+Service Platform Project (2023-275-1-1).
+References
+1. Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J.D., Dhariwal, P., Nee-
+lakantan, A., Shyam, P., Sastry, G., Askell, A., et al.: Language models are few-
+shot learners. In: Advances in Neural Information Processing Systems. vol. 33, pp.
+1877–1901 (2020)
+
+=== PAGE 15 ===
+Title Suppressed Due to Excessive Length
+15
+2. Dong, Q., Li, L., Dai, D., Zheng, C., Ma, Z., Li, R., Xia, H., Xu, J., Wu, Z., Liu,
+B., et al.: A survey on in-context learning. arXiv preprint arXiv:2301.00234 (2023)
+3. Dubey, A., Jauhri, A., Pandey, A., Kadian, A., Al-Dahle, A., Letman, A., Mathur,
+A., Schelten, A., Yang, A., Fan, A., et al.: The Llama 3 herd of models. arXiv
+preprint arXiv:2407.21783 (2024)
+4. Elhelo, A., Geva, M.: Inferring functionality of attention heads from their param-
+eters. arXiv preprint arXiv:2412.11965 (2024)
+5. Gao, T., Yao, X., Chen, D.: SimCSE: Simple contrastive learning of sentence em-
+beddings. In: Proceedings of the 2021 Conference on Empirical Methods in Natural
+Language Processing. pp. 6894–6910 (2021)
+6. Hendrickx, I., Kim, S.N., Kozareva, Z., Nakov, P., Séaghdha, D.O., Padó, S., Pen-
+nacchiotti, M., Romano, L., Szpakowicz, S.: SemEval-2010 Task 8: Multi-way clas-
+sification of semantic relations between pairs of nominals. In: Proceedings of the
+5th International Workshop on Semantic Evaluation. pp. 33–38 (2010)
+7. Li, Y., Miao, X., Zhou, S., Xu, M., Ren, Y., Qian, T.: Enhancing relation extraction
+via supervised rationale verification and feedback. In: Proceedings of the AAAI
+Conference on Artificial Intelligence. vol. 39, pp. 24521–24529 (2025)
+8. Liu, J., Shen, D., Zhang, Y., Dolan, B., Carin, L., Chen, W.: What makes good
+in-context examples for GPT-3? In: Proceedings of the 60th Annual Meeting of the
+Association for Computational Linguistics (Volume 1: Long Papers). pp. 100–114
+(2022)
+9. Liu, Y., Zhang, K., Gan, A., Yue, L., Hu, F., Liu, Q., Chen, E.: Empowering few-
+shot relation extraction with the integration of traditional RE methods and large
+language models. In: Database Systems for Advanced Applications. Lecture Notes
+in Computer Science, vol. 14600, pp. 349–359. Springer (2024)
+10. Liu, Y., Ott, M., Goyal, N., Du, J., Joshi, M., Chen, D., Levy, O., Lewis, M.,
+Zettlemoyer, L., Stoyanov, V.: RoBERTa: A robustly optimized BERT pretraining
+approach. arXiv preprint arXiv:1907.11692 (2019)
+11. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. In: International
+Conference on Learning Representations (2019)
+12. Luan, Y., He, L., Ostendorf, M., Hajishirzi, H.: Multi-task identification of en-
+tities, relations, and coreference for scientific knowledge graph construction. In:
+Proceedings of the 2018 Conference on Empirical Methods in Natural Language
+Processing. pp. 3219–3232 (2018)
+13. Mo, Y., Liu, J., Yang, J., Wang, Q., Zhang, S., Wang, J., Li, Z.: C-ICL: Contrastive
+in-context learning for information extraction. arXiv preprint arXiv:2402.11254
+(2024)
+14. Pang, C., Cao, Y., Ding, Q., Luo, P.: Guideline learning for in-context informa-
+tion extraction. In: Proceedings of the 2023 Conference on Empirical Methods in
+Natural Language Processing. pp. 14435–14452 (2023)
+15. Peng, K., Ding, L., Yuan, Y., Liu, X., Zhang, M., Ouyang, Y., Tao, D.: Revisiting
+demonstration selection strategies in in-context learning. In: Proceedings of the
+62nd Annual Meeting of the Association for Computational Linguistics (Volume
+1: Long Papers). pp. 12850–12869 (2024)
+16. Rubin, O., Herzig, J., Berant, J.: Learning to retrieve prompts for in-context learn-
+ing. In: Proceedings of the 2022 Conference of the North American Chapter of the
+Association for Computational Linguistics: Human Language Technologies. pp.
+2655–2671 (2022)
+17. Walker, C., Strassel, S., Medero, J., Maeda, K.: ACE 2005 multilingual training
+corpus, linguistic Data Consortium, Philadelphia (2006)
+
+=== PAGE 16 ===
+16
+X. Sun et al.
+18. Wan, Z., Cheng, F., Mao, Z., Liu, Q., Song, H., Li, J., Kurohashi, S.: GPT-RE:
+In-context learning for relation extraction using large language models. In: Pro-
+ceedings of the 31st ACM International Conference on Multimedia. pp. 7634–7643
+(2023)
+19. Wang, L., Li, L., Dai, D., Chen, D., Zhou, H., Meng, F., Zhou, J., Sun, X.: Label
+words are anchors: An information flow perspective for understanding in-context
+learning. In: Proceedings of the 2023 Conference on Empirical Methods in Natural
+Language Processing. pp. 9840–9855 (2023)
+20. Yang, H., Cho, H., Inoue, N.: Localizing task recognition and task learning in
+in-context learning via attention head analysis. arXiv preprint arXiv:2509.24164
+(2025)
+21. Ye, J., Wu, Z., Feng, J., Yu, T., Kong, L.: Compositional exemplars for in-context
+learning. In: International Conference on Machine Learning. pp. 39818–39833.
+PMLR (2023)
+22. Zhang, Y., Zhong, V., Chen, D., Angeli, G., Manning, C.D.: Position-aware atten-
+tion and supervised data improve slot filling. In: Proceedings of the 2017 Conference
+on Empirical Methods in Natural Language Processing. pp. 35–45 (2017)
+23. Zhang, Z., Lan, S., Song, L., Bian, J., Li, Y., Ren, K.: Learning to select
+in-context demonstrations preferred by large language model. arXiv preprint
+arXiv:2505.19966 (2025)

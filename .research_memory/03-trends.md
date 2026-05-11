@@ -2,6 +2,31 @@
 
 > 何时更新：引用网络 / 批量调研后产生新的横向判断时
 
+## ⚠️ 口径警告（2026-05-11 追加）
+
+**以下"趋势判断"基于引用网络 + 顶会 proceedings 观察，是定性的。**
+
+曾经在对话里出现过一组基于 **OpenAlex 裸 `search` 查询**的粗数字（IE 253K / RE 69K / EE 93K / ICL+RE 357 等），那组数字**口径不严、不可引用**，原因：
+
+- `search` 字段是全文+标题+摘要的宽泛匹配，跨学科命中严重（物理学的 "excited event extraction"、医学的 "adverse event"+"data extraction" 都会被算进来）
+- 没加 concept filter（应 filter=concepts 锁 NLP 领域）
+- 没加 venue filter（应限定 ACL/EMNLP/NAACL/COLING/AAAI/NeurIPS）
+- 2025 索引滞后 6-12 个月，年度对比本身失真
+
+**正确的趋势验证口径**（未来要用趋势数字时走这个）：
+
+| 来源 | 查询方式 | 可信度 |
+|---|---|---|
+| DBLP | 直接看 ACL/EMNLP/NAACL/COLING proceedings 的 title | ⭐⭐⭐⭐⭐ |
+| ACL Anthology | `aclanthology.org/?q=...&year=2024` | ⭐⭐⭐⭐ |
+| Semantic Scholar | API + venue filter | ⭐⭐⭐⭐ |
+| OpenAlex + concept_id | 必须加 concept_id=C205649164(NLP) 等 filter | ⭐⭐⭐ |
+| OpenAlex 裸 search | ❌ 不可用，跨学科污染严重 | ⭐ |
+
+**下面的 8 条趋势判断来自引用网络观察（可信），不是来自那组垃圾数字。**
+
+---
+
 ## 趋势 1：DocRE 两阶段范式已经站住（2024-2026）
 
 - **代表起点**：LMRC (2408.13889, 2024-08) "LLM 关系分类 → SLM 实体抽取"
@@ -58,3 +83,32 @@
 2. ⭐ Mamba/SSM 在 DocRE 的应用（趋势 2）
 3. 关系先验 vs 关系分类的统一框架（趋势 1 的元层）
 4. 低资源 / 长尾 DocRE 的两阶段优化（趋势 1 + 趋势 4）
+
+---
+
+## 趋势 9：DocRE 在顶会仍然活跃，RAG 在卷成红海（2026-05-11 ACL Anthology 干净口径）
+
+**口径**：直接爬 ACL Anthology 年度 events 页面（acl-2024 / emnlp-2024 / naacl-2024 等），匹配 paper title 关键词。覆盖 main + findings + workshops。
+
+**ACL+EMNLP+NAACL 三家顶会标题命中数加总**：
+
+| 关键词 | 2023 | 2024 | 2025 | 趋势 |
+|---|---|---|---|---|
+| Relation Extraction | 57 | 40 | 34 | 📉 -40%（下降但有量） |
+| Event Extraction | 15 | 15 | 12 | ➡️ 持平略降 |
+| Event Argument | 11 | 12 | 7 | 📉 -36% |
+| Document-level | 38 | 20 | 28 | ➡️ 波动 |
+| In-Context Learning | 70 | 115 | 115 | ➡️ 2024 翻倍后持平 |
+| Retrieval-Augmented | 26 | 93 | 239 | 🚀 **9 倍** |
+| "RAG"（标题里直接出现） | 0 | 9 | 97 | 🚀 **从零到爆发** |
+
+**对开题的指导**：
+
+- **DocRE 不死**：document-level 命中 28 篇/年，relation extraction 34 篇/年，意味着这是个"冷门但活着"的子领域 → 答辩老师不会喷"过时"，可借鉴 baseline 也够用
+- **RE > EAE 5 倍体量**：选 RE 而不是 EAE 的硬证据（EAE 一年只有 7 篇 event argument，可参考工作太少）
+- **ICL 持平不跌**：但 115 篇/年比 RE 卷 3 倍，做"纯 ICL demo retrieval"会撞 EPR/UDR/CEIL 一堆成名工作
+- **RAG 是红海**：239 篇/年比 RE 卷 7 倍，"做 RAG 学术"性价比差。**但论文标题蹭 "Retrieval-Augmented" 关键词是免费午餐**——主流叙事在那放着，不蹭白不蹭
+
+> 用此表替代之前那组 OpenAlex 裸 search 的脏数字（IE 253K / RE 69K / EE 93K）。
+
+

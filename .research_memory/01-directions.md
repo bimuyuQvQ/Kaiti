@@ -2,53 +2,92 @@
 
 > 何时更新：提出新方向、推翻或确认旧方向时
 
-## ✅ 用户已确认的 3 个大方向
+---
 
-### 方向 1：LLM-based IE 的硬问题（推理 / 鲁棒性 / 可控性）
-- **状态**：确认可做
-- **典型子问题**：幻觉抑制、关系/事件结构推理、约束生成、自一致性
-- **新冒头的细分（来自 2025-2026 引用网络）**：**LLM 幻觉抑制 × DocRE** 是空白大、刚有人做但未占领的子方向
+## 🔒 已锁定方向（2026-05-11）
 
-### 方向 2：文档级 / 跨文档 IE
-- **状态**：确认可做，调研最深入
-- **核心痛点**（2025-2026 仍存在）：长文档定位偏差、boundary drift、长尾、跨段落指代
-- **当前热点子方向**：
-  - 法律领域 + 长文档 + 事件共指（LegalCore 数据集引用速度快）
-  - DocRE 两阶段范式（LMRC 起头，RelPrior、DTPE、Two-Stage Loss 等都在 follow）
-  - Mamba/SSM 进 DocRE（MAUM 是早期落地）
+**毕业论文方向 = DocRE（文档级关系抽取）× TTM-RE 底座 × LLM 外挂 × RAG 标题包装**
 
-### 方向 3：复杂事件结构（嵌套 / 多事件 / 论元共享）
-- **状态**：确认可做
-- **典型 benchmark**：MLEE、GENIA、RAMS（多事件共享论元）
-- **2025-2026 趋势**：多智能体协作 + RL 用于结构化抽取（GenExtract 2026-03 是新例）
+### 最终路线图
 
-## ❌ 已被排除的方向
+```
+方向：       文档级关系抽取（DocRE）——不是 EAE、不是纯 ICL、不是 RAG 学术
+底座：       TTM-RE（ACL 2024 长文，chufangao/TTM-RE，作者发布了预训练权重）
+benchmark：  DocRED + Re-DocRED（标准公开数据集）
+Backbone：   RoBERTa-large（底座默认）+ LLM 外挂（7B 级，可用 Llama-3 / Mistral）
+形态：       encoder 底座保证 SOTA 性能 + LLM 做 verifier/reranker/ICL 外挂
+包装：       论文标题往 "Retrieval-Augmented Document-Level Relation Extraction" 靠
+叙事：       师姐做句子级 RE → 用户升级到文档级 RE + 加 LLM，合法且干净的差异化
+```
 
-### 纯 BERT 微调式 IE
-- **理由**：
-  - 用户明确问过"是不是太老了"
-  - 答复：纯做 BERT fine-tuning 已死，但 SLM 仍活在三种模式：
-    1. SLM 当 LLM 的工具人（候选生成 / 后处理 / 校正器）
-    2. SLM-LLM 混合两阶段（LMRC 范式）
-    3. SLM 做高效部署（蒸馏、量化）
-- **结论**：不能纯做 SLM，但 SLM 可以作为方法的组件出现
+### 为什么是这个组合
 
-### 纯 NER
-- **理由**：审稿人已经反感，benchmark 饱和
+| 维度 | 判断 | 证据 |
+|---|---|---|
+| 方向不死 | DocRE 顶会 28 篇/年（2025 ACL+EMNLP+NAACL title 含 "document-level"）| `03-trends.md` 趋势 9 |
+| 栈完全对口 | RoBERTa-large + 检索器 + ICL 全在用户肌肉记忆里 | `00-context.md` B 会技术栈 |
+| 底座最好复现 | TTM-RE **唯一发布预训练权重**，load 即复现 | candidate list v1 评估 |
+| 答辩好讲 | "我用了 LLM"+"我做了 RAG" 两个关键词都能自然命中 | 包装策略 |
+| 工作量可控 | 不需要 from scratch 训 LLM，改进点可选范围大 | 8×3090 充足 |
+| 不撞师姐 | 师姐做句子级，用户升文档级，数据集/架构/任务都不同 | 差异化叙事 |
 
-## 🔍 待评估方向（新冒出来的）
+### 候选改进点 Y（开题前二选一/三选一）
 
-### Mamba/SSM 在 DocRE 的应用
-- **来源**：LMRC 引用网络中 MAUM (IJCNN 2025) 是早期落地
-- **优势**：架构红利 + 长文档天然契合
-- **风险**：需要看复现难度
+- **Y1：替换 retriever**——用 B 会 InfoNCE 经验，训一个 DocRE 专用检索器替换 TTM-RE 默认的检索模块
+- **Y2：加 LLM verifier**——TTM-RE 出候选三元组 → LLM 判真伪，参考 "Correction & Completion (ICAACE 2025)"
+- **Y3：加 LLM reranker**——TTM-RE 出 top-K → LLM rerank，参考 LMRC 第二阶段
+- **Y4：对比学习正则**——在 TTM 的 token memory 上加 InfoNCE 对齐
 
-### LLM 幻觉抑制 × RE
-- **来源**：2508.14391 "Hallucination-Resistant RE via Dependency-Aware Sentence Simplification"
-- **优势**：BERT 时代不存在的全新问题，有空白
-- **风险**：评估指标设计有难度
+**具体选哪个，要在跑通 TTM-RE 复现之后再决定**。
 
-### 关系先验范式（RelPrior 路线）vs 关系分类范式（LMRC 路线）的统一
-- **来源**：用户已下载这两篇，可对照对读
-- **优势**：方法论级融合工作有理论价值
-- **风险**：需要扎实的理论分析能力
+---
+
+## ❌ 被排除的方向（决策链完整）
+
+### 方向 X1：继续 CLARE / 句子级 RE（路径 A/B/C）
+- **排除理由**：CLARE 核心（PCE + 方法设计）是师姐的，不能作为毕业论文核心。AIM 是用户做的但 +0.2 F1、调参调出来的、换模型大概率失效
+- **详见** `04-decisions.md`: 2026-05-11 放弃延续 B 会
+
+### 方向 X2：AIM 升级路径（路径 甲）
+- **排除理由**：AIM 鲁棒性不足，无法扩展到 RAG/Long-context
+- **详见** `04-decisions.md`: 2026-05-11 放弃延续 B 会
+
+### 方向 X3：领域 IE（路径 乙）
+- **排除理由**：实验室没有横向项目数据，无法做领域 IE
+- **详见** `04-decisions.md`: 2026-05-11 放弃延续 B 会
+
+### 方向 X4：EAE（事件论元抽取）
+- **排除理由**：EAE 顶会年产出只有 RE 的 1/5（7 篇 vs 34 篇），可借鉴 baseline/代码少。虽然用户读过 EAE 论文不算零基础，但"工作量可控"角度 RE 更优
+- **详见** `04-decisions.md`: 2026-05-11 确认 RE > EAE
+
+### 方向 X5：纯 LLM ICL（脱离 IE 做 demo retrieval 等）
+- **排除理由**：ICL 顶会 115 篇/年**比 RE 卷 3 倍**，差异化难；且 B 会 PCE 思路与 EPR/UDR/CEIL 撞车
+- **详见** `04-decisions.md`: 2026-05-11 排除纯 ICL
+
+### 方向 X6：RAG 学术路线
+- **排除理由**：RAG 顶会 239 篇/年**比 RE 卷 7 倍**，用户字节 RAG 实习虽有工程积淀但不能转化为论文 contribution（只做了文档清洗+chunking，工程标配）
+- **保留**：但**包装层仍然蹭 RAG**——论文标题写 "Retrieval-Augmented Document-Level RE"
+- **详见** `04-decisions.md`: 2026-05-11 排除 RAG 学术
+
+---
+
+## 🧊 历史候选方向（已冻结，仅供参考）
+
+> 2026-05-11 之前的候选方向列表，现已被上面的锁定方向取代。保留用于追溯决策来源。
+
+### 候选 1：LLM-based IE 的硬问题（推理 / 鲁棒性 / 可控性）
+- 子方向：幻觉抑制、关系/事件结构推理、约束生成、自一致性
+- 冒头点：LLM 幻觉抑制 × DocRE（2508.14391 代表）
+- **当前处理**：被吸收进"锁定方向"的 Y2/Y3（LLM verifier/reranker）
+
+### 候选 2：文档级 / 跨文档 IE
+- **当前处理**：就是锁定方向本身（DocRE on DocRED/Re-DocRED）
+
+### 候选 3：复杂事件结构（嵌套 / 多事件 / 论元共享）
+- **当前处理**：已排除（归为 X4 EAE 路线）
+
+### 候选 4：Mamba/SSM 在 DocRE（MAUM 路线）
+- **当前处理**：被排除（MAUM 没公开权重，复现风险高；TTM-RE 更稳）
+
+### 候选 5：LLM 幻觉抑制 × RE（2508.14391）
+- **当前处理**：作为 Y2 的 motivation 引用，不单独做
