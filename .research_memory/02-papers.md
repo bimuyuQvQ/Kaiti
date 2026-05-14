@@ -29,6 +29,7 @@
 
 **论文路径**：`papers/2024.acl-long.26.pdf`（本地）
 **代码路径**：`codes/TTM-RE/`（本地 clone，不入库）
+**全文版精读笔记**：[`notes-ttmre.md`](./notes-ttmre.md)（含完整公式、扩展观察、复现坑预警）
 
 ##### 1. 一句话定位
 - **问题**：DocRE 的 distant supervision 数据噪声大、false negative 多，以前的方法（ATLOP/SSR-PU/KD-DocRE/DREEAM）即使加了 distant 数据也不显著涨分。作者认为这是**架构限制**，不是数据质量问题。
