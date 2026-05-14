@@ -57,19 +57,17 @@
 
 ## 📚 P1：精读 TTM-RE 论文，定改进点 Y
 
-- [ ] 1. 精读 TTM-RE 论文（arXiv: 2406.05906）
-  - 重点：TTM token memory 模块的 forward 流程
-  - 重点：noise-robust loss（PU learning）的具体公式
-  - 重点：retriever 是怎么训的、用什么监督信号
+- [x] 1. 精读 TTM-RE 论文（arXiv: 2406.05906）✅ 2026-05-14
+  - 笔记落在 `02-papers.md` 「精读笔记」区块
+  - 关键收获：训练 schedule 是两段式（distant pretrain → human finetune）；TTM 的 write 没启用；memory 是全局静态的
 - [ ] 2. 精读 LMRC（2408.13889）
   - 关注两阶段范式（关系分类 → 实体抽取）
   - 看 retriever 怎么和 LLM 配合
 - [ ] 3. 精读 Correction & Completion（DOI 10.1109/ICAACE65325.2025.11019681）
   - 这是 Y2 LLM verifier 路线的直接 motivation
-- [ ] 4. 列出 3-5 个具体可实施的 Y 改进点，每个标注：
-  - 工作量估计（人时）
-  - 期望收益（F1 涨多少）
-  - 失败兜底（如果不 work，能不能写成 negative result）
+- [x] 4. 列出 3-5 个具体可实施的 Y 改进点 ✅ 2026-05-14
+  - 见 `02-papers.md` 「4 个候选 Y 的具体落点」表格
+  - 初步倾向 Y2，但**最终决定要等 P0 复现跑完**
 
 ---
 
@@ -97,11 +95,19 @@
 
 ## 🎯 历史 next steps（保留近 3 次）
 
+### 2026-05-14（本轮：TTM-RE 精读完成）
+- 提取 PDF 文本 + 通读论文 ✅
+- 对照代码（ttm.py / model2.py / train2.py）验证关键细节 ✅
+- 发现 3 个论文未提的代码细节：残差混合 0.5/0.5、tail 用 head_extractor 疑似 bug、write 操作代码有但未启用 ✅
+- 输出 4 个候选 Y 的代码级落点（Y2 优先）✅
+- 写入 02-papers.md 精读笔记区块 ✅
+- 下一步：仍是 P0 上实验室服务器复现
+
 ### 2026-05-11（本轮 N+3：底座锁定 + 跨机交接）
 - 修正 OpenAlex 口径错误 ✅
 - 重新用 ACL Anthology 拉干净趋势数字 ✅
 - 锁定底座 TTM-RE ✅
-- 重写记忆库为跨机交接版本 ⏳（本轮）
+- 重写记忆库为跨机交接版本 ✅
 
 ### 2026-05-11（本轮 N+2：底座调研）
 - 用 OpenAlex 拉 DocRE × LLM × 公开代码候选清单 ✅
