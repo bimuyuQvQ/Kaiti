@@ -31,14 +31,21 @@ Backbone：   RoBERTa-large（底座默认）+ LLM 外挂（7B 级，可用 Llam
 | 工作量可控 | 不需要 from scratch 训 LLM，改进点可选范围大 | 8×3090 充足 |
 | 不撞师姐 | 师姐做句子级，用户升文档级，数据集/架构/任务都不同 | 差异化叙事 |
 
-### 候选改进点 Y（开题前二选一/三选一）
+### 候选改进点 Y（2026-05-15 优先级修正）
 
-- **Y1：替换 retriever**——用 B 会 InfoNCE 经验，训一个 DocRE 专用检索器替换 TTM-RE 默认的检索模块
-- **Y2：加 LLM verifier**——TTM-RE 出候选三元组 → LLM 判真伪，参考 "Correction & Completion (ICAACE 2025)"
-- **Y3：加 LLM reranker**——TTM-RE 出 top-K → LLM rerank，参考 LMRC 第二阶段
+**首选（外挂式，跟 TTM 主体解耦，规避 backbone 敏感性风险）**：
+
+- **Y2：加 LLM verifier** ⭐——TTM-RE 出候选三元组 → LLM 判真伪，参考 "Correction & Completion (ICAACE 2025)"
+- **Y3：加 LLM reranker** ⭐——TTM-RE 出 top-K → LLM rerank，参考 LMRC 第二阶段
+
+**兜底（耦合式，动 memory 内部，仅在 Y2/Y3 跑不通时启用）**：
+
+- **Y1：替换 retriever**——用 B 会 InfoNCE 经验，训 DocRE 专用检索器替换 TTM-RE 默认的检索模块
 - **Y4：对比学习正则**——在 TTM 的 token memory 上加 InfoNCE 对齐
 
-**具体选哪个，要在跑通 TTM-RE 复现之后再决定**。
+**优先级理由**：TTM-RE 论文 ablation 显示 DeBERTaV3 替 RoBERTa 反掉 4 F1，TTM 模块对 backbone 敏感。Y1/Y4 强耦合，继承这个风险（跟 B 会 AIM 失败同类）；Y2/Y3 外挂，独立于底座。详见 `04-decisions.md` 2026-05-15 条目。
+
+**具体选 Y2 还是 Y3，要在 P0 复现 + 验证 LLM 推理成本之后再定**。
 
 ---
 

@@ -73,13 +73,17 @@
 
 ## 🔬 P2：决定毕业论文的"小改进 Y"（跑通底座后再决定）
 
-候选清单（详见 `01-directions.md`）：
+**优先级（2026-05-15 修正，详见 `04-decisions.md` 同日条目 + `01-directions.md`）**：
+
+首选（外挂式，规避 backbone 敏感性风险）：
+- **Y2 ⭐**：加 LLM verifier（蹭 RAG 标题，参考 Correction & Completion）
+- **Y3 ⭐**：加 LLM reranker（参考 LMRC 第二阶段）
+
+兜底（耦合式，仅在 Y2/Y3 跑不通时启用）：
 - **Y1**：替换 retriever（用 B 会 InfoNCE 经验，DocRE 专用检索器）
-- **Y2**：加 LLM verifier（蹭 RAG 标题，参考 Correction & Completion）
-- **Y3**：加 LLM reranker（参考 LMRC 第二阶段）
 - **Y4**：对比学习正则（在 TTM token memory 上加 InfoNCE）
 
-**选择策略**：跑通 P0 之后，看哪个改进点对 TTM-RE 现状的"短板"最直接。**不要在跑通底座之前预先决定 Y**。
+**选择策略**：跑通 P0 之后，先做一个**小成本验证**——在 100 个 doc 上跑一遍 Y2 全流程，估算 LLM 推理时长 + 涨分量级。再决定 Y2 还是 Y3。**不要在跑通底座之前预先决定具体 Y**。
 
 ---
 

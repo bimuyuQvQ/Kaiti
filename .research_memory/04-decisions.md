@@ -4,6 +4,23 @@
 
 ---
 
+### 2026-05-15：Y 改进点优先级修正——Y2/Y3（LLM 外挂）优先于 Y1/Y4（动 memory 内部）
+- **背景**：精读 TTM-RE 后重新审视 4 个候选 Y。新发现 3 个事实：
+  1. TTM-RE 真正的胜负手是"两段式 schedule + SSR-PU loss"，memory 模块只是配菜
+  2. Human-only setting 下 TTM-RE 没赢 SSR-PU（79.95 vs 80.18）——TTM 优势只在 H+D 成立
+  3. **DeBERTaV3 替 RoBERTa 反而掉 4 F1**（80.56 vs 84.01）——TTM 模块对 backbone 敏感
+- **关键风险类比**：事实 3 跟用户 B 会 AIM 失败的根因（"换 backbone 大概率失效"）**是同类问题**
+- **解耦判断**：
+  - Y1（动 memory 内部，替换 nn.Parameter 为 retrieved tokens）/ Y4（在 memory 上加 InfoNCE）**跟 TTM 主体强耦合**，等于在作者代码上做手术——继承 backbone 敏感性风险
+  - Y2（LLM verifier）/ Y3（LLM reranker）**完全外挂**，只读 TTM 输出的 top-K 候选——TTM 主体换什么 backbone 都不影响外挂
+- **决定**：
+  - **首选 Y2 或 Y3**（外挂式）
+  - **Y1/Y4 降级为兜底**（如果 Y2/Y3 跑出来效果不行再回过头做）
+- **理由**：用户已经在 B 会被"backbone 敏感"坑过一次（AIM +0.2 F1 且换模型失效），不能再栽同一个坑。外挂式改进的"涨分"独立于底座，是更干净的科研姿态
+- **遗留待验证**（P0 复现完立即测）：Y2/Y3 的 LLM 推理成本——DocRED test ~1000 doc × 几十~上百候选三元组 = 万到十万级 LLM 调用，7B 在 3090 上可能要几小时到一天。意味着 ablation 数量受限，要先在 sample 子集上调
+
+---
+
 ### 2026-05-11：最终锁定底座 = TTM-RE（ACL 2024 长文）
 - **背景**：已排除延续 B 会、EAE、纯 ICL、RAG 学术四条路线。需要在 DocRE 方向下从 8 个候选底座中定 1 个
 - **候选池**（见 `02-papers.md` "候选底座清单 v1"）：
