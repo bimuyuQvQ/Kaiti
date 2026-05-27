@@ -63,13 +63,17 @@ backbone: RoBERTa-large + LLM 7B 外挂
 
 1. 本文件（你正在读）
 2. [`00-context.md`](./00-context.md) —— 用户背景、目标、约束、B 会论文细节
-3. [`04-decisions.md`](./04-decisions.md) —— 决策日志（最重要的是 2026-05-11 那批，按时间倒序读前 5 条即可）
+3. [`04-decisions.md`](./04-decisions.md) —— 决策日志（最重要的是 2026-05-27 两条 + 2026-05-11 那批，按时间倒序读前 7 条即可）
 4. [`05-next-steps.md`](./05-next-steps.md) —— 当前在哪、下一步做什么
-5. [`01-directions.md`](./01-directions.md) —— 方向锁定理由（如果你要解释"为什么不做 X"）
-6. [`02-papers.md`](./02-papers.md) —— TTM-RE 底座详情 + 候选清单 + 必读论文
-7. [`03-trends.md`](./03-trends.md) —— 趋势观察（注意顶部口径警告）
+5. [`01-directions.md`](./01-directions.md) —— 方向锁定理由 + **2026-05-27 两章关联方案 A'/B'/C'/D'**
+6. [`02-papers.md`](./02-papers.md) —— TTM-RE 底座详情 + 候选清单 + 2025-2026 顶会论文 + Y 改进点更新
+7. [`07-reading-list.md`](./07-reading-list.md) —— **必读论文清单（24 篇）+ PDF 文件名映射 + 跨机复现下载脚本**
+8. [`03-trends.md`](./03-trends.md) —— 趋势观察（注意顶部口径警告 + 2026-05-27 arxiv 真实数据）
+9. [`notes-ttmre.md`](./notes-ttmre.md) —— TTM-RE 精读笔记（含公式 + 代码对照）
 
 `my_paper/` 目录有用户 B 会论文 PDF + 提取文本，**只用于了解"哪些技术路径不能碰"**，不要试图延续这条线。
+
+`papers/` 目录有 24 篇必读 DocRE 论文 PDF（**被 gitignore 不入库**）。如果当前机器上 `papers/` 为空，按 [`07-reading-list.md`](./07-reading-list.md) 末尾"复现下载"区块的脚本重新下载（PowerShell 或 bash 都给好了）。
 
 ## 8. 沟通规则（用户偏好）
 

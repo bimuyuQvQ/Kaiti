@@ -124,6 +124,68 @@
 | 2508.00757 | GLiDRE | ❌ | GLiNER 风格 bi-encoder 用于 DocRE |
 | 2511.08143 | RelPrior | ❌ | "关系作为先验"——LMRC 两阶段范式的对偶 |
 
+---
+
+## 🔥 2025-2026 DocRE 顶会论文清单（2026-05-27 调研，回应"方向是否过时"）
+
+> **调研动机**：导师担心 TTM-RE (2024) 之后没人在 DocRE 这条线了。
+> **结论**：方向**完全没死**——2025 顶会主会 + Findings 累计 ~13 篇 DocRE。
+
+### 顶会主会 / 长文（4 篇，直接驳斥"过时"担忧）
+
+| # | 简称 | 会议 | 切入点 | 代码 | 对我们的影响 |
+|---|---|---|---|---|---|
+| 1 | **DRELL** | **NAACL 2025 Long** | LLM as refiner（task distribution + probability fusion）。比已有 LLM 方法 +25.2% F1，SOTA | [Drasick/Drell](https://github.com/Drasick/Drell) ⭐3 | 🔴 **抢了 Y2/Y3 路线**——单纯做"LLM verifier"已没新意 |
+| 2 | **SciNLP** | **EMNLP 2025 Main** | 科学文献领域 entity + RE 新 benchmark | ? | 🟡 可考虑作为第二章的领域扩展 |
+| 3 | **CaDRL** | **COLING 2025 Main** | 上下文感知可微规则学习 | [aclanthology.org/2025.coling-main.551](https://aclanthology.org/2025.coling-main.551/) | 🟡 规则路线，跟我们方向不冲突 |
+| 4 | **Re2-DocRED** | **EACL 2026 Long** | Joint Entity-Relation Extraction，用 LLM + reasoning + schema 增强 Re-DocRED（+27% triplets） | [klassessg/re2-docred](https://github.com/klassessg/re2-docred) | 🟢 **方案 C（联合抽取）的直接 motivation + 新增强数据集** |
+
+### Findings（5 篇，比 B 会高半档）
+
+| # | 简称 | 会议 | 切入点 | 代码 | 对我们的影响 |
+|---|---|---|---|---|---|
+| 5 | **GREP** | ACL 2025 Findings | 全局关系 + entity pair reasoning + 辅助任务"先预测所有可能关系" | [yanyi74/GREP](https://github.com/yanyi74/GREP) ⭐2 | 🟡 中等冲击——抢了 entity pair reasoning，但跟我们 retriever/对比学习路线不直接撞 |
+| 6 | **AMTL** | ACL 2025 Findings | Adaptive Multi-Threshold Loss（plug-in loss，解决长尾问题）。在 TTM-RE 等模型上一致提升 | [xhm-code/AMTL](https://github.com/xhm-code/AMTL) ⭐3 | 🔴 **对方案 B' 重大冲击**——AMTL 已经把长尾 loss 改进做了，且明确说能 plug 到 TTM-RE 上。我们做方案 B' 必须找 AMTL 没覆盖的子问题 |
+| 7 | **ET-MIER** | EMNLP 2025 Findings | Entity Type-guided 关键 mention 识别 + 证据检索 | [NEU-IDKE/ET-MIER](https://github.com/NEU-IDKE/ET-MIER) | 🟡 中等冲击——抢了 entity type 路线 |
+| 8 | **EP-RSR** | NAACL 2025 Findings | Entity Pair-guided LLM-based DocRE（EPRF 范式） | [LookingYu/EP-RSR](https://github.com/LookingYu/EP-RSR) | 🟡 中——但明确说 "LLM-based DocRE still lags behind small models at SOTA" |
+| 9 | **GLiM** | ACL 2025 Findings | Graph Transformer + LLM（生物医学 DocRE） | ? | 🟢 跟我们方向不冲突 |
+
+### 其他主流会议（4 篇）
+
+| # | 简称 | 会议 | 切入点 |
+|---|---|---|---|
+| 10 | MAUM | IJCNN 2025 | U-Mamba 替代 Transformer + 记忆增强 |
+| 11 | Two-Stage Loss + Anaphor | IJCNN 2025 | 两阶段 loss + 指代消解 |
+| 12 | DTPE | ICASSP 2026 | 文档树解析 + LLM 数据精修 |
+| 13 | Coarse-to-Fine | ICASSP 2026 | 低资源 DocRE 的粗到细两阶段 |
+
+### 🚨 关键发现
+
+**1. 东北大学 Fu Zhang & Jingwei Cheng 团队是当前最活跃的 DocRE 团队**
+- 2025 一年发了 **4 篇 DocRE**（DRELL @ NAACL Main / GREP @ ACL Findings / AMTL @ ACL Findings / ET-MIER @ EMNLP Findings / EP-RSR @ NAACL Findings = 实际 5 篇）
+- 风格：每年从不同角度切入同一个 DocRE 任务，路线包括 loss 改进、LLM 协作、entity type、entity pair-level reasoning
+- 暗示：DocRE 是个**有人 actively investing 的方向**，但**人少**（一年大部分论文出自同一团队），适合冷门方向做毕业论文
+
+**2. 关于"小众 ≠ 过时"的对照**
+
+| 方向 | 2025 顶会论文/年 | 卷度 | 毕业友好度 |
+|---|---|---|---|
+| RAG | ~240 | 🔴 红海 | 答辩追问深 |
+| ICL | ~115 | 🔴 红海 | 撞车风险高 |
+| **DocRE** | **~13** | 🟡 **冷门但活着** | ✅ **甜区** |
+| EAE | ~7 | 🟢 已死 | 答辩会被问"为什么不做更前沿的" |
+
+### 🎯 对我们改进点 Y 的重新评估（2026-05-27）
+
+| Y | 原计划 | 2025 现状 | 是否还可做 |
+|---|---|---|---|
+| Y1 替换 retriever | TTM-RE 静态 memory 换 retrieved-doc memory | 没人做过 retrieval-augmented TTM-RE | ✅ 仍可做 |
+| Y2 LLM verifier | TTM-RE + LLM 判真伪 | ❌ DRELL 已做（NAACL 2025），且做得更精致 | ❌ **不能直接做** |
+| Y3 LLM reranker | TTM-RE top-K + LLM rerank | ❌ 同上，DRELL 的 probability fusion 已覆盖 | ❌ **不能直接做** |
+| Y4 InfoNCE on memory | 在 TTM memory tokens 上加对比学习正则 | 没人做过 | ✅ 仍可做 |
+| **Y5 长尾 retrieval** | （新增）retrieval-based long-tail DocRE | AMTL 做 loss 角度，**retrieval 角度空白** | ✅ **新机会** |
+| **Y6 联合抽取扩展** | （新增）从 RE 扩到 NER + coref + RE | Re2-DocRED (EACL 2026) 提供新数据 | ✅ **新机会** |
+
 ## 🔥 LMRC 的 11 篇引用论文（按价值分档，2026-05-11 拉取）
 
 ### 第一档：直接接续 DocRE × LLM 主线（7 篇，开题必看）

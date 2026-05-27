@@ -4,6 +4,43 @@
 
 ---
 
+## 📐 2026-05-27 新增：两章关联方案（导师 review 触发）
+
+> **背景**：导师要求论文分两章且两章最好有关联。2026-05-27 调研确认 DocRE 在 2025 顶会仍活跃（13 篇/年），但 Y2/Y3（LLM verifier/reranker）被 DRELL (NAACL 2025) 抢了。
+
+### 第一章（确定）
+
+- **基线**：TTM-RE 不动
+- **改进点**：在 Y1（retriever 替换）/ Y4（InfoNCE 正则）/ Y5（retrieval long-tail）中选
+
+### 第二章关联方案（待用户选）
+
+| 方案 | Ch1 | Ch2 | 关联强度 | 工作量 | 主要风险 |
+|---|---|---|---|---|---|
+| **A'** | TTM-RE + Y4（InfoNCE on memory） | TTM-RE + Y1（retriever 替换 static memory） | 强（同底座两改进，都改 memory 模块） | 中 | 低 |
+| **B'** | TTM-RE + Y4 在 full-shot 上 | TTM-RE + Y5（retrieval-based long-tail） | 中（同方法两设定） | 中-高 | AMTL 已做 loss 角度长尾，需找它没解决的角度 |
+| **C'** | TTM-RE 在 DocRE 上 | 扩展到 Joint Entity-Relation (基于 Re2-DocRED 数据) | 中（任务递进，DocRE → JERE） | **高** | 要增加 NER + coref 任务，工作量 +50% |
+| **D'** | TTM-RE（encoder 路线）+ 改进 | 用 TTM-RE 输出做 LLM 协作（必须**避开 DRELL** 的 probability fusion） | 强 | 中 | DRELL 把最直白的 LLM 协作抢了，剩余空间窄 |
+
+### 推荐排序（基于 2026-05-27 调研，含 arxiv 数据修正）
+
+1. **A' > C' > B' > D'**（B' 排序下降）
+2. **A' 推荐理由**：
+   - 完全避开 2025 已发表工作（DRELL/GREP/AMTL/ET-MIER 都不撞）
+   - 两章都在 TTM-RE 同一个 memory 模块上改，关联最自然
+   - Y1/Y4 都在 TTM-RE 论文自己的 limitation 里被点名为 future work
+   - 复用 B 会 InfoNCE 经验（用户肌肉记忆）
+3. **B' 排序下降的理由（2026-05-27 修正）**：
+   - arxiv 数据显示 2025-2026 DocRE 40% 在做 long-tail/few-shot/data augmentation
+   - AMTL（loss）+ DOREMI（active annotation）+ VaeDiff-DocRE（data aug）+ GLiDRE（few-shot）已经把长尾的几个主要切入点覆盖
+   - 我们做 B' 必须找这 4 个工作都没覆盖的子角度（候选：retrieval-based long-tail），空间被压缩了
+4. **C' 可选 + 排序上升**：
+   - EACL 2026 Re2-DocRED 是顶会主会长文，提供 +27% triplets 的增强数据集
+   - 联合抽取 2025-2026 工作充足（Three-stage / MTEI / Anaphor-Aware / Bi-encoder / Karalka）
+   - 工作量大但叙事最完整（"我做了 DocRE，还顺手做了 NER+coref"）
+
+---
+
 ## 🔒 已锁定方向（2026-05-11）
 
 **毕业论文方向 = DocRE（文档级关系抽取）× TTM-RE 底座 × LLM 外挂 × RAG 标题包装**
@@ -31,21 +68,24 @@ Backbone：   RoBERTa-large（底座默认）+ LLM 外挂（7B 级，可用 Llam
 | 工作量可控 | 不需要 from scratch 训 LLM，改进点可选范围大 | 8×3090 充足 |
 | 不撞师姐 | 师姐做句子级，用户升文档级，数据集/架构/任务都不同 | 差异化叙事 |
 
-### 候选改进点 Y（2026-05-15 优先级修正）
+### 候选改进点 Y（2026-05-27 重大修正——Y2/Y3 已被抢）
 
-**首选（外挂式，跟 TTM 主体解耦，规避 backbone 敏感性风险）**：
+> **重要变更**：2026-05-27 调研发现 DRELL (NAACL 2025 Long) 已经做了"LLM as refiner with task distribution + probability fusion"，且明确比已有 LLM 方法 +25.2% F1。**Y2/Y3 直接做已无新意，必须放弃**。
 
-- **Y2：加 LLM verifier** ⭐——TTM-RE 出候选三元组 → LLM 判真伪，参考 "Correction & Completion (ICAACE 2025)"
-- **Y3：加 LLM reranker** ⭐——TTM-RE 出 top-K → LLM rerank，参考 LMRC 第二阶段
+**当前可做的 Y（重新排序）**：
 
-**兜底（耦合式，动 memory 内部，仅在 Y2/Y3 跑不通时启用）**：
+| Y | 描述 | 状态 | 详细 |
+|---|---|---|---|
+| ~~Y2~~ | LLM verifier | ❌ 放弃 | DRELL 已做 |
+| ~~Y3~~ | LLM reranker | ❌ 放弃 | DRELL probability fusion 覆盖 |
+| **Y1** | 替换 retriever：把 TTM-RE 静态 memory 替换为 retrieved-doc memory | ✅ 仍可做 | 没人做过 retrieval-augmented TTM-RE |
+| **Y4** | 对比学习正则：在 TTM memory tokens 上加 InfoNCE | ✅ 仍可做 | 复用 B 会经验，没人做过 |
+| **Y5（新）** | retrieval-based long-tail：用 retrieval 帮长尾样本 | ✅ 新机会 | AMTL 做 loss 角度，retrieval 角度空白 |
+| **Y6（新）** | 扩展到 JERE：从 RE 扩到 NER + coref + RE | ✅ 新机会 | Re2-DocRED (EACL 2026) 提供新数据 |
 
-- **Y1：替换 retriever**——用 B 会 InfoNCE 经验，训 DocRE 专用检索器替换 TTM-RE 默认的检索模块
-- **Y4：对比学习正则**——在 TTM 的 token memory 上加 InfoNCE 对齐
+**风险类比**：TTM-RE 论文 ablation 显示 DeBERTaV3 替 RoBERTa 反掉 4 F1，TTM 模块对 backbone 敏感。Y1/Y4/Y5/Y6 强耦合，继承这个风险（跟 B 会 AIM 失败同类）。但因为 Y2/Y3 这条"外挂"路径被抢了，**只能接受耦合风险**，通过两章互补降低单章失败概率。
 
-**优先级理由**：TTM-RE 论文 ablation 显示 DeBERTaV3 替 RoBERTa 反掉 4 F1，TTM 模块对 backbone 敏感。Y1/Y4 强耦合，继承这个风险（跟 B 会 AIM 失败同类）；Y2/Y3 外挂，独立于底座。详见 `04-decisions.md` 2026-05-15 条目。
-
-**具体选 Y2 还是 Y3，要在 P0 复现 + 验证 LLM 推理成本之后再定**。
+**两章选哪个 Y，取决于用户对方案 A'/B'/C'/D' 的选择**——见本文件顶部"两章关联方案"表格。
 
 ---
 

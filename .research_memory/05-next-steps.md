@@ -55,6 +55,18 @@
 
 ---
 
+## 🔥 P0.5：导师 review 触发——选定两章关联方案（2026-05-27 新增，未完成）
+
+**背景**：导师反馈论文要两章 + 两章要关联，且担心 TTM-RE 太老。调研已确认方向不过时，但 Y2/Y3 被 DRELL 抢了。
+
+### 待完成
+
+- [ ] 用户在 A'/B'/C'/D' 四个方案中选 1 个（见 `01-directions.md` 顶部表格）
+- [ ] 选定后，深读对应方案的关键论文（如 A' 选定则深读 GREP + AMTL；C' 选定则深读 Re2-DocRED + Anaphor-Aware）
+- [ ] 重新评估第一章具体的 Y（在 Y1/Y4/Y5/Y6 中选 1-2 个）
+
+---
+
 ## 📚 P1：精读 TTM-RE 论文，定改进点 Y
 
 - [x] 1. 精读 TTM-RE 论文（arXiv: 2406.05906）✅ 2026-05-14
@@ -98,6 +110,38 @@
 ---
 
 ## 🎯 历史 next steps（保留近 3 次）
+
+### 2026-05-27（同日 N+2：必读论文清单 + PDF 批量下载完成）
+- 基于本日 N+1 调研，列出 24 篇必读论文清单（5 档优先级）✅
+- 批量下载 PDF 到 `papers/`（22.6 MB，全部成功）✅
+  - arxiv 15 篇 + ACL Anthology 9 篇
+  - `papers/` 在 `.gitignore` 中，PDF 不入库，跨机器需重新下载
+- 写入 `07-reading-list.md`（含分档、文件名映射、PowerShell + bash 复现下载脚本）✅
+- 更新 `README.md` / `06-handoff.md`（增加 07-reading-list 索引）✅
+- **下一步**（同上）：用户做方向决策 + 找老师 30 分钟 calibrate 接受度
+
+### 2026-05-27（同日 N+1：arxiv 真实数据修正）
+- 用户质疑 N 轮里"DocRE 13 vs EAE 7"的口径，要求看 arxiv 调研
+- 拉 arxiv title 严格匹配的累计 + 2025/2026 分布 ✅
+- 真实数据：DocRE 2025 全年 7（vs EAE 2，比 3.5x）；vs RAG 700 / ICL 840（差 30-40 倍）✅
+- 修正了之前 "DocRE 是甜区"的过度乐观 framing ✅
+- 提取 2025-2026 DocRE arxiv 10 篇完整清单 ✅
+- 重要发现：2025-2026 DocRE arxiv 40% 在做 long-tail/few-shot/data augmentation，**方案 B' 比预想更拥挤** ✅
+- 更新 `03-trends.md`（新增趋势 10）/ `04-decisions.md`（新增 N+1 决策记录）/ `01-directions.md`（B' 排序下降）✅
+- **下一步**：用户做方向决策（继续 DocRE / 拓宽到 DocRE+X / 重新考虑跨领域）
+
+### 2026-05-27（本轮：导师 review 触发方向重审，DocRE 不过时 + Y2/Y3 被抢）
+- 用户与导师讨论，导师两个担忧：
+  1. 两章要有关联
+  2. TTM-RE (2024) 太老了，方向是不是没人做
+- google_scholar 拉 2025-2026 DocRE 顶会论文，确认 13 篇/年（4 主会 + 5 Findings + 4 其他主流）✅
+- 关键发现：DRELL (NAACL 2025) 已做 LLM as refiner，**Y2/Y3 必须放弃** ✅
+- 关键发现：AMTL (ACL Findings 2025) 是 plug-in loss，**方案 B' 需要找它没覆盖的角度** ✅
+- 关键发现：Re2-DocRED (EACL 2026) 提供 JERE 增强数据集，**方案 C 有新窗口** ✅
+- 提出 4 个两章关联方案 A'/B'/C'/D'（见 `01-directions.md` 顶部表格）✅
+- 推荐：A' > B' > D' > C'（理由：A' 完全避开 2025 已发表工作，关联自然，复用用户经验）✅
+- 更新 `02-papers.md` / `04-decisions.md` / `01-directions.md` ✅
+- **下一步**：用户在 A'/B'/C'/D' 中选定后，深读 2-3 篇关键论文 + 重新评估第一章具体的 Y
 
 ### 2026-05-14（本轮：TTM-RE 精读完成）
 - 提取 PDF 文本 + 通读论文 ✅

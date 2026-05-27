@@ -86,6 +86,52 @@
 
 ---
 
+## 趋势 10：arxiv title 严格匹配的硬数字（2026-05-27 现场调研，最可信口径）
+
+**口径**：arxiv 搜索 → search type = title → query 为关键词全词匹配。比 ACL Anthology 标题匹配更广（覆盖未投顶会的预印本），比 OpenAlex `search` 更窄（不会跨学科污染）。
+
+**总累计 + 2025/2026 分布**：
+
+| 任务 | arxiv title 累计 | 2024 | **2025 全年** | 2026 前 5 月 | 实际产出（含别名）估算 |
+|---|---|---|---|---|---|
+| **document-level relation extraction** | **88** | 16 | **7** | 3 | 真实 DocRE 工作 2025 约 **15-20 篇**（title 漏掉用 DocRED/DocRE/biomedical RE 等术语的论文）|
+| **event argument extraction** | 46 | 11 | **2** | 1 | 真实 EAE 工作 2025 约 5-8 篇 |
+| retrieval-augmented generation | 1,522 | — | — | ~25 篇/月 | 年 ~300 篇 |
+| in-context learning | 2,067 | — | — | ~30 篇/月 | 年 ~360 篇 |
+
+### 关键结论
+
+1. **DocRE vs EAE：3.5x**（2025 严格 title 匹配 7:2）—— DocRE 显著比 EAE 活跃，但都是个位/十位数
+2. **DocRE vs RAG/ICL：差 30-40 倍** —— DocRE 是冷门子方向，不是热点
+3. **2025-2026 DocRE arxiv 论文 40% 在做 long-tail/few-shot/data augmentation** —— 长尾是当前最活跃子方向
+4. **Fu Zhang 团队（东北大学）占 2025 DocRE 顶会论文 30%+** —— 单点集中度高，撞车风险中等
+
+### 2025-2026 DocRE arxiv 完整清单（10 篇，2026-05-27 拉取）
+
+| 时间 | 论文 | 切入点 | 跟我们方向关系 |
+|---|---|---|---|
+| 2026-02 | GutBrainIE | 生物医学 DocRE benchmark | 数据集 |
+| **2026-01** | **DOREMI** | Long-tail DocRE 迭代框架，可应用到任何模型 | 🔴 对方案 B' 重要 |
+| 2026-01 | DocZSRE-SI | Zero-shot DocRE + entity side info | 不冲突 |
+| 2025-11 | RelPrior | LLM-based DocRE 新范式 | LLM 路线 |
+| **2025-08** | **GLiDRE** | Few-shot DocRE generalist lightweight model | 🔴 对方案 B' 重要 |
+| 2025-05 | Zero-Shot Biomedical DocRE | 两阶段 LLM prompt | 不冲突 |
+| 2025-04 | CDER | Collaborative Evidence Retrieval | retrieval 路线 |
+| 2025-03 | COMM | Concentrated Margin Maximization | 不冲突 |
+| 2025-01 | KnowRA | Knowledge Retrieval Augmented | retrieval 路线 |
+| **2025-01** | **VaeDiff-DocRE** | VAE + Diffusion 数据增强解决长尾 | 🔴 对方案 B' 重要 |
+
+### ⚠️ 推翻之前的"DocRE 13 篇/年"估算
+
+之前在汇报中用过 "DocRE ~13 / EAE ~7 / RAG ~240 / ICL ~115" 这组数字（口径是 ACL Anthology 标题匹配 + 我加总估算）。**这组数字不严谨**：
+- 13 是我把"主会 + Findings + 其他主流"加和估算的
+- 7 是 ACL Anthology 三家顶会标题匹配
+- 两个口径不同，**不能直接比**
+
+正确的对照应该是 arxiv title 严格匹配（本表数据）或者 ACL Anthology 严格匹配（趋势 9 表）。**未来引用趋势数据，用本表**。
+
+---
+
 ## 趋势 9：DocRE 在顶会仍然活跃，RAG 在卷成红海（2026-05-11 ACL Anthology 干净口径）
 
 **口径**：直接爬 ACL Anthology 年度 events 页面（acl-2024 / emnlp-2024 / naacl-2024 等），匹配 paper title 关键词。覆盖 main + findings + workshops。

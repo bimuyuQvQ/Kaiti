@@ -4,6 +4,60 @@
 
 ---
 
+### 2026-05-27（同日 N+1）：arxiv 真实数据修正——DocRE 是"冷门活着"而非"甜区"
+
+- **背景**：用户质疑 N 轮里"DocRE 13 篇/年 vs EAE 7 篇/年"的数据来源，且问有没有 arxiv 调研
+- **现场调研**：直接拉 arxiv title 严格匹配的累计 + 2025/2026 分布（见 `03-trends.md` 趋势 10）
+- **真实数据**：
+  - DocRE arxiv title 累计 88 / 2025 全年 7 / 2026 前 5 月 3 / 2024 16
+  - EAE arxiv title 累计 46 / 2025 全年 2 / 2026 前 5 月 1 / 2024 11
+  - RAG arxiv title 累计 1,522 / 月产 ~60 → 年 ~700
+  - ICL arxiv title 累计 2,067 / 月产 ~70 → 年 ~840
+- **修正之前的 framing**：
+  - 我之前用 "DocRE 13 vs EAE 7" 论证"DocRE 是甜区"——**口径混乱、不能相比**
+  - 真实对比：**DocRE 2025 是 EAE 的 3.5x**（7:2，arxiv 严格 title），但都是个位/十位数
+  - **DocRE 比 RAG/ICL 冷 30-40 倍**，是冷门子方向，不是热点
+- **对老师"过时"担忧的修正回答**：
+  - "过时"严格说不对——DocRE 还在顶会主会出（NAACL/COLING/EMNLP/EACL Main）
+  - 但准确说法是：**DocRE 一直是冷门子方向，但持续活着，且在 LLM 时代被重新激活**
+  - 不能再用"DocRE 比 EAE 多 2 倍所以活"这种话术——量级一致，差异是定性的不是定量的硬证据
+- **新发现的 long-tail/few-shot 方向更拥挤**：
+  - 2025-2026 arxiv DocRE 的 40% 在做 long-tail/few-shot/data augmentation
+  - DOREMI（2026-01）、VaeDiff-DocRE（2025-01）、GLiDRE（2025-08）、AMTL（ACL Findings 2025）合起来已经覆盖 long-tail 的多个角度
+  - **方案 B' 的难度比我之前估计高**——必须找 4 个工作都没覆盖的角度（candidate：retrieval-based long-tail）
+- **决定**：
+  - 数据修正记入记忆库，未来不再用错误的 13/7 估算
+  - DocRE 方向保持锁定（理由仍成立：跟用户技术栈匹配、TTM-RE 复现可控、Y1/Y4/Y5/Y6 都有空间）
+  - **方案 B' 优先级下降**（从二选项 → 三选项，因为更拥挤）
+  - 用户的"小众"疑虑是合理的，但**不影响硕士毕业**——答辩老师不能拿 RAG 标准来要求
+- **理由**：研究记忆库的价值在于可信，错的数字留着会污染未来决策。这次修正确保下次需要数据时用的是 arxiv 严格 title 这条干净口径
+
+---
+
+### 2026-05-27：导师 review 触发的方向重审——确认 DocRE 不过时 + Y2/Y3 必须放弃
+
+- **背景**：用户与导师讨论后反馈两个担忧：
+  1. 论文要分两章，两章最好有关联
+  2. TTM-RE (2024) 太老了，导师担心是不是因为方向没人做了所以才没新论文
+- **调研动作**（2026-05-27）：用 google_scholar 拉了 2025-2026 顶会 DocRE 论文，确认主会 + Findings + 其他主流会议 = ~13 篇/年
+- **核心发现**：
+  - **方向没死**：NAACL 2025 主会（DRELL）/ EMNLP 2025 主会（SciNLP benchmark）/ COLING 2025 主会（CaDRL）/ EACL 2026 主会（Re2-DocRED 联合抽取）都有 DocRE 工作
+  - **东北大学 Fu Zhang 团队 2025 发 5 篇 DocRE**——证明有团队 actively investing
+  - **🔴 Y2/Y3（LLM verifier/reranker）必须放弃**：DRELL（NAACL 2025 Long）已经做了"LLM as refiner with task distribution + probability fusion"，且明确比已有 LLM 方法 +25.2% F1。我们再做单纯的"LLM verifier"是炒冷饭
+  - **🔴 方案 B'（长尾路线）有冲击**：AMTL（ACL Findings 2025）已经做了 plug-in 的长尾 loss 改进，且在 TTM-RE 等模型上一致提升。我们做 B' 必须找 AMTL 没覆盖的子问题（如 retrieval-based long-tail）
+  - **🟢 方案 C（联合抽取）有新窗口**：EACL 2026 Re2-DocRED 提供了增强的 JERE 数据集（+27% triplets），且做的就是 NER + coref + RE 联合
+- **决定**：
+  - 第一章基线**保留 TTM-RE 不动**（理由：ACL 2024 长文 + 唯一公开权重 + 复现可控）
+  - 第一章改进**放弃 Y2/Y3**，转向 Y1（retriever 替换）/ Y4（InfoNCE 正则）/ Y5（retrieval-based long-tail）/ Y6（联合抽取扩展）
+  - 第二章方向**等用户在 A'/B'/C'/D' 中选定后再具体定**
+- **理由**：
+  - 不能在毕业论文里讲跟 DRELL 同样的故事（直接被审稿人拍）
+  - "小众 ≠ 过时"——DocRE 13 篇/年 vs RAG 240 篇/年 vs ICL 115 篇/年，是冷门**但对硕士毕业是甜区**
+  - 用 EACL/COLING/NAACL/EMNLP 主会硬证据反驳导师"过时"担忧
+- **遗留待选**：两章关联方案 A'/B'/C'/D' 待用户决定（具体方案见 `01-directions.md` "2026-05-27 两章关联方案"区块）
+
+---
+
 ### 2026-05-15：Y 改进点优先级修正——Y2/Y3（LLM 外挂）优先于 Y1/Y4（动 memory 内部）
 - **背景**：精读 TTM-RE 后重新审视 4 个候选 Y。新发现 3 个事实：
   1. TTM-RE 真正的胜负手是"两段式 schedule + SSR-PU loss"，memory 模块只是配菜
