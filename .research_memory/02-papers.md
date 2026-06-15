@@ -6,6 +6,45 @@
 
 ---
 
+## 🆕 agent 自演进 / PRM 方向论文池（2026-06-10 新增，对应新主候选研究内容二）
+
+> 用 2026-06 web 检索核到，未精读。研究内容二（步骤级归因/PRM）的起点。
+
+> **2026-06-10 已下载到 `papers/`（gitignore，不入库）+ 已核验 arXiv 真实存在**：PRM 综述、Who&When、CAR、ECHO 四篇 PDF 在本地。
+
+**先读 4 篇（定盘）**：
+- **PRM 综述**：*A Survey of Process Reward Models: From Outcome Signals to Process Supervisions* (arXiv:2510.08049, SJTU Weinan Zhang 组)。✅已核验+下载。PRM 全景：生成过程数据→训 PRM→test-time scaling / RL 闭环。**注意：PRM 重心是 reasoning(math/code)，agent 只是它列的应用之一（math/code/text/multimodal/robotics/agents），不是 PRM 的主场。**
+- **Who&When**：*Which Agent Causes Task Failures and When? On Automated Failure Attribution of LLM Multi-Agent Systems* (ICML 2025, **arXiv:2505.00212**)。✅已核验+下载。**真正的归因 benchmark**，LLM-judge 步骤级准确率仅 ~14%（反水硬难度的源头）。⚠️ 上轮误把 ECHO(2510.04886) 当成 Who&When，已纠正。
+- **Causal Agent Replay (CAR)** (arXiv:2606.08275, CMU 单作者短文)。✅已核验+下载。用 do(·) 干预+重放做失败步骤归因，反驳 LLM-judge 归因。开源。
+- **ECHO**：*Where Did It All Go Wrong? Hierarchical Multi-Agent Error Attribution* (arXiv:2510.04886)。✅已核验+下载。Who&When 上的层次化归因方法。
+
+**CAR related-work 里挖到的同方向（未下载，待按需）**：AgenTracer (arXiv:2509.03312, counterfactual replay 标注失败轨迹)、Ma et al. *Automatic Failure Attribution & Critical Step Prediction via Causal Inference* (arXiv:2509.08682)。
+**AgentPRM**：仅核到 WWW 2026 ACM 收录 (dl.acm 10.1145/3774904.3792551)，**arXiv 号未独立核验**，别当真号引用，要用先查。
+
+### 2026-06-10 推荐方向定调 + 综述/基线（已核验+下载到 `papers/`）
+
+> **AI 最终推荐方向**：agent「步骤级过程奖励 / 自我纠错」——核心是**训判别式 verifier/PRM（对比学习，复用 B 会手艺）+ 推理时用**，**不做全程 RL**（RL 不稳，违背"省事毕业"）。次选：tool-use 可靠性（ToolACE-8B/xLAM/Hammer 全开权重 + BFCL V4，最稳最干净基线）。理由表见本轮对话/`04-decisions`。
+
+**综述**：
+- `SURVEY_SelfEvolvingAgents_TMLR2026_arXiv2507.21046.pdf`（TMLR 2026，方向大图，✅核验+下载）
+- `PRM_Survey_2025_arXiv2510.08049.pdf`（方法族，已有）
+
+**基线**（按"权重>代码、26>25、无代码不要"排序）：
+- **PRIME** (arXiv:2502.01456, 清华/上海AI Lab)：2025，✅**开权重**(Eurus-2-7B-PRIME)+数据+代码(`PRIME-RL/PRIME`)。杀手锏=**只用结果标签在线训 PRM，免逐步标注**。偏 math/code。→ 首选起点。`BASELINE_PRIME_*.pdf` 已下。
+- **StepPO** (arXiv:2604.18401, AgentR1/StepPO)：**2026**，⚠️开代码无权重。把 agent RL 提到**步骤级信用分配**(step-level GAE)，基于 veRL+vLLM。→ 最新+最 agentic，第二。`BASELINE_StepPO_*.pdf` 已下。
+- **空白即机会**：目前无"2026+开权重+专做 agent 过程奖励"的现成模型 → 论文空间在此。
+- **评测 benchmark**：ProcessBench(推理) / Who&When(agent 失败归因) / BFCL V4 Agentic(tool-use)。
+- **次选(tool-use)基线**：ToolACE-8B(开权重, Team-ACE@HF)、xLAM、Hammer；榜 BFCL V4 Agentic(2025-07)。
+
+**背景/扩展（按需）**：
+- *A Survey of Self-Evolving Agents* (TMLR 2026)：what/when/how/where to evolve，"自演进"招牌的综述靠山。
+- agent memory 三段式（Storage→Reflection→Experience）：arXiv:2605.06716、2603.07670、2512.16301（adaptation: post-training/memory/skills）。Ch2"知识提炼/经验沉淀"靠山。
+- *Conformal Agent Error Attribution* (arXiv:2605.06788)：带覆盖保证的归因区间，进阶。
+- 约束化 workflow（对应研究内容一/三，备用）：**MermaidFlow-CF** (openreview INX9FhqbUM) / MermaidFlow / *Agentic AI Architectures & Evaluation* (arXiv:2601.12560)。flow engineering / 显式图约束执行。
+- **公开 benchmark**（研究内容二可用，不依赖指控数据）：Who&When、ProcessBench、AgentProcessBench、PRM800K。
+
+---
+
 ## 🥇 底座论文（已锁定，2026-05-11）
 
 ### TTM-RE：Memory-Augmented Document-Level Relation Extraction
@@ -140,6 +179,59 @@
 | 3 | **CaDRL** | **COLING 2025 Main** | 上下文感知可微规则学习 | [aclanthology.org/2025.coling-main.551](https://aclanthology.org/2025.coling-main.551/) | 🟡 规则路线，跟我们方向不冲突 |
 | 4 | **Re2-DocRED** | **EACL 2026 Long** | Joint Entity-Relation Extraction，用 LLM + reasoning + schema 增强 Re-DocRED（+27% triplets） | [klassessg/re2-docred](https://github.com/klassessg/re2-docred) | 🟢 **方案 C（联合抽取）的直接 motivation + 新增强数据集** |
 
+#### 📖 Re2-DocRED 精读纠正（2026-06-03，读 §1/§3/§4/§5）
+
+> ⚠️ **纠正一个之前记忆库 + `目前搞法以及todo.md` 里的根本性误解**：Re2-DocRED **不是 JERE 方法论文，是数据集论文**。第二章不能说"用 Re2-DocRED 的 JERE baseline"。
+
+- **它的真正卖点（§4 contribution）**：**SiftingLogic**——一个**免训练的 LLM 标注 pipeline**，专门补回 Re-DocRED/DocGNRE 里漏标的**假阴性（False Negative）三元组**。
+  - Stage 0：小 LLM 检索相关关系 R* + NER 抽 entity
+  - Stage 1：按"关系→兼容 head/tail 实体类型"映射表生成候选三元组 T1
+  - Stage 2：小 LLM 用**实体级约束（entity-level constraints，源自 Wikidata 关系定义）**+ 关系 verbalization 逐条校验
+  - Stage 3：大 LLM 严格复验 → T3；再 5 人人工验证（Krippendorff α=0.88）+ inverse/co-occurring 规则扩展 → T4
+  - 产出：Re2-DocRED 数据集（Re-DocRED +27% triplets / DocGNRE test +49.89% / REDFM 中文 +109.8%）
+- **它自己不提出 JERE 模型**。§5 的"JERE baseline"是**拿现成模型来跑**，用于证明"补全数据后旧模型 recall 掉"：
+  - **AutoRE (Xue et al. 2024)** —— 被称为 "state-of-the-art document-level JERE model"，**LLM-based**
+  - **TaG (Zhang et al. 2023)**、**REBEL (Huguet Cabot & Navigli 2021)**
+  - 这三个才是**第二章真正要打的 baseline**；数字很低（AutoRE 在新 test 上 P≈47-67 / R≈30-50），任务远未解决 → 有空间但 baseline 不弱、且是 LLM-based。
+- **对方案 C/C' 的影响**：
+  1. 第二章对照口径要改成"对标 AutoRE/TaG/REBEL（AutoRE = LLM-based SOTA）"，不是"对标 Re2-DocRED 的方法"。
+  2. **两章卖点的真正交汇点是"假阴性 FN"**：TTM-RE 从模型侧扛 FN（SSR-PU + memory），Re2-DocRED 从数据侧补 FN（SiftingLogic）。`目前搞法` 里的"任务递进 + InfoNCE 平移"串法没串到卖点，FN 主线才是更硬的串联。
+  3. Re2-DocRED 的"entity-level constraints"是可借用的现成思想（第二章 entity 侧约束/校验），且能避开 DRELL（DRELL refine 关系，这里约束实体）。
+- **数据/代码 gate**：数据集已开源（github.com/klassessg/re2-docred）。✅ C' 的"数据集能不能用"这关基本过（仍需 clone 确认格式 + 是否含 mention/coref 标注供端到端用）。
+
+#### 📌 AutoRE（第二章主对照 baseline，2026-06-03 下载 + 调研）
+
+- **出处**：Xue, Zhang, Dong, Tang，**ACL 2024 Demo track**（arXiv 2403.14888，清华）
+- **代码**：https://github.com/THUDM/AutoRE ⭐ ｜ **PDF**：`papers/AutoRE_LLM_DocRE_2024_ACL_Demo.pdf`（不入库）
+- **地位**：**LLM-based 文档级 RE 的 SOTA / 标准对照**——Re2-DocRED §5 和 EP-RSR(NAACL 2025 Findings) 都拿它当 baseline。第二章 JERE 真正要打的就是它（+ TaG / REBEL）。
+- **核心方法 RHF（Relation-Head-Facts）**：分三步生成 ——（1）判文档出现哪些关系 →（2）每个关系找头实体 →（3）每个(关系,头)抽完整三元组。底座 **Mistral-7B + QLoRA**（PEFT），端到端生成式。
+- **卖点**：不假设关系候选已知、不假设实体已知（贴近真实场景，区别于 ATLOP/TTM-RE 这类"实体已标好"的 encoder 方法）；Re-DocRED 上 LLM-based SOTA（比 TaG dev/test +10.03/9.03%）。
+- **关键局限（对我们有利）**：LLM-based 方法整体**仍打不过 fine-tuned 小模型 SOTA**（EP-RSR/Re2-DocRED 均印证）→ 印证"DocRE 上 encoder 仍是主力，LLM 是追赶者"。
+
+#### 🧵 两章卖点串联主线（2026-06-03 确立）：**对抗 DocRE 的假阴性/噪声监督**
+
+> 第一章基线 TTM-RE 的卖点本就是"噪声/FN 鲁棒"（SSR-PU + memory）；第二章数据集 Re2-DocRED 的卖点是"补 FN"。两章应统一在 FN 主线下，而非"用了同一底座"的工程联系。
+
+| | 设定 | 噪声/FN 来源 | 创新点 | 接续关系 |
+|---|---|---|---|---|
+| 第一章 | entity 已知（Re-DocRED）| **关系级 FN**（pair 对，关系没标）| TTM-RE entity-pair 表示上加 **FN 感知对比**（不盲推疑似 FN 的 pair）| —— |
+| 第二章 | entity 未知（Re2-DocRED）| **+ 实体级 FN**（真实体被漏召回→它所有关系全丢，pipeline 永久不可恢复）| 同套 FN 鲁棒学习 + **用关系信号回流召回被漏掉的实体** + 吃 Re2-DocRED 补回的标签，对标 AutoRE | 同一 FN 鲁棒原则从关系级扩到实体级 |
+
+> ⚠️ **2026-06-03 概念纠正（用户戳出）**：不要把第二章卖点说成"对 error propagation 鲁棒"——错误传播是 pipeline vs 端到端的轴，端到端本就为消除传播而生，说"对传播鲁棒"自相矛盾。FN（数据/监督问题）与 error propagation（架构问题）是两个独立轴，勿混。
+>
+> ⚠️⚠️ **2026-06-03 二次纠正（更重要，用户再戳）**：上一条把"实体级 FN"说成第二章招牌也夸大了，两点站不住：
+> 1. **Re2-DocRED 补的是关系不是实体**：+27% 全是 triplet（Table 1/3），靠 inverse/co-occurring 关系规则 + 实体级约束校验三元组；Stage 0 的 NER 只为生成候选，**它不补漏标实体**。所以 Re2-DocRED 的卖点 = 关系 FN，**不是实体 FN**。
+> 2. **"漏实体→关系全丢"现象存在，但在 DocRED 家数据上可能很小**：DocRED 实体是命名实体+Wikidata 链接、相对好认，标准 DocRE 还给 gold 实体+coref；真正难的是关系（长尾/跨句）。实体漏召回大概率不是主误差源。
+> - **结论**：实体 FN 目前是**硬凑的桥，非文献既有结论**，别当第二章招牌（会被问"问题多大、谁说过、数据呢"）。
+> - **第二章稳的招牌 = 关系 FN 在 JERE 难设定（实体未知）下的迁移 + 吃 Re2-DocRED 补回的关系标签**。
+> - **判据（P0 复现后做）**：在 Re2-DocRED 跑 JERE baseline，分解漏掉的 triplet 里"实体没识别出来" vs "实体对了关系判错"的占比。实体漏召回占比大 → 实体 FN 可升级为招牌；占比小（更可能）→ 老实用关系 FN 迁移当招牌。
+>
+> ⚠️⚠️⚠️ **2026-06-03 三次纠正（用户再戳"补干净"）**：不要说 Re2-DocRED"把数据侧 FN 补干净了"——论文自己强调 FN 是顽疾、补不完（说 DocGNRE "remains incomplete, substantial FN persisting"，它只是再补一层）。它的补法有天花板：规则只覆盖 inverse/co-occurring 关系、LLM 有召回上限+幻觉、人工只留 5/5 全票（偏保守）。+27% 是相对量，无 ground truth 说残余 FN=0。
+> - **正确表述**：Re2-DocRED = 目前公开数据里 **FN 最少的版本，但残余 FN 仍在**。
+> - **修正后的对照设计（不依赖"补干净"假命题）**：把第一/二章看成 **FN 完整度的梯度**——Ch1 Re-DocRED（FN 更多）vs Ch2 Re2-DocRED（FN 更少）。问题：数据 FN 越被补全，模型侧 FN 鲁棒的收益是变小（主要靠数据）还是稳定（模型侧正交不可替代）。
+>
+> 📌 **元判断**：核心骨架（关系 FN 主线 + 跨"实体已知/未知"和"FN 多/少"两轴做对照）是稳的；但"叠加 vs 冗余""实体 FN""补干净"这些招牌级精确表述**全都还没数据支撑，不能当结论讲**。开题阶段只讲骨架，细节统一答"这是开题后第一批诊断实验要测的"。别在无数据时精雕话术（已被用户连续戳塌 3 处：对传播鲁棒 / 实体 FN / 补干净）。
+
 ### Findings（5 篇，比 B 会高半档）
 
 | # | 简称 | 会议 | 切入点 | 代码 | 对我们的影响 |
@@ -149,6 +241,21 @@
 | 7 | **ET-MIER** | EMNLP 2025 Findings | Entity Type-guided 关键 mention 识别 + 证据检索 | [NEU-IDKE/ET-MIER](https://github.com/NEU-IDKE/ET-MIER) | 🟡 中等冲击——抢了 entity type 路线 |
 | 8 | **EP-RSR** | NAACL 2025 Findings | Entity Pair-guided LLM-based DocRE（EPRF 范式） | [LookingYu/EP-RSR](https://github.com/LookingYu/EP-RSR) | 🟡 中——但明确说 "LLM-based DocRE still lags behind small models at SOTA" |
 | 9 | **GLiM** | ACL 2025 Findings | Graph Transformer + LLM（生物医学 DocRE） | ? | 🟢 跟我们方向不冲突 |
+
+#### 🆕 2026-06-03 补充：SOTA 时间线纠正 + 为什么基线锚在 2024 可辩护
+
+> 用户质疑"TTM-RE / AutoRE 都是 2024 的，2026 难道没有更新 SOTA"。WebSearch 确认结论：
+
+- **有更新的，但 DocRE 是慢车道（~13 篇/年），2024 基线不丢人。** 2025-2026 新工作：
+  - **EP-RSR**（NAACL 2025 Findings）：LLM-based，**比 AutoRE +7.42 F1（DocRED）→ AutoRE 已非 LLM-SOTA**
+  - **DRELL**（NAACL 2025）：LLM refiner，声称整体 SOTA
+  - **AMTL**（ACL 2025 Findings）：plug-in 长尾 loss，**plug 在 TTM-RE 上能涨 → TTM-RE 仍是 2025 别人改进的活底座**
+  - **DOREMI**（2026, Knowledge-Based Systems）：长尾去噪数据集
+  - **DocKS-RAG**（2025/2026 OpenReview poster）：LLM + 文档级知识图谱 + **RAG** + hybrid-prompt tuning → ⚠️ **已占"Retrieval-Augmented DocRE"包装位，用户原标题策略需避开/区分**
+- **为什么仍锚 2024 基线（可辩护）**：
+  1. 第一章 TTM-RE = **可复现改进底座**（唯一公开权重），不是当绝对 SOTA 比；新 SOTA 进相关工作 + 对照即可
+  2. 第二章 AutoRE = **Re2-DocRED（EACL 2026）自己用的 baseline**，跟随其评测协议天然合理；2026 论文仍用 2024 AutoRE 反证子方向节奏慢
+- **待办**：DocKS-RAG / EP-RSR / DRELL 还没下载精读，需确认它们占的地盘（尤其 DocKS-RAG 的 RAG 包装重叠）。
 
 ### 其他主流会议（4 篇）
 
