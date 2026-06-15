@@ -4,6 +4,20 @@
 
 ---
 
+### 2026-06-15（晚，补充）：底座锁定 ProRAG；IG-Search / TreePS-RAG 因无代码排除
+
+- **背景**：AI 曾推荐 IG-Search(2604.15148) 和 TreePS-RAG(2601.06922) 作为"便宜底座"，用户核查后发现两篇均无开源代码，违反既定规则。
+- **核查结果**：
+  - IG-Search：无 GitHub，无权重 ❌
+  - TreePS-RAG：无 GitHub，无权重 ❌
+  - ProRAG：GitHub `lilinwz/ProRAG`（MIT 协议）+ HF 权重（`bmbgsj/ProRAG`，Qwen3-8B）✅
+  - ReasonRAG：GitHub 有但 MCTS 数据生成依赖 GPT-4o API，成本不可控，降优先级
+- **决定**：**Phase 0 底座 = ProRAG**（唯一同时满足"有代码+有权重+2026"的候选）。
+- **Phase 0 方案**：直接下载 `bmbgsj/ProRAG`（Qwen3-8B）权重 → 在原论文 benchmark（HotpotQA/2Wiki/MuSiQue）跑推理 → 复现论文数字（允许 ±1-2 点）。MCTS 阶段暂跳过（用已发布权重），中文场景适配时再决定是否重跑。
+- **理由**：Qwen3-8B 原生支持中文，与 B 计划（中文多跳 QA）天然对接；8×3090 可跑。
+
+---
+
 ### 2026-06-15：方向最终锁定——过程监督 RL for Agentic RAG（接受做 RL，以 ReasonRAG + ProRAG 为 baseline）
 
 - **背景**：用户连续否掉若干方案后（DocRE→agent项目→PRM/verifier→tool-use SFT），自己找来两篇要求当 baseline。AI 读后指出**两篇都是 RL**，与用户先前"不想搞 RL"冲突；用户明确回复"**接受，搞 RL 吧**"。
