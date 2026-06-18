@@ -4,6 +4,21 @@
 
 ---
 
+### 2026-06-18：算力硬约束确认——online agentic RL 不可行，方向需重调
+
+- **背景**：用户咨询师姐（在公司有 128 张卡的算力经验），师姐**明确不建议**在 8×3090 上跑 agentic RL，她在公司 128 张卡跑 agentic RL 需要 3 天/轮。
+- **算力分析**：8×3090（24GB×8=192GB 总显存）理论容量与 4×A100（80GB×4=320GB）差距大，且 NVLink/带宽完全不同级；online RL rollout（GRPO 每 step 需 G=8 条 13-hop 轨迹 × retriever 调用 × 梯度反传）在 3090 上单 epoch 预计需数周，不可接受。
+- **直接影响**：ProRAG Stage 4（online process-supervised RL）**无法在本机复现**。"基线可复现→改进→对比"的毕设套路在 ProRAG 这条线上断裂。
+- **放弃事项**：
+  - ❌ 不再以 ProRAG 作为"可训练基线"（其 RL 阶段无法复现）
+  - ❌ RE / EE / NER 方向**彻底永久放弃**（用户明确，不再讨论）
+  - ❌ 路 B（inference-time PRM beam search）：推理时间开销大，被 ProRAG 论文自身批评，思路路径不干净
+- **新倾向（路 A）**：**离线过程监督**（offline process supervision）——SFT 作基线，MCTS 构造离线过程偏好数据，DPO/RFT 训练；全程无 online RL，8×3090 完全可行。核心参考：ReasonRAG（MCTS + 离线偏好学习），ProRAG Stage 1-3（SFT+MCTS+RFT，跳过 Stage 4）。
+- **待确定**：① 具体贡献点在离线流水线的哪一环（数据构造质量 / PRM 设计 / 训练目标）；② GPT-4o 标注成本是否可接受（ReasonRAG 路线需要 API 费用）；③ 需与导师对齐。
+- **下一步**：精读 ReasonRAG 方法节，明确其离线流水线细节，找白区。
+
+---
+
 ### 2026-06-15（晚，补充）：底座锁定 ProRAG；IG-Search / TreePS-RAG 因无代码排除
 
 - **背景**：AI 曾推荐 IG-Search(2604.15148) 和 TreePS-RAG(2601.06922) 作为"便宜底座"，用户核查后发现两篇均无开源代码，违反既定规则。

@@ -4,38 +4,34 @@
 
 ---
 
-## 🎯 当前阶段（2026-06-15 锁定）：过程监督 RL for Agentic RAG，底座 = ProRAG
+## 🎯 当前阶段（2026-06-18 重调）：离线过程监督 for Agentic RAG
 
-**方向**：过程监督强化学习 for Agentic RAG，搜索 agent 多跳推理。
+**背景**：2026-06-18 确认 8×3090 无法跑 online agentic RL（师姐：128 卡 × 3 天/轮）。ProRAG 不再作为可训练基线。RE/EE/NER 彻底放弃。
 
-**策略 A+B**：
-- **A（底座）**：**ProRAG**（arXiv:2601.21912，`lilinwz/ProRAG`，HF 权重 `bmbgsj/ProRAG` Qwen3-8B，MIT 协议）
-- **B（冷场景）**：中文 / 领域多跳检索 QA（英文已饱和，中文是真空白；Qwen3 原生支持中文，天然对接）
+**新方向（路 A）**：**离线过程监督**（Offline Process Supervision for Multi-hop RAG）
+- 基线：SFT-only agentic RAG（Qwen3-8B + 结构化推理格式微调）
+- 改进：MCTS 构造离线过程偏好数据 → DPO / RFT 训练
+- 全程无 online RL，8×3090 完全可行
+- 参考论文：ReasonRAG（arXiv:2505.14069）、ProRAG Stage 1-3
 
-**排除候选（无代码）**：
-- IG-Search (2604.15148)：无代码无权重 ❌
-- TreePS-RAG (2601.06922)：无代码无权重 ❌
+**ProRAG 的新用途**：
+- 发布权重（`bmbgsj/ProRAG`）作为**上界参考**（inference only，不训练）
+- 其 Stage 1-3 的设计作为**方法参考**
 
-**执行顺序（确认）**：
-1. **Phase 0（立即可做）**：下载 ProRAG 权重，在原论文 benchmark 复现数字
-2. **Phase 1**：切换到中文多跳 QA 数据，跑 ProRAG baseline，error analysis
-3. **Phase 2**：针对弱点小改 + 消融
+**方向待确定事项**：
+1. 具体贡献点：数据构造质量 / PRM 设计 / 训练目标选哪个环节
+2. GPT-4o 标注成本能否接受（ReasonRAG 的 MCTS 对比对需要 LLM 打标签）
+3. 与导师对齐：接受"不做 RL"方案吗
 
 ---
 
 ### ✅ TODO（按优先级排列）
 
-- [ ] **【P0，实验室服务器】** 克隆 ProRAG 代码 + 装环境
-  ```bash
-  git clone https://github.com/lilinwz/ProRAG
-  conda create -n prorag python=3.13.11
-  # 按 README 装 vllm==0.11.0、flash-attn 等
-  ```
-- [ ] **【P0，实验室服务器】** 下载 `bmbgsj/ProRAG`（Qwen3-8B）HF 权重
-- [ ] **【P0，实验室服务器】** 在原论文 benchmark（HotpotQA / 2WikiMultiHopQA / MuSiQue）跑推理，复现论文 EM 数字（允许 ±1-2 点误差）
-- [ ] **【P1，确认数据】** 查中文多跳 QA 数据集可用性（CMuSiQue / CRAG / DRCD / 自建？）
-- [ ] **【P1，实验室服务器】** ProRAG 在中文数据上跑 zero-shot baseline，做 error analysis
-- [ ] **【之后】** 根据 error analysis 定具体改进点，回来讨论并起草开题骨架
+- [ ] **【P0，讨论】** 精读 ReasonRAG 方法节，搞清楚其离线流水线细节，找到 ProRAG Stage 1-3 + ReasonRAG 的差异和白区
+- [ ] **【P0，讨论】** 确定具体贡献点，起草一句话 pitch
+- [ ] **【P1，问导师】** 导师是否接受"不做 online RL"方案；GPT-4o 标注费用是否有支持
+- [ ] **【P1，实验室服务器】** 用 ProRAG 发布权重跑原论文 benchmark inference（复现数字，作为上界参考）
+- [ ] **【之后】** 根据确认的贡献点起草开题骨架
 
 ---
 
@@ -56,10 +52,12 @@
 
 ## 🚫 不要做的事
 
-- 不要再讨论"要不要换方向"——方向已最终锁定
-- 不要推荐没有开源代码的论文作为底座候选
-- 不要在 Windows 笔记本上跑 GPU 任务——没卡
-- 不要用 OpenAlex 裸 `search` 查询出趋势数字——口径污染严重
+- ❌ 不要推荐 RE / EE / NER 方向（永久放弃）
+- ❌ 不要以 ProRAG 作为"可训练基线"（online RL 在 8×3090 不可行）
+- ❌ 不要推荐需要 online RL rollout 的方案（GRPO/PPO + agentic rollout 均排除）
+- ❌ 不要推荐没有开源代码的论文作为底座候选
+- ❌ 不要在 Windows 笔记本上跑 GPU 任务——没卡
+- ❌ 不要用 OpenAlex 裸 `search` 查询出趋势数字——口径污染严重
 
 ---
 
