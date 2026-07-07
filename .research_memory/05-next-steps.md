@@ -27,11 +27,64 @@
 
 ### ✅ TODO（按优先级排列）
 
-- [ ] **【P0，讨论】** 精读 ReasonRAG 方法节，搞清楚其离线流水线细节，找到 ProRAG Stage 1-3 + ReasonRAG 的差异和白区
+#### 🔧 环境 & 数据（实验室服务器，进行中）
+- [x] **【P0】** 修复 torch CUDA 版本问题（已跑通推理）
+- [x] **【P0】** 下载 wiki18_100w.jsonl + QA 数据集
+- [x] **【P0】** 建索引（bge_Flat.index 已完成）
+- [~] **【P0】** 跑通 ReasonRAG 推理（hotpotqa 已跑到约 3000/7405，被 OOM kill 中断）→ **需从头重跑**（FlashRAG 不支持断点续跑，全跑完才写盘）
+- [~] **【P0】** 复现论文推理指标（HotpotQA）：当前 `em=33.21 / f1=43.96`，低于论文 `38.4/48.9`，需做配置对齐排查（iter/topk/评测 split/检索一致性）。
+  - 已在 `inference.py` 增加 `--gpu_id` 与 `--run_tag`，支持多卡并行跑不同评测集/参数组合。
+- [~] **【P1】** **SimPO 全量微调进行中**（2026-06-24）：ZeRO-3 + 8 GPU（0-7）+ chunked logps + lowmem DS config。
+  - 已定位并修复 OOM 根因：`dpo/trainer.py` 在 `concatenated_forward` 里把 `labels` 传进了 `model.forward`，触发 Qwen2 内部 CE loss，导致额外显存峰值（约 +2.3GB）并在 rank1 OOM。
+  - 修复：forward 时移除 `labels`，仅保留 logits 路径，再由 SimPO/DPO trainer 自己算偏好损失。
+  - 8 卡 + `cutoff_len=2048`：`/data1/home/lmy/Kaiti/logs/simpo_full_z3_8gpu_2048.log`，在 rank1 再次 OOM 后退出。
+  - 8 卡 + `cutoff_len=1536`：`/data1/home/lmy/Kaiti/logs/simpo_full_z3_8gpu_1536.log`，已稳定跑到 step 11（step10：loss=0.9776，reward accuracy=55%），当前运行中。
+  - 检查点目录：`/data1/home/lmy/Kaiti/baselines/ReasonRAG-main/saves/qwen2.5-7b-instruct/full/dpo`
+
+#### ⚠️ 训练显存红线（2026-06-23 踩坑记录，2026-07-01 更新）
+- ❌ **ZeRO-3 + sigmoid DPO 全量**：每卡 22GB baseline + lm_head all-gather，OOM
+- ❌ **DPO+LoRA 1–4 卡 ZeRO-2/3**：step 0 OOM（每卡 ~22GB 顶满）
+- ❌ **ZeRO-3 + offload_param + offload_optimizer**：CPU 内存炸，触发 OOM-killer
+- ❌ **Liger Kernel + DPO**：transformers 4.57 下 `.logits` 变 None，与 ZeRO-3 不兼容
+- ✅ **DPO+LoRA+ZeRO-3（8 卡）已验证**（2026-07-01）：5 step 冒烟全过，峰值 **~8.8GB/卡**，~120s/step，无 OOM
+  - 配置：`qwen_dpo_lora_z3_smoke.yaml` + `ds_z3_lowmem.json` + NCCL 三件套（`P2P_DISABLE/IB_DISABLE/SHM_DISABLE=1`）
+  - 必修补丁：`dpo/trainer.py` 去掉 forward 的 labels（CE 峰值）；LoRA+torch2.11 scheduler callback（`zip()` 报错，非 OOM）
+  - 日志：`logs/dpo_lora_z3_smoke_8gpu_v5.log`；权重：`saves/qwen2.5-7b-instruct/lora/dpo_z3_smoke/`
+- ✅ **SimPO 全量+ZeRO-3（8 卡）**：也可跑，但比 DPO+LoRA 更吃显存/更慢；`cutoff_len=1536` 曾稳定到 step 20+
+
+#### 🚨 系统内存红线（2026-06-25 新增，强制）
+- 任何高内存任务（尤其 `build_extend_index.py`）运行前必须先评估 OOM 风险。
+- `build_extend_index.py` 已增加 **CUDA OOM 自适应降批**（`START_BATCH_SIZE=64`，失败自动减半到 `MIN_BATCH_SIZE=8`）与 `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`，用于避免 24GB 卡在首批编码时 OOM。
+- `build_extend_index.py` 已新增 `--device` 参数（如 `--device cuda:0`）并在启动时 `torch.cuda.set_device` 显式绑定卡，避免默认设备漂移导致加载阶段 OOM。
+- `build_extend_index.py` 的合并阶段已修复：不再使用仅适用于 IVF 的 `faiss.merge_into`，改为 `IndexFlatIP` 兼容的 `reconstruct_n + add`；支持 `--merge_only` 直接复用已生成的 `index_part_*.index` 产出最终索引。
+
+#### 🧠 方向 & 贡献点（讨论）
+- [ ] **【P0，讨论】** 精读 ReasonRAG 方法节，搞清楚 MCTS 数据构造 + DPO 训练的细节，找改进白区
 - [ ] **【P0，讨论】** 确定具体贡献点，起草一句话 pitch
 - [ ] **【P1，问导师】** 导师是否接受"不做 online RL"方案；GPT-4o 标注费用是否有支持
-- [ ] **【P1，实验室服务器】** 用 ProRAG 发布权重跑原论文 benchmark inference（复现数字，作为上界参考）
 - [ ] **【之后】** 根据确认的贡献点起草开题骨架
+
+> ⚠️ **已确认**：毕设目标是**在 ReasonRAG 基础上改进**（情况二），需自己复现训练流程，不是只跑 inference 取数字。
+
+---
+
+## 🧪 2026-06-24 复现偏差排查（HotpotQA）
+
+**最新观测**：
+- `hotpotqa` 评测结果：`EM 0.3321 / F1 0.4396`（显著低于论文 Table 2 的 `38.4 / 48.9`）。
+- 运行配置来自：`output/hotpotqa_2026_06_24_05_21_/.../config.yaml`。
+
+**已确认的关键偏差（有证据）**：
+1. **语料与论文不一致**：论文 Appendix E.1 明确写了“在 wiki18 上并入 PopQA/HotpotQA/2Wiki 相关内容做增强语料”；当前推理仍使用 `indexes/wiki18_100w.jsonl` + `indexes/bge_Flat.index`。
+   - 2026-06-24 定量检验：`context` 标题覆盖率仅 **67.47%**（81,095/120,195），`context` 100-word chunk 精确覆盖率仅 **0.035%**（58/165,738）。
+2. **增强语料当前无效**：`wiki18_100w_extend.jsonl` 与 `wiki18_100w.jsonl` 行数完全相同（`21,015,324`），且 `bge_Flat_wiki_extend.index` 不存在，说明未形成可用增强检索链路。
+3. **当前热点评测不是论文主设定**：最新一次是 `retrieval_topk=5`（论文主文/附录主设定是 top-3）；这会带来可比性偏差。
+4. **checkpoint 一致性待确认**：当前本地模型卡显示 `dpo_v16 / dpo_mcts_rag_v8` 自动导出信息，需核验是否与论文发布的最终 `ReasonRAG` checkpoint 完全一致。
+
+**下一步（按优先级）**：
+- [ ] 先做**严格可比复现**：固定论文设定（top-3、同 split、同 backbone），并记录输出 `config.yaml` 作为证据。
+- [ ] 修复/重建增强语料流程：重新生成 `wiki18_100w_extend.jsonl`（保证行数增加），并构建对应 `bge_Flat_wiki_extend.index`。
+- [ ] 校验 checkpoint 来源：确认是否为论文 release 权重，必要时拉取官方权重重跑一轮 HotpotQA。
 
 ---
 

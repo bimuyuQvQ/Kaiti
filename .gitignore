@@ -13,3 +13,6 @@ codes/
 papers/
 log/
 *.pdf
+*.whl
+*.jsonl
+*.json

@@ -4,6 +4,34 @@
 
 ---
 
+### 2026-06-24：撤回“wiki18_100w 已完整覆盖 QA context”的判断，复现差距优先排查语料/索引不一致
+
+- **背景**：为解释 HotpotQA 推理分数低于论文，重新对 `dataset/hotpotqa/dev.jsonl` 与 `dataset/2wikimultihopqa/dev.jsonl` 的 `context` 做了定量覆盖检验（对比 `indexes/wiki18_100w.jsonl`）。
+- **检验结果（当前口径）**：
+  - `context` 标题覆盖率：**81,095 / 120,195 = 67.47%**
+  - `context` 100-word chunk 精确覆盖率：**58 / 165,738 = 0.035%**
+  - Hotpot supporting-fact 标题覆盖率：**10,945 / 13,783 = 79.41%**
+- **决定**：
+  1. **撤回**此前“`wiki18_100w` 已包含 Hotpot/2Wiki 全部 context，因此无需增强语料”的判断；
+  2. 将“论文复现差距”优先归因到**语料/索引与论文 E.1 设定不一致**，而非仅 `max_tokens`；
+  3. 后续复现必须同时报告：`corpus_path`、`index_path`、`retrieval_topk`、checkpoint 来源，避免“参数看似接近但数据底座不同”。
+- **理由**：覆盖率检验直接否定“已全覆盖”前提；继续在错误前提上调参会浪费实验预算并放大误判风险。
+
+---
+
+### 2026-06-18（晚）：毕设底座确认为 ReasonRAG，目标"在其基础上改进"
+
+- **背景**：用户明确表示目标是"情况二：在 ReasonRAG 基础上改进"，而非仅用官方权重跑推理对比。
+- **决定**：**ReasonRAG = 可训练基线**，用户需要复现其训练流程，然后在某一环节提出改进。
+- **训练方式**：8×3090 跑 DPO 可行（全量 DPO + DeepSpeed ZeRO-3，或 LoRA DPO 更轻量）；不涉及 online RL。
+- **当前实验进展**：
+  - conda 环境 `reasonrag` 已建，flashrag-dev 已装，torch/vllm 正在修复 CUDA 12.8 vs cu130 不匹配问题
+  - wiki18_100w.jsonl 和 QA 数据集正在下载
+  - bge_Flat.index 待建（约 1~2 小时，需等数据下完）
+- **下一步**：先跑通 inference（用官方权重验证环境），再跑通 DPO 训练（用 RAG_ProGuide 数据集），最后确定改进贡献点。
+
+---
+
 ### 2026-06-18：算力硬约束确认——online agentic RL 不可行，方向需重调
 
 - **背景**：用户咨询师姐（在公司有 128 张卡的算力经验），师姐**明确不建议**在 8×3090 上跑 agentic RL，她在公司 128 张卡跑 agentic RL 需要 3 天/轮。

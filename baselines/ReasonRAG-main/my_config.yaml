@@ -82,8 +82,8 @@ generator_max_input_len: 8192  # max length of the input
 generator_batch_size: 2 # batch size for generation, invalid for vllm
 generation_params:
   do_sample: False
-  max_tokens: 256
-use_fid: False # whether to use FID, only valid in encoder-decoder model
+  # max_tokens: 256
+  max_tokens: 1024
 
 # -----------------------------------------OpenAI Generator Settings------------------------------------------------#
 #framework: openai # inference frame work of LLM, supporting: 'hf','vllm','fschat'
