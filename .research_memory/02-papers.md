@@ -325,3 +325,48 @@
 - **Semantic Scholar**：覆盖 arXiv 引用，但**公开 API 严格限流（~100 次/5min/IP）**
 - **建议**：申请免费的 SS API Key（[这里](https://www.semanticscholar.org/product/api#api-key-form)）后限流升至 ~1000 次/min
 
+
+---
+
+## 2026-07-09 精读补充：LogicRAG（2508.06105v2）
+
+**论文**：*You Don’t Need Pre-built Graphs for RAG: Retrieval Augmented Generation with Adaptive Reasoning Structures*，arXiv:2508.06105v2，本地路径：`papers/acl2026/2508.06105v2.pdf`。
+
+**一句话定位**：LogicRAG 是一种 **query-time / inference-time 的 GraphRAG 替代方案**：不为整个语料预构建知识图，而是对每个输入问题动态构造“查询逻辑依赖图”（Query Logic Dependency Graph），用子问题 DAG 来调度多步检索与生成。
+
+**核心流程**：
+1. 用 LLM 将复杂 query 分解为子问题集合 `P={p1,...,pn}`；
+2. 用 LLM 判断子问题之间的逻辑先后关系，构造 DAG `G=(V,E)`；
+3. 对 DAG 做拓扑排序，得到依赖一致的推理/检索顺序；
+4. 按拓扑顺序贪心解决子问题，前序子问题答案作为后续检索条件；
+5. 对同一拓扑 rank 的子问题做 unified query，减少重复检索（graph pruning）；
+6. 用 rolling memory 对历史检索证据和中间答案做摘要压缩，控制上下文长度（context pruning）；
+7. 最后基于所有中间答案和 memory compose 最终答案。
+
+**关键观察**：
+- 传统 GraphRAG 的图是 corpus-level graph，构图成本高、更新慢、且固定图未必适配当前 query。
+- LogicRAG 的图是 query-level reasoning graph，图的用途从“组织知识库”变成“组织当前问题的推理计划”。
+- 论文还指出 agentic RAG 容易出现“hesitation”：模型反复生成相似子查询。作者用 sampling without replacement 强制推进子问题批次，降低 token 成本。
+
+**实验结果摘要**：
+- 数据集：HotpotQA、2WikiMultiHopQA、MuSiQue，各取 1000 条验证集问题。
+- Baseline：Zero-shot LLM、Vanilla RAG、KGP、G-retriever、RAPTOR、GraphRAG、LightRAG、HippoRAG、HippoRAG2。
+- LogicRAG 在三组多跳 QA 上整体优于 baseline：例如 2WikiMQA string accuracy 64.7%，明显高于 HippoRAG2 的 50.0%；MuSiQue 30.4/37.5（Str/LLM Acc）也超过 HippoRAG2。
+- 2WikiMQA 查询时效率：LogicRAG 平均 9.83s / 1777.9 tokens；比 VanillaRAG 慢，但比多个图方法省 token，且无离线构图成本。
+
+**方法性质判断（重要）**：
+- 这是 **prompt + 系统流程 + 检索调度 + 上下文管理** 的工作。
+- 没有训练新模型，没有改 LLM 底层结构，没有新 embedding 模型，也没有可学习模块。
+- 子问题分解、依赖边判断、统一查询生成、rolling memory 摘要、新子问题发现、最终 compose 基本都依赖 LLM prompting。
+- 论文有算法符号（DAG、拓扑排序、rolling memory、merge/query rank），但数学深度主要是流程形式化，不是模型结构或优化目标。
+
+**对本毕设的启发**：
+- 可以作为“非 RL Agentic RAG / 推理时结构化检索”的重要相关工作和可借鉴模块。
+- 它证明“动态推理结构 + 检索调度”本身能涨点，适合拿来设计 retrieval scheduling、子问题依赖建模、context pruning 的 baseline/ablation。
+- 但如果直接复刻 LogicRAG 作为毕业论文一章，风险是：创新会被看成“纯 prompt 编排”，缺少训练、模型模块或更硬的优化目标。
+- 更稳的用法：把 LogicRAG 当作流程骨架或对照，在其上增加**可训练/可量化的组件**，例如子问题依赖图质量评估器、检索步骤选择器、过程偏好模型、DPO/SimPO 训练的数据构造，或面向中文/专业场景的结构化检索诊断。
+
+**可尝试方向**：
+- 将 LogicRAG 的 DAG 规划与 ReasonRAG/ProRAG 的过程监督思想结合：不是只 prompt 出 DAG，而是对“子问题分解、依赖边、检索推进、上下文保留”这些步骤构造偏好数据或奖励信号。
+- 做一个“训练增强版 LogicRAG”：保留 DAG + rolling memory 框架，但引入可训练的 verifier/ranker/policy 来判断子问题是否足够、依赖是否正确、是否需要继续检索。
+- 论文叙事上可以作为反例/动机：纯 inference-time 流程有效但偏软，因此我们的贡献需要落在“流程结构 + 可训练过程监督/评价器”的结合上。

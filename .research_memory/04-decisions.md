@@ -4,6 +4,21 @@
 
 ---
 
+
+### 2026-07-09：LogicRAG 可作为非 RL Agentic RAG 参考，但不宜单独作为毕设一章主贡献
+
+- **背景**：精读 `papers/acl2026/2508.06105v2.pdf`（LogicRAG）。该工作提出 query-time DAG 推理结构：将输入问题分解为子问题，构造逻辑依赖 DAG，拓扑排序后按 rank 合并检索，并用 rolling memory 做上下文剪枝。
+- **确认**：LogicRAG 本质是 **prompt + inference-time workflow + retrieval scheduling**。它没有训练新模型、没有改 LLM/embedding 底层结构、没有可学习参数模块；数学公式主要是 DAG、拓扑排序、memory update 的流程形式化。
+- **用户担心**：如果毕设的一章只是类似 LogicRAG 的流程设计，可能显得太简单，答辩时容易被问“是不是只是 prompt 工程/流程编排”。
+- **判断**：该担心成立。纯流程型 Agentic RAG 可以作为相关工作、baseline 或系统骨架，但**不宜单独承担硕士论文主章节的硬贡献**。
+- **决定**：后续若继续沿 LogicRAG 思路做，必须加一个更硬的贡献点：
+  1. 可训练组件：例如子问题/依赖边 verifier、检索步骤 ranker、context pruning policy、过程奖励模型；
+  2. 可优化目标：例如 DPO/SimPO/对比学习，用偏好数据学习更好的检索推进或结构选择；
+  3. 可诊断评测：对 DAG 质量、子问题重复率、检索充分性、context 保真度做可量化评估；
+  4. 场景扩展：中文/专业领域多跳 RAG，但不能只有 prompt 迁移，仍需训练或系统性诊断支撑。
+- **当前定位**：LogicRAG 进入“可继续尝试”的相关工作池；用于启发非 RL Agentic RAG 的结构化检索流程，但主线仍应争取“流程结构 + 可训练过程监督/评价器”。
+
+---
 ### 2026-06-24：撤回“wiki18_100w 已完整覆盖 QA context”的判断，复现差距优先排查语料/索引不一致
 
 - **背景**：为解释 HotpotQA 推理分数低于论文，重新对 `dataset/hotpotqa/dev.jsonl` 与 `dataset/2wikimultihopqa/dev.jsonl` 的 `context` 做了定量覆盖检验（对比 `indexes/wiki18_100w.jsonl`）。
@@ -353,3 +368,22 @@
 - **背景**：用户因审稿人评论"很意外还有人做 NER"而焦虑
 - **结论**：传统固定 benchmark IE 已死，但 LLM 时代问题驱动 IE 仍活跃
 - **理由**：6 个活跃方向（LLM-IE 硬问题、文档级/跨文档、复杂事件、领域 IE、多模态 EE、IE × 下游任务）都有持续产出
+
+---
+
+### 2026-07-07：基于新证据终止 RL 主线，切换到非 RL Agentic RAG
+
+- 背景：用户已完成 `DPO 全量微调` 与 `DPO + LoRA` 的对比实验。
+- 关键证据：`DPO + LoRA` 准确率约比全量 DPO 低 `3` 个点。
+- 约束更新：
+  1. 当前可承受训练预算仅支持 `LoRA-DPO` 或 `全量 SimPO`。
+  2. RL 训练（在线 rollout + 策略更新）对当前毕业时间和算力而言不再现实。
+- 决策：
+  1. 停止以 RL 作为论文主路线；
+  2. 保留 Agentic RAG 方向，但切换为非 RL 方法设计；
+  3. 优先做“奖励构造”和“非 RL rollout/search 策略”的方法级改造。
+- 合理性说明：
+  - 现有实测差距已经暴露模型容量与训练预算瓶颈；
+  - 在当前预算下继续叠加 RL，只会降低迭代速度并提高执行风险。
+- 直接影响：
+  - 后续方案与实验统一定位为“低算力、可复现、非 RL 的 Agentic RAG 优化”。
