@@ -16,7 +16,7 @@ import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
-DEBUG = True
+DEBUG = False
 FLAG = True
 
 logging.basicConfig(level=logging.INFO)

@@ -1,9 +1,9 @@
 {
-    "model_name_or_path": "/data1/home/lmy/models/Qwen2.5-7B-Instruct",
+    "model_name_or_path": "/data1/home/lmy/.cache/modelscope/hub/models/LLM-Research/Meta-Llama-3-8B-Instruct/",
     "dataset": "hotpotqa",
     "data_path": "data/hotpotqa",
     "fewshot": 8,
-    "sample": -1,
+    "sample": 1000,
     "shuffle": false,
     "generate_max_length": 128,
     "query_formulation": "real_words",

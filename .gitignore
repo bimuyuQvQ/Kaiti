@@ -8,6 +8,10 @@ node_modules/
 .idea/
 .vscode/
 
+logs/
+data/
+index/
+
 # 外部 clone 的代码、PDF、运行日志，不入库
 codes/
 papers/
