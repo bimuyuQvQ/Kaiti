@@ -349,6 +349,204 @@ class Generator:
             fun_word = fun_word,
         )
 
+    def _build_online_output(
+        self,
+        blocks: List[Block],
+        generated_ids: List[int],
+        entropies_by_token: Tensor,
+        sequence_ids: Tensor,
+        ended: bool,
+    ) -> GeneratorOutput:
+        tokens = self.tokenizer.convert_ids_to_tokens(generated_ids)
+        if (len(tokens)<=1):
+            return GeneratorOutput(
+                empty=True,
+                ended=True,
+                blocks=None,
+                merged_blocks=None,
+                atten=None,
+                max_atten=None,
+                entropies=None,
+                entropies_s1=None,
+                entropies_s2=None,
+                smooth_s2=None,
+                fun_word=None,
+            )
+        if ended:
+            tokens = tokens[:-1]
+        text = self.tokenizer.convert_tokens_to_string(tokens)
+        range_ = self.merge_tokens(tokens)
+        new_block = Block(text=text, tokens=tokens, range_=range_)
+
+        cur_blocks = blocks + [new_block]
+        merged_blocks = merge_blocks(cur_blocks)
+
+        atten = self.model(sequence_ids, output_attentions=True).attentions[-1][0][:, -new_block.len_tokens:, :]
+        atten = atten.mean(dim=0)
+        atten = torch.stack([atten[:, l:r].sum(dim=-1) for l, r in merged_blocks.range_], dim=-1)
+        atten = torch.stack([atten[l:r, :].mean(dim=-2) for l, r in range_], dim=-2)
+
+        atten_to_new = atten[:, -new_block.len_words:]
+        atten_to_new /= atten.sum(dim=-1,keepdim=True) + 1e-10
+        max_atten, _ = atten_to_new.max(dim=1)
+
+        entropies = torch.stack([entropies_by_token[l:r].max() for l, r in range_])
+
+        func_words=[]
+        doc = nlp(new_block.text)
+        real_words = set(token.text for token in doc if token.pos_ in
+                         ['NOUN', 'ADJ', 'VERB', 'PROPN', 'NUM'])
+        wl = 0
+        wr = new_block.len_words
+        for i in range(wl, wr):
+            tl, tr = new_block.range_[i]
+            word = self.tokenizer.convert_tokens_to_string(new_block.tokens[tl:tr])
+            if not match(word, real_words):
+                func_words.append(i)
+
+        entropies_s1 = [{'key': i, 'val': torch.tensor(0, dtype=torch.float64)} for i in range(len(range_))]
+        entropies_s2 = [{'key': i, 'val': torch.tensor(0, dtype=torch.float64)} for i in range(len(range_))]
+        smooth_s2 = [{'key': i, 'val': torch.tensor(0, dtype=torch.float64)} for i in range(len(range_))]
+        mt_s2 = [{'key': i, 'val': torch.tensor(0, dtype=torch.float64)} for i in range(len(range_))]
+        fun_word = [{'key': i, 'val': torch.tensor(0, dtype=torch.float64)} for i in range(len(range_))]
+        for i, (l,r) in enumerate(range_[:]):
+            word = self.tokenizer.convert_tokens_to_string(new_block.tokens[l:r])
+            if i not in func_words:
+                fun_word[i]['val'] = torch.tensor(1, dtype=torch.float64)
+        for i, (l, r) in enumerate(range_[1:]):
+            word = self.tokenizer.convert_tokens_to_string(new_block.tokens[l:r])
+            entropy = entropies[i+1].item()
+            if i+1 not in func_words:
+                j = i
+                while j >= 0:
+                    if j not in func_words:
+                        s1 = (entropies[i+1].to(torch.float64) - entropies[j].to(torch.float64))
+                        entropies_s1[i+1]['val'] = s1
+                        break
+                    if j == 0:
+                        break
+                    else:
+                        j -= 1
+        for i, (l, r) in enumerate(range_[2:]):
+            word = self.tokenizer.convert_tokens_to_string(new_block.tokens[l:r])
+            entropy = entropies[i+2].item()
+            if i+2 not in func_words:
+                j = i + 1
+                while j >= 1:
+                    if entropies_s1[j]['val'].item() != 0:
+                        s2 = (entropies_s1[i+2]['val'].to(torch.float64) - entropies_s1[j]['val'].to(torch.float64))
+                        entropies_s2[i+2]['val'] = s2
+                        break
+                    if j == 1:
+                        break
+                    else:
+                        j -= 1
+
+        count_fun = 0
+        sum_s2 = 0
+        prev_s2 = torch.tensor(0, dtype=torch.float64)
+        for i, (l, r) in enumerate(range_[2:]):
+            if entropies_s2[i+2]['val'] != 0:
+                count_fun += 1
+                sum_s2 += entropies_s2[i+2]['val'].item()
+                s2_mean = sum_s2/count_fun
+                w = torch.abs((prev_s2 - s2_mean)) /(torch.abs((entropies_s2[i+2]['val']-s2_mean)) + torch.abs((prev_s2 - s2_mean)))
+                alpha = 0.9 + 0.1 * w
+                Mt = alpha * entropies_s2[i+2]['val'] + (1-alpha) * prev_s2
+                mt_s2[i+2]['val'] = Mt
+                prev_s2 = entropies_s2[i+2]['val']
+
+        return GeneratorOutput(
+            empty = False,
+            ended=ended,
+            blocks=cur_blocks,
+            merged_blocks=merged_blocks,
+            atten=atten,
+            max_atten=max_atten,
+            entropies=entropies,
+            entropies_s1 = entropies_s1,
+            entropies_s2 = entropies_s2,
+            smooth_s2 = smooth_s2,
+            mt_s2 = mt_s2,
+            fun_word = fun_word,
+        )
+
+    def generate_online(
+        self,
+        input_texts: List[str],
+        max_length: int,
+        should_retrieve,
+    ):
+        blocks = []
+        for text in input_texts:
+            blocks.append(self.build_block(text, is_start=not blocks))
+
+        input_tokens = sum([block.tokens for block in blocks], [])
+        input_ids = torch.tensor([self.tokenizer.convert_tokens_to_ids(input_tokens)], device=self.model.device)
+
+        generated_ids = []
+        entropies = []
+        past_key_values = None
+        next_input_ids = input_ids
+        final_outputs = None
+        final_check_info = None
+
+        for _ in range(max_length):
+            model_outputs = self.model(
+                input_ids=next_input_ids,
+                past_key_values=past_key_values,
+                use_cache=True,
+            )
+            past_key_values = model_outputs.past_key_values
+            logits = model_outputs.logits[:, -1, :]
+            probs = logits.softmax(dim=-1)
+            entropy = (-probs * torch.log(probs + 1e-10)).sum(dim=-1)[0]
+            next_token = torch.argmax(logits, dim=-1, keepdim=True)
+            token_id = next_token[0, 0].item()
+
+            generated_ids.append(token_id)
+            entropies.append(entropy)
+            sequence_ids = torch.cat(
+                [input_ids, torch.tensor([generated_ids], device=self.model.device)],
+                dim=1,
+            )
+
+            ended = (token_id == self.tokenizer.eos_token_id)
+            final_outputs = self._build_online_output(
+                blocks=blocks,
+                generated_ids=generated_ids,
+                entropies_by_token=torch.stack(entropies),
+                sequence_ids=sequence_ids,
+                ended=ended,
+            )
+            if not final_outputs.empty:
+                final_check_info = should_retrieve(final_outputs)
+                if final_check_info.hallucination:
+                    break
+                if "\n" in final_outputs.new_text:
+                    break
+            if ended:
+                break
+
+            next_input_ids = next_token
+
+        if final_outputs is None:
+            final_outputs = GeneratorOutput(
+                empty=True,
+                ended=True,
+                blocks=None,
+                merged_blocks=None,
+                atten=None,
+                max_atten=None,
+                entropies=None,
+                entropies_s1=None,
+                entropies_s2=None,
+                smooth_s2=None,
+                fun_word=None,
+            )
+
+        return final_outputs, final_check_info
+
 def join_if_nonempty(*li, sep=" "):
     return sep.join([s for s in li if len(s) > 0])
 
@@ -531,10 +729,18 @@ class ETC:
             print("Begin reasoning")
         while True:
             old_len = len(text)
-            outputs = self.generator.generate(
-                input_texts=[demo, "\nQuestion:", question, "\nAnswer:", text], 
-                max_length=self.generate_max_length,
-            )
+            if getattr(self, "online_detection", False):
+                outputs, check_info = self.generator.generate_online(
+                    input_texts=[demo, "\nQuestion:", question, "\nAnswer:", text],
+                    max_length=self.generate_max_length,
+                    should_retrieve=self.hallucination_check,
+                )
+            else:
+                outputs = self.generator.generate(
+                    input_texts=[demo, "\nQuestion:", question, "\nAnswer:", text],
+                    max_length=self.generate_max_length,
+                )
+                check_info = None
             # print("outputs:",outputs)
             if DEBUG:
                 if outputs.empty==False :
@@ -546,7 +752,8 @@ class ETC:
                     print("If only blank characters are detected, the generation process will be interrupted.")
                 break
 
-            check_info = self.hallucination_check(outputs)
+            if check_info is None:
+                check_info = self.hallucination_check(outputs)
             if not check_info.hallucination:
                 if DEBUG:
                     print("No hallucinations")
