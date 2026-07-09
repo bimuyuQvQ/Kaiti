@@ -1,22 +1,26 @@
-.DS_Store
-*.swp
-*.swo
-__pycache__/
-.venv/
-venv/
-node_modules/
-.idea/
-.vscode/
-
-logs/
-data/
-index/
-
-# 外部 clone 的代码、PDF、运行日志，不入库
-codes/
-papers/
-log/
-*.pdf
-*.whl
-*.jsonl
-*.json
+.DS_Store
+*.swp
+*.swo
+__pycache__/
+.venv/
+venv/
+node_modules/
+.idea/
+.vscode/
+
+logs/
+data/
+index/
+output/
+
+# 外部 clone 的代码、PDF、运行日志，不入库
+codes/
+papers/
+log/
+ReasonRAG-main/
+*.pdf
+*.whl
+*.jsonl
+
+# 不用全局 *.json，否则会误伤 baselines/ETC/config*.json 等配置文件
+# 运行产生的 json 由 data/、output/、各 baseline 子目录 .gitignore 覆盖
