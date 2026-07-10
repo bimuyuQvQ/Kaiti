@@ -125,7 +125,9 @@ class Generator:
         input_length = input_ids.shape[1]
         output_ids = self.model.generate(
             input_ids=input_ids,
+            attention_mask=torch.ones_like(input_ids),
             max_new_tokens=max_length,
+            pad_token_id=self.tokenizer.pad_token_id,
             stop_strings = "\n",
             tokenizer=self.tokenizer
         )[0, input_length:]
@@ -381,7 +383,15 @@ class Generator:
         cur_blocks = blocks + [new_block]
         merged_blocks = merge_blocks(cur_blocks)
 
-        atten = self.model(sequence_ids, output_attentions=True).attentions[-1][0][:, -new_block.len_tokens:, :]
+        attention_outputs = self.model(
+            sequence_ids,
+            attention_mask=torch.ones_like(sequence_ids),
+            output_attentions=True,
+            use_cache=False,
+            num_logits_to_keep=1,
+        )
+        atten = attention_outputs.attentions[-1][0][:, -new_block.len_tokens:, :]
+        del attention_outputs
         atten = atten.mean(dim=0)
         atten = torch.stack([atten[:, l:r].sum(dim=-1) for l, r in merged_blocks.range_], dim=-1)
         atten = torch.stack([atten[l:r, :].mean(dim=-2) for l, r in range_], dim=-2)
