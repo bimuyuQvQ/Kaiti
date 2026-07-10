@@ -4,6 +4,17 @@
 
 ---
 
+## 2026-07-11 ETC HotpotQA 在线评测续跑
+
+- 运行目录：`baselines/ETC/result/hotpotqa_online_alpha1_parallel`
+- 当前配置：Llama-3-8B、HotpotQA 1000 条、`online_detection=true`、`hallucination_threshold=1.0`。
+- 已确认慢速根因：`from_pretrained(device_map="auto")` 未指定低精度，FP32 模型无法完整放入单张 24GB RTX 3090；8 路单卡 worker 会把部分参数 offload 到 CPU，导致约 `300～600s/it` 并触发 CUDA OOM。alpha 从 1.3 降到 1.0 只使已完成同样本的平均检索次数增加约 24%、预测长度增加约 15%，不是 8 倍慢速的主因。
+- 修复：提交 `707ac0e` 关闭 attention 重算中的无用 KV cache、只保留最后位置 logits，并增加逐条 flush、断点续跑、OOM 重试和完整性校验；提交 `21f0e49` 改为每个 worker 使用两张 GPU，4 个 worker 并发处理原 8 个 shard，保持 FP32 数值口径且消除 CPU offload。
+- 验证：旧代码必现 OOM 的 `sample_index=240` 已成功完成；双卡 worker 日志无 CPU offload，首两条速度为 `23.76s/it`、`24.15s/it`，显存约 `17～20GB/卡`。
+- 后台控制日志：`result/hotpotqa_online_alpha1_parallel/controller_dual_gpu.log`。任务完成后会自动严格检查 1000 个 `sample_index`、合并输出；之后运行 `evaluate_online.py --dir result/hotpotqa_online_alpha1_parallel --extract_mode first_answer_span`。
+
+---
+
 ## 🎯 当前阶段（2026-06-18 重调）：离线过程监督 for Agentic RAG
 
 **背景**：2026-06-18 确认 8×3090 无法跑 online agentic RL（师姐：128 卡 × 3 天/轮）。ProRAG 不再作为可训练基线。RE/EE/NER 彻底放弃。
