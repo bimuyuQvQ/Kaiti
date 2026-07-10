@@ -6,7 +6,8 @@ import torch
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from data import StrategyQA, WikiMultiHopQA, HotpotQA, IIRC, COVID, BIOASQ, PubmedQA
+from data import StrategyQA, WikiMultiHopQA, HotpotQA, IIRC, BIOASQ, PubmedQA
+# from data import StrategyQA, WikiMultiHopQA, HotpotQA, IIRC, COVID, BIOASQ, PubmedQA  # COVID 未在 data.py 中实现
 from transformers import AutoTokenizer, AutoModelForCausalLM 
 
 logging.basicConfig(level=logging.INFO) 
@@ -68,8 +69,8 @@ def main():
         data = HotpotQA(args.data_path)
     elif args.dataset == 'iirc':
         data = IIRC(args.data_path)
-    elif args.dataset == 'covid_qa_cleaned_CS':
-        data = COVID(args.data_path)
+    # elif args.dataset == 'covid_qa_cleaned_CS':
+    #     data = COVID(args.data_path)
     elif args.dataset == 'bioasq_7b_yesno':
         data = BIOASQ(args.data_path)
     elif args.dataset == 'pubmedQA':
