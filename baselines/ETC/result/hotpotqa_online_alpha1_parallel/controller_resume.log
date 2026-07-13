@@ -1,0 +1,10 @@
+started shard 0 on GPU 0, pid=3226426
+started shard 1 on GPU 1, pid=3226427
+started shard 2 on GPU 2, pid=3226428
+started shard 3 on GPU 3, pid=3226429
+started shard 4 on GPU 4, pid=3226430
+started shard 5 on GPU 5, pid=3226431
+started shard 6 on GPU 6, pid=3226432
+started shard 7 on GPU 7, pid=3226433
+shard 2 completed
+shard 5 completed

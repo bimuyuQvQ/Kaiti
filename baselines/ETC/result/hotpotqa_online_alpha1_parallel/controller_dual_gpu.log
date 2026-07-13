@@ -1,0 +1,17 @@
+started shard 0 on GPUs 0,1, pid=3264677
+started shard 1 on GPUs 2,3, pid=3264683
+started shard 2 on GPUs 4,5, pid=3264684
+started shard 3 on GPUs 6,7, pid=3264685
+shard 2 completed
+started shard 4 on GPUs 4,5, pid=3265133
+shard 3 completed
+started shard 5 on GPUs 6,7, pid=3318950
+shard 5 completed
+started shard 6 on GPUs 6,7, pid=3319245
+shard 1 completed
+started shard 7 on GPUs 2,3, pid=3380051
+shard 0 completed
+shard 6 completed
+shard 4 completed
+shard 7 completed
+merged 1000 rows into result/hotpotqa_online_alpha1_parallel/output.txt

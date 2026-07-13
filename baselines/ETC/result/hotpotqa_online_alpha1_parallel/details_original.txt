@@ -1,0 +1,1000 @@
+{"qid": "dev_0", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 0}
+{"qid": "dev_1", "final_pred": "United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana and later United States Chief of Protocol. So the answer is United States Ambassador to Ghana", "EM": "0", "F1": "0.04195804195804196", "sample_index": 1}
+{"qid": "dev_2", "final_pred": "Animorphs", "EM": "1", "F1": "1.0", "sample_index": 2}
+{"qid": "dev_3", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 3}
+{"qid": "dev_4", "final_pred": "Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So the answer is Brooklyn. So", "EM": "0", "F1": "0", "sample_index": 4}
+{"qid": "dev_5", "final_pred": "YG Entertainment. So the answer is YG Entertainment", "EM": "0", "F1": "0.4444444444444445", "sample_index": 5}
+{"qid": "dev_6", "final_pred": "Peter Aladin", "EM": "0", "F1": "0", "sample_index": 6}
+{"qid": "dev_7", "final_pred": "3,625", "EM": "0", "F1": "0", "sample_index": 7}
+{"qid": "dev_8", "final_pred": "Terry Richardson", "EM": "1", "F1": "1.0", "sample_index": 8}
+{"qid": "dev_9", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 9}
+{"qid": "dev_10", "final_pred": "Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk, Jayhawk. So the answer is Rock Chalk", "EM": "0", "F1": "0", "sample_index": 10}
+{"qid": "dev_11", "final_pred": "David Diamond", "EM": "0", "F1": "0.5", "sample_index": 11}
+{"qid": "dev_12", "final_pred": "1996", "EM": "0", "F1": "0", "sample_index": 12}
+{"qid": "dev_13", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 13}
+{"qid": "dev_14", "final_pred": "1986-2013", "EM": "0", "F1": "0", "sample_index": 14}
+{"qid": "dev_15", "final_pred": "331 million", "EM": "0", "F1": "0", "sample_index": 15}
+{"qid": "dev_16", "final_pred": "Northeast Conference . So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the answer is Northeast Conference. So the", "EM": "0", "F1": "0.020833333333333336", "sample_index": 16}
+{"qid": "dev_17", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 17}
+{"qid": "dev_18", "final_pred": "1963-1969", "EM": "0", "F1": "0", "sample_index": 18}
+{"qid": "dev_19", "final_pred": "neither", "EM": "0", "F1": "0", "sample_index": 19}
+{"qid": "dev_20", "final_pred": "Pedro Rodríguez. So the answer is Pedro Rodríguez", "EM": "0", "F1": "0.4444444444444445", "sample_index": 20}
+{"qid": "dev_21", "final_pred": "Dr. Robotnik", "EM": "0", "F1": "0", "sample_index": 21}
+{"qid": "dev_22", "final_pred": "DVD Player", "EM": "0", "F1": "0", "sample_index": 22}
+{"qid": "dev_23", "final_pred": "Wolf Alice", "EM": "0", "F1": "0", "sample_index": 23}
+{"qid": "dev_24", "final_pred": "World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goalkeeper. So the answer is World's Best Goal", "EM": "0", "F1": "0.06666666666666667", "sample_index": 24}
+{"qid": "dev_25", "final_pred": "Lee Hazlewood", "EM": "0", "F1": "0.8", "sample_index": 25}
+{"qid": "dev_26", "final_pred": " 1968. Question", "EM": "0", "F1": "0", "sample_index": 26}
+{"qid": "dev_27", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 27}
+{"qid": "dev_28", "final_pred": "Henry J. Kaiser", "EM": "1", "F1": "1.0", "sample_index": 28}
+{"qid": "dev_29", "final_pred": "Adventures", "EM": "0", "F1": "0", "sample_index": 29}
+{"qid": "dev_30", "final_pred": "not applicable", "EM": "0", "F1": "0", "sample_index": 30}
+{"qid": "dev_31", "final_pred": "Japan", "EM": "0", "F1": "0", "sample_index": 31}
+{"qid": "dev_32", "final_pred": "Charles Nungesser", "EM": "0", "F1": "0.5", "sample_index": 32}
+{"qid": "dev_33", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 33}
+{"qid": "dev_34", "final_pred": "Letters to Cleo", "EM": "1", "F1": "1.0", "sample_index": 34}
+{"qid": "dev_35", "final_pred": "1922", "EM": "0", "F1": "0.6666666666666666", "sample_index": 35}
+{"qid": "dev_36", "final_pred": "2000", "EM": "1", "F1": "1.0", "sample_index": 36}
+{"qid": "dev_37", "final_pred": "World War II", "EM": "1", "F1": "1.0", "sample_index": 37}
+{"qid": "dev_38", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 38}
+{"qid": "dev_39", "final_pred": "New York City", "EM": "1", "F1": "1.0", "sample_index": 39}
+{"qid": "dev_40", "final_pred": "Scotch Collie", "EM": "1", "F1": "1.0", "sample_index": 40}
+{"qid": "dev_41", "final_pred": "India. Question", "EM": "0", "F1": "0", "sample_index": 41}
+{"qid": "dev_42", "final_pred": "1976", "EM": "0", "F1": "0", "sample_index": 42}
+{"qid": "dev_43", "final_pred": "independence and sovereignty", "EM": "0", "F1": "0.5", "sample_index": 43}
+{"qid": "dev_44", "final_pred": "Nelson Rockefeller", "EM": "1", "F1": "1.0", "sample_index": 44}
+{"qid": "dev_45", "final_pred": "North Sea", "EM": "0", "F1": "0", "sample_index": 45}
+{"qid": "dev_46", "final_pred": "Screamin' Jay Hawkins", "EM": "0", "F1": "0", "sample_index": 46}
+{"qid": "dev_47", "final_pred": "Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the answer is Yalta European Strategy. So the", "EM": "0", "F1": "0", "sample_index": 47}
+{"qid": "dev_48", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 48}
+{"qid": "dev_49", "final_pred": "de Havilland Vampire", "EM": "0", "F1": "0", "sample_index": 49}
+{"qid": "dev_50", "final_pred": "2006", "EM": "0", "F1": "0", "sample_index": 50}
+{"qid": "dev_51", "final_pred": "1,528", "EM": "0", "F1": "0", "sample_index": 51}
+{"qid": "dev_52", "final_pred": "Indianapolis Motor Speedway. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 52}
+{"qid": "dev_53", "final_pred": "Naples", "EM": "0", "F1": "0", "sample_index": 53}
+{"qid": "dev_54", "final_pred": "Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg Kurstin, and Calvin Harris. So the answer is Max Martin, Greg", "EM": "0", "F1": "0.05454545454545455", "sample_index": 54}
+{"qid": "dev_55", "final_pred": "Canberra", "EM": "0", "F1": "0", "sample_index": 55}
+{"qid": "dev_56", "final_pred": "drifting", "EM": "1", "F1": "1.0", "sample_index": 56}
+{"qid": "dev_57", "final_pred": "Jerry Glanville", "EM": "0", "F1": "0", "sample_index": 57}
+{"qid": "dev_58", "final_pred": "not available", "EM": "0", "F1": "0", "sample_index": 58}
+{"qid": "dev_59", "final_pred": "yes", "EM": "0", "F1": "0", "sample_index": 59}
+{"qid": "dev_60", "final_pred": "Donald Singletary", "EM": "0", "F1": "0", "sample_index": 60}
+{"qid": "dev_61", "final_pred": "Sidney Sheinberg", "EM": "0", "F1": "0", "sample_index": 61}
+{"qid": "dev_62", "final_pred": "Virginia Woolf", "EM": "0", "F1": "0.8", "sample_index": 62}
+{"qid": "dev_63", "final_pred": "821", "EM": "1", "F1": "1.0", "sample_index": 63}
+{"qid": "dev_64", "final_pred": "70", "EM": "0", "F1": "0.4", "sample_index": 64}
+{"qid": "dev_65", "final_pred": "Charmed", "EM": "1", "F1": "1.0", "sample_index": 65}
+{"qid": "dev_66", "final_pred": "International Boxing Hall of Fame", "EM": "1", "F1": "1.0", "sample_index": 66}
+{"qid": "dev_67", "final_pred": "Usher", "EM": "1", "F1": "1.0", "sample_index": 67}
+{"qid": "dev_68", "final_pred": "Chris Doyle", "EM": "0", "F1": "0", "sample_index": 68}
+{"qid": "dev_69", "final_pred": "EFL Cup", "EM": "0", "F1": "0.5", "sample_index": 69}
+{"qid": "dev_70", "final_pred": "Teen Titans Go!. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 70}
+{"qid": "dev_71", "final_pred": "3.5 million", "EM": "0", "F1": "0", "sample_index": 71}
+{"qid": "dev_72", "final_pred": "orange", "EM": "1", "F1": "1.0", "sample_index": 72}
+{"qid": "dev_73", "final_pred": "Tromeo and Juliet", "EM": "1", "F1": "1.0", "sample_index": 73}
+{"qid": "dev_74", "final_pred": "Bill Clinton", "EM": "0", "F1": "0.4", "sample_index": 74}
+{"qid": "dev_75", "final_pred": "John John Florence. However, the question states that the surfer was born on October 18, 1992, which is not correct. So the answer is not John John Florence. The correct answer is not given in the text. So the answer is unknown", "EM": "0", "F1": "0.15384615384615385", "sample_index": 75}
+{"qid": "dev_76", "final_pred": "Ann", "EM": "1", "F1": "1.0", "sample_index": 76}
+{"qid": "dev_77", "final_pred": "Ais", "EM": "0", "F1": "0", "sample_index": 77}
+{"qid": "dev_78", "final_pred": "British", "EM": "1", "F1": "1.0", "sample_index": 78}
+{"qid": "dev_79", "final_pred": "1865", "EM": "1", "F1": "1.0", "sample_index": 79}
+{"qid": "dev_80", "final_pred": "Newport. So the answer is Newport", "EM": "0", "F1": "0.33333333333333337", "sample_index": 80}
+{"qid": "dev_81", "final_pred": "Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger. So the answer is Bob Seger", "EM": "0", "F1": "0.042553191489361694", "sample_index": 81}
+{"qid": "dev_82", "final_pred": "requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the draft. So the answer is requiring only men to register for the", "EM": "0", "F1": "0", "sample_index": 82}
+{"qid": "dev_83", "final_pred": "Hostess Brands, Inc. (Hostess Brands, Inc.) is an American multinational confectionery, food, and beverage company that is based in Illinois. So the answer is Hostess Brands, Inc. (Hostess Brands, Inc.) is an American multinational confectionery, food, and beverage company that is based in Illinois. So the answer is Hostess Brands, Inc. (Hostess Brands, Inc.) is an American multinational confectionery, food, and beverage company that is based in Illinois", "EM": "0", "F1": "0.030303030303030304", "sample_index": 83}
+{"qid": "dev_84", "final_pred": "Monica Lewinsky", "EM": "1", "F1": "1.0", "sample_index": 84}
+{"qid": "dev_85", "final_pred": "April 1,  1949. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 85}
+{"qid": "dev_86", "final_pred": "1866", "EM": "1", "F1": "1.0", "sample_index": 86}
+{"qid": "dev_87", "final_pred": "Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the answer is Canary Islands, Spain. So the", "EM": "0", "F1": "0.06185567010309278", "sample_index": 87}
+{"qid": "dev_88", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 88}
+{"qid": "dev_89", "final_pred": "cinematographer", "EM": "0", "F1": "0", "sample_index": 89}
+{"qid": "dev_90", "final_pred": "The Conversation. So the answer is The Conversation", "EM": "0", "F1": "0.33333333333333337", "sample_index": 90}
+{"qid": "dev_91", "final_pred": "John Waters", "EM": "1", "F1": "1.0", "sample_index": 91}
+{"qid": "dev_92", "final_pred": "not correct. The correct answer is not mentioned in the text. So the answer is unknown", "EM": "0", "F1": "0.1111111111111111", "sample_index": 92}
+{"qid": "dev_93", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 93}
+{"qid": "dev_94", "final_pred": "March or April", "EM": "0", "F1": "0.6666666666666666", "sample_index": 94}
+{"qid": "dev_95", "final_pred": "Fairfax County. So the answer is Fairfax County", "EM": "0", "F1": "0.4444444444444445", "sample_index": 95}
+{"qid": "dev_96", "final_pred": "computer programming", "EM": "0", "F1": "0", "sample_index": 96}
+{"qid": "dev_97", "final_pred": "Lev Yilmaz", "EM": "0", "F1": "0.5", "sample_index": 97}
+{"qid": "dev_98", "final_pred": "Rabat", "EM": "0", "F1": "0", "sample_index": 98}
+{"qid": "dev_99", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 99}
+{"qid": "dev_100", "final_pred": "Oklahoma. So the answer is Oklahoma", "EM": "0", "F1": "0", "sample_index": 100}
+{"qid": "dev_101", "final_pred": "Sandi Patti", "EM": "0", "F1": "0", "sample_index": 101}
+{"qid": "dev_102", "final_pred": "2005", "EM": "0", "F1": "0", "sample_index": 102}
+{"qid": "dev_103", "final_pred": "Atlanta", "EM": "0", "F1": "0", "sample_index": 103}
+{"qid": "dev_104", "final_pred": "Leo Varadkar", "EM": "1", "F1": "1.0", "sample_index": 104}
+{"qid": "dev_105", "final_pred": "George Raft", "EM": "1", "F1": "1.0", "sample_index": 105}
+{"qid": "dev_106", "final_pred": "1894", "EM": "0", "F1": "0", "sample_index": 106}
+{"qid": "dev_107", "final_pred": "business", "EM": "1", "F1": "1.0", "sample_index": 107}
+{"qid": "dev_108", "final_pred": "1981", "EM": "0", "F1": "0", "sample_index": 108}
+{"qid": "dev_109", "final_pred": "Igor Sikorsky", "EM": "0", "F1": "0", "sample_index": 109}
+{"qid": "dev_110", "final_pred": "Kacey Musgraves. So the answer is Kacey Musgraves", "EM": "0", "F1": "0", "sample_index": 110}
+{"qid": "dev_111", "final_pred": "4", "EM": "0", "F1": "0", "sample_index": 111}
+{"qid": "dev_112", "final_pred": "1936", "EM": "0", "F1": "0.5", "sample_index": 112}
+{"qid": "dev_113", "final_pred": "George Archainbaud", "EM": "1", "F1": "1.0", "sample_index": 113}
+{"qid": "dev_114", "final_pred": "dinitrophenol", "EM": "0", "F1": "0", "sample_index": 114}
+{"qid": "dev_115", "final_pred": "15", "EM": "0", "F1": "0", "sample_index": 115}
+{"qid": "dev_116", "final_pred": "EC Comics", "EM": "0", "F1": "0", "sample_index": 116}
+{"qid": "dev_117", "final_pred": "Chairman of the Democratic Senatorial Campaign Committee (DSCC)", "EM": "0", "F1": "0", "sample_index": 117}
+{"qid": "dev_118", "final_pred": "yes", "EM": "0", "F1": "0", "sample_index": 118}
+{"qid": "dev_119", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 119}
+{"qid": "dev_120", "final_pred": "A41", "EM": "1", "F1": "1.0", "sample_index": 120}
+{"qid": "dev_121", "final_pred": "Princess Jessica", "EM": "1", "F1": "1.0", "sample_index": 121}
+{"qid": "dev_122", "final_pred": "The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the answer is The Spiderwick Chronicles. So the", "EM": "0", "F1": "0.05", "sample_index": 122}
+{"qid": "dev_123", "final_pred": "Kohlberg Kravis Roberts", "EM": "0", "F1": "0", "sample_index": 123}
+{"qid": "dev_124", "final_pred": "How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to Girls at Parties. So the answer is How to Talk to", "EM": "0", "F1": "0", "sample_index": 124}
+{"qid": "dev_125", "final_pred": "Shannon Brook", "EM": "0", "F1": "0", "sample_index": 125}
+{"qid": "dev_126", "final_pred": "Owsley Stanley", "EM": "1", "F1": "1.0", "sample_index": 126}
+{"qid": "dev_127", "final_pred": "Spynie Palace", "EM": "0", "F1": "0", "sample_index": 127}
+{"qid": "dev_128", "final_pred": "incorrect", "EM": "0", "F1": "0", "sample_index": 128}
+{"qid": "dev_129", "final_pred": "University of Phoenix Stadium. Question", "EM": "0", "F1": "0", "sample_index": 129}
+{"qid": "dev_130", "final_pred": "LaLee's Kin: The Legacy of Cotton", "EM": "1", "F1": "1.0", "sample_index": 130}
+{"qid": "dev_131", "final_pred": "Catan. Question", "EM": "0", "F1": "0", "sample_index": 131}
+{"qid": "dev_132", "final_pred": "Square Enix", "EM": "0", "F1": "0", "sample_index": 132}
+{"qid": "dev_133", "final_pred": "The Marshall Mathers LP  2. Question", "EM": "0", "F1": "0.888888888888889", "sample_index": 133}
+{"qid": "dev_134", "final_pred": "Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the answer is Harsh Times.  So the", "EM": "0", "F1": "0", "sample_index": 134}
+{"qid": "dev_135", "final_pred": "Kristen Wiig", "EM": "0", "F1": "0", "sample_index": 135}
+{"qid": "dev_136", "final_pred": "Texas Tech University", "EM": "1", "F1": "1.0", "sample_index": 136}
+{"qid": "dev_137", "final_pred": "General Sir Henry Hardinge", "EM": "0", "F1": "0", "sample_index": 137}
+{"qid": "dev_138", "final_pred": "stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation. So the answer is stop motion animation", "EM": "0", "F1": "0.055045871559633024", "sample_index": 138}
+{"qid": "dev_139", "final_pred": " 2005. Question", "EM": "0", "F1": "0", "sample_index": 139}
+{"qid": "dev_140", "final_pred": "Oxford University", "EM": "0", "F1": "0.6666666666666666", "sample_index": 140}
+{"qid": "dev_141", "final_pred": "Roberta Vinci", "EM": "1", "F1": "1.0", "sample_index": 141}
+{"qid": "dev_142", "final_pred": "Teach the Controversy", "EM": "0", "F1": "0.8", "sample_index": 142}
+{"qid": "dev_143", "final_pred": "Ian Watkins", "EM": "0", "F1": "0.125", "sample_index": 143}
+{"qid": "dev_144", "final_pred": "Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstrechu (A Dream Come True). So the answer is Mechte Navstre", "EM": "0", "F1": "0", "sample_index": 144}
+{"qid": "dev_145", "final_pred": "Erika Jayne", "EM": "1", "F1": "1.0", "sample_index": 145}
+{"qid": "dev_146", "final_pred": "2009", "EM": "1", "F1": "1.0", "sample_index": 146}
+{"qid": "dev_147", "final_pred": "Inner Hebrides", "EM": "0", "F1": "0", "sample_index": 147}
+{"qid": "dev_148", "final_pred": "The Beatles", "EM": "1", "F1": "1.0", "sample_index": 148}
+{"qid": "dev_149", "final_pred": "\"A Lot About Livin' (And a Little 'bout Love)\"", "EM": "0", "F1": "0", "sample_index": 149}
+{"qid": "dev_150", "final_pred": "filmmaker", "EM": "0", "F1": "0", "sample_index": 150}
+{"qid": "dev_151", "final_pred": "1901", "EM": "1", "F1": "1.0", "sample_index": 151}
+{"qid": "dev_152", "final_pred": "Argand lamp", "EM": "1", "F1": "1.0", "sample_index": 152}
+{"qid": "dev_153", "final_pred": "3", "EM": "0", "F1": "0", "sample_index": 153}
+{"qid": "dev_154", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 154}
+{"qid": "dev_155", "final_pred": "Spain", "EM": "0", "F1": "0", "sample_index": 155}
+{"qid": "dev_156", "final_pred": "the Seven Days Battles", "EM": "1", "F1": "1.0", "sample_index": 156}
+{"qid": "dev_157", "final_pred": "Lush", "EM": "0", "F1": "0.6666666666666666", "sample_index": 157}
+{"qid": "dev_158", "final_pred": "Manchester United", "EM": "1", "F1": "1.0", "sample_index": 158}
+{"qid": "dev_159", "final_pred": "1966", "EM": "0", "F1": "0", "sample_index": 159}
+{"qid": "dev_160", "final_pred": "Anna Burke", "EM": "0", "F1": "0", "sample_index": 160}
+{"qid": "dev_161", "final_pred": "Frank Lowy", "EM": "1", "F1": "1.0", "sample_index": 161}
+{"qid": "dev_162", "final_pred": "Crystal Lake", "EM": "0", "F1": "0", "sample_index": 162}
+{"qid": "dev_163", "final_pred": "Kelly Osbourne", "EM": "0", "F1": "0.8", "sample_index": 163}
+{"qid": "dev_164", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 164}
+{"qid": "dev_165", "final_pred": "$700 million", "EM": "0", "F1": "0", "sample_index": 165}
+{"qid": "dev_166", "final_pred": "Dinosaur. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 166}
+{"qid": "dev_167", "final_pred": "Wichita, Kansas", "EM": "0", "F1": "0.6666666666666666", "sample_index": 167}
+{"qid": "dev_168", "final_pred": "2020", "EM": "0", "F1": "0", "sample_index": 168}
+{"qid": "dev_169", "final_pred": "Roman Empire", "EM": "0", "F1": "0.6666666666666666", "sample_index": 169}
+{"qid": "dev_170", "final_pred": "C. W. Grafton", "EM": "1", "F1": "1.0", "sample_index": 170}
+{"qid": "dev_171", "final_pred": "Ashland, Wisconsin", "EM": "0", "F1": "0", "sample_index": 171}
+{"qid": "dev_172", "final_pred": "48,982", "EM": "1", "F1": "1.0", "sample_index": 172}
+{"qid": "dev_173", "final_pred": "Pasek and Paul", "EM": "0", "F1": "0.8", "sample_index": 173}
+{"qid": "dev_174", "final_pred": "Newcastle", "EM": "0", "F1": "0.5", "sample_index": 174}
+{"qid": "dev_175", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 175}
+{"qid": "dev_176", "final_pred": "drawings", "EM": "1", "F1": "1.0", "sample_index": 176}
+{"qid": "dev_177", "final_pred": "Old Saxon", "EM": "0", "F1": "0", "sample_index": 177}
+{"qid": "dev_178", "final_pred": "Raoul Walsh", "EM": "0", "F1": "0", "sample_index": 178}
+{"qid": "dev_179", "final_pred": "Scotland", "EM": "1", "F1": "1.0", "sample_index": 179}
+{"qid": "dev_180", "final_pred": "The Nerdist Podcast", "EM": "0", "F1": "0", "sample_index": 180}
+{"qid": "dev_181", "final_pred": "Las Vegas. Question", "EM": "0", "F1": "0", "sample_index": 181}
+{"qid": "dev_182", "final_pred": "George Harrison", "EM": "1", "F1": "1.0", "sample_index": 182}
+{"qid": "dev_183", "final_pred": "Center", "EM": "0", "F1": "0", "sample_index": 183}
+{"qid": "dev_184", "final_pred": " 1967. Question", "EM": "0", "F1": "0", "sample_index": 184}
+{"qid": "dev_185", "final_pred": " 3rd season. Question", "EM": "0", "F1": "0", "sample_index": 185}
+{"qid": "dev_186", "final_pred": "Roland Emmerich and Harald Kloser. Question", "EM": "0", "F1": "0.1818181818181818", "sample_index": 186}
+{"qid": "dev_187", "final_pred": "Ralph Garman", "EM": "0", "F1": "0", "sample_index": 187}
+{"qid": "dev_188", "final_pred": "no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong to the same genre, documentary. So the answer is no. They belong", "EM": "0", "F1": "0", "sample_index": 188}
+{"qid": "dev_189", "final_pred": "1944", "EM": "0", "F1": "0", "sample_index": 189}
+{"qid": "dev_190", "final_pred": "Oregon State University. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon. So the answer is University of Oregon", "EM": "0", "F1": "0.018518518518518517", "sample_index": 190}
+{"qid": "dev_191", "final_pred": "NBC. Question", "EM": "0", "F1": "0", "sample_index": 191}
+{"qid": "dev_192", "final_pred": "Arab", "EM": "0", "F1": "0.5", "sample_index": 192}
+{"qid": "dev_193", "final_pred": "Murray Hill, New Jersey", "EM": "0", "F1": "0.6666666666666666", "sample_index": 193}
+{"qid": "dev_194", "final_pred": "Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute Respiratory Syndrome. So the answer is Severe Acute", "EM": "0", "F1": "0.08888888888888888", "sample_index": 194}
+{"qid": "dev_195", "final_pred": "Gurney Norman", "EM": "0", "F1": "0", "sample_index": 195}
+{"qid": "dev_196", "final_pred": "Vikram Bhatt", "EM": "0", "F1": "0", "sample_index": 196}
+{"qid": "dev_197", "final_pred": "New York City", "EM": "0", "F1": "0", "sample_index": 197}
+{"qid": "dev_198", "final_pred": "unknown. So the answer is unknown", "EM": "0", "F1": "0", "sample_index": 198}
+{"qid": "dev_199", "final_pred": "The Impossible. However, the question is incorrect as the film was not made in  2007. It was made in 2012. So the answer is incorrect. The correct answer is The Impossible. However, the question is incorrect as the film was not made in 2007. It was made in 2012. So the answer is incorrect. The correct answer is The Impossible. However, the question is incorrect as the film was not made in 2007. It was made in 2012. So the answer is incorrect. The correct answer is The Impossible. However, the question is incorrect as the film was not made in 2007. It was made in 2012. So the answer is incorrect. The correct answer is The Impossible. However, the question is incorrect as the film was not made in 2007. It was made in 2012. So the answer is incorrect. The correct answer is The Impossible. However, the question is incorrect as the film was not made in", "EM": "0", "F1": "0", "sample_index": 199}
+{"qid": "dev_200", "final_pred": "Crackle", "EM": "1", "F1": "1.0", "sample_index": 200}
+{"qid": "dev_201", "final_pred": "North Ferriby United", "EM": "0", "F1": "0", "sample_index": 201}
+{"qid": "dev_202", "final_pred": "Morris Lapidus", "EM": "0", "F1": "0", "sample_index": 202}
+{"qid": "dev_203", "final_pred": "multiple nominations", "EM": "0", "F1": "0.5", "sample_index": 203}
+{"qid": "dev_204", "final_pred": "Kevin Spacey", "EM": "1", "F1": "1.0", "sample_index": 204}
+{"qid": "dev_205", "final_pred": "Howie Mandel", "EM": "0", "F1": "0", "sample_index": 205}
+{"qid": "dev_206", "final_pred": "yes. Hot Rod is a magazine, but The Memory of Our People is not. So the answer is yes", "EM": "0", "F1": "0", "sample_index": 206}
+{"qid": "dev_207", "final_pred": "Edward Lloyd-Mostyn", "EM": "0", "F1": "0", "sample_index": 207}
+{"qid": "dev_208", "final_pred": "Semyon Aranovich Gershgorin. So the answer is Semyon Aranovich Gershgorin. So the answer is Semyon Aranovich Gershgorin. So the answer is Semyon Aranovich Gershgorin. So the answer is Semyon Aranovich Gershgorin. So the answer is Semyon Aranovich Gershgorin", "EM": "0", "F1": "0", "sample_index": 208}
+{"qid": "dev_209", "final_pred": "Gal Gadot", "EM": "1", "F1": "1.0", "sample_index": 209}
+{"qid": "dev_210", "final_pred": "J. Edward Snyder", "EM": "0", "F1": "0.7499999999999999", "sample_index": 210}
+{"qid": "dev_211", "final_pred": "Jackson Storm", "EM": "1", "F1": "1.0", "sample_index": 211}
+{"qid": "dev_212", "final_pred": "712 Fifth Avenue", "EM": "0", "F1": "0.6666666666666666", "sample_index": 212}
+{"qid": "dev_213", "final_pred": "right-hand", "EM": "1", "F1": "1.0", "sample_index": 213}
+{"qid": "dev_214", "final_pred": "Arthur Conan Doyle", "EM": "0", "F1": "0.8571428571428571", "sample_index": 214}
+{"qid": "dev_215", "final_pred": "Knoxville", "EM": "0", "F1": "0", "sample_index": 215}
+{"qid": "dev_216", "final_pred": "44", "EM": "1", "F1": "1.0", "sample_index": 216}
+{"qid": "dev_217", "final_pred": "Parthian Empire", "EM": "1", "F1": "1.0", "sample_index": 217}
+{"qid": "dev_218", "final_pred": "Peyton Place", "EM": "0", "F1": "0", "sample_index": 218}
+{"qid": "dev_219", "final_pred": "China", "EM": "0", "F1": "0", "sample_index": 219}
+{"qid": "dev_220", "final_pred": "Kimmy Schmidt", "EM": "0", "F1": "0.6666666666666666", "sample_index": 220}
+{"qid": "dev_221", "final_pred": "The IT Crowd", "EM": "0", "F1": "0", "sample_index": 221}
+{"qid": "dev_222", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 222}
+{"qid": "dev_223", "final_pred": "19th century", "EM": "0", "F1": "0", "sample_index": 223}
+{"qid": "dev_224", "final_pred": "Awake", "EM": "1", "F1": "1.0", "sample_index": 224}
+{"qid": "dev_225", "final_pred": "French Canadians", "EM": "1", "F1": "1.0", "sample_index": 225}
+{"qid": "dev_226", "final_pred": "American", "EM": "1", "F1": "1.0", "sample_index": 226}
+{"qid": "dev_227", "final_pred": "16 kilometers. So the answer is 16 kilometers", "EM": "0", "F1": "0", "sample_index": 227}
+{"qid": "dev_228", "final_pred": "Rawhide", "EM": "1", "F1": "1.0", "sample_index": 228}
+{"qid": "dev_229", "final_pred": "Marsilea", "EM": "1", "F1": "1.0", "sample_index": 229}
+{"qid": "dev_230", "final_pred": "St James's Palace", "EM": "0", "F1": "0", "sample_index": 230}
+{"qid": "dev_231", "final_pred": "Perspex. Question", "EM": "0", "F1": "0", "sample_index": 231}
+{"qid": "dev_232", "final_pred": "Hong Kong", "EM": "1", "F1": "1.0", "sample_index": 232}
+{"qid": "dev_233", "final_pred": "United States v. Paramount Pictures, Inc.. ", "EM": "0", "F1": "0.2222222222222222", "sample_index": 233}
+{"qid": "dev_234", "final_pred": "the City of Churches. Question", "EM": "0", "F1": "0.3333333333333333", "sample_index": 234}
+{"qid": "dev_235", "final_pred": "Arrowhead Stadium", "EM": "1", "F1": "1.0", "sample_index": 235}
+{"qid": "dev_236", "final_pred": "peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss and bogs. So the answer is peat moss", "EM": "0", "F1": "0", "sample_index": 236}
+{"qid": "dev_237", "final_pred": "The McTrue", "EM": "0", "F1": "0", "sample_index": 237}
+{"qid": "dev_238", "final_pred": "Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport. So the answer is Logan International Airport", "EM": "0", "F1": "0.05882352941176471", "sample_index": 238}
+{"qid": "dev_239", "final_pred": "Ehretia", "EM": "1", "F1": "1.0", "sample_index": 239}
+{"qid": "dev_240", "final_pred": "Ty Cobb", "EM": "0", "F1": "0", "sample_index": 240}
+{"qid": "dev_241", "final_pred": "Celine Dion", "EM": "0", "F1": "0", "sample_index": 241}
+{"qid": "dev_242", "final_pred": "Roberto Clemente", "EM": "0", "F1": "0", "sample_index": 242}
+{"qid": "dev_243", "final_pred": "Thomas Mawson", "EM": "1", "F1": "1.0", "sample_index": 243}
+{"qid": "dev_244", "final_pred": "stringed instrument", "EM": "0", "F1": "0", "sample_index": 244}
+{"qid": "dev_245", "final_pred": "Brad Silberling", "EM": "1", "F1": "1.0", "sample_index": 245}
+{"qid": "dev_246", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 246}
+{"qid": "dev_247", "final_pred": "no", "EM": "0", "F1": "0", "sample_index": 247}
+{"qid": "dev_248", "final_pred": "Thomas Friedman", "EM": "0", "F1": "0.8", "sample_index": 248}
+{"qid": "dev_249", "final_pred": "Harry Styles", "EM": "0", "F1": "0", "sample_index": 249}
+{"qid": "dev_250", "final_pred": "Istanbul", "EM": "0", "F1": "0.6666666666666666", "sample_index": 250}
+{"qid": "dev_251", "final_pred": "a shopping mall", "EM": "0", "F1": "0.8", "sample_index": 251}
+{"qid": "dev_252", "final_pred": "Baotou Steel Tower Equipment Co., Ltd. or Baotou Iron and Steel Group Co., Ltd. as they are the same thing. So the answer is Baotou Steel Tower Equipment Co., Ltd. or Baotou Iron and Steel Group Co., Ltd. as they are the same thing", "EM": "0", "F1": "0", "sample_index": 252}
+{"qid": "dev_253", "final_pred": "Alain Resnais", "EM": "0", "F1": "0", "sample_index": 253}
+{"qid": "dev_254", "final_pred": "over 650", "EM": "0", "F1": "0.4", "sample_index": 254}
+{"qid": "dev_255", "final_pred": "not correct. The correct answer is not mentioned in the given context. So the answer is unknown", "EM": "0", "F1": "0", "sample_index": 255}
+{"qid": "dev_256", "final_pred": "1952", "EM": "0", "F1": "0", "sample_index": 256}
+{"qid": "dev_257", "final_pred": "House of Windsor", "EM": "0", "F1": "0", "sample_index": 257}
+{"qid": "dev_258", "final_pred": "Mick Jackson", "EM": "0", "F1": "0", "sample_index": 258}
+{"qid": "dev_259", "final_pred": "Gulangyu", "EM": "1", "F1": "1.0", "sample_index": 259}
+{"qid": "dev_260", "final_pred": "Slaughterhouse-Five", "EM": "1", "F1": "1.0", "sample_index": 260}
+{"qid": "dev_261", "final_pred": "Munster. So the answer is Munster", "EM": "0", "F1": "0", "sample_index": 261}
+{"qid": "dev_262", "final_pred": "Ards", "EM": "0", "F1": "0", "sample_index": 262}
+{"qid": "dev_263", "final_pred": "Mercutio. So the answer is Mercutio", "EM": "0", "F1": "0", "sample_index": 263}
+{"qid": "dev_264", "final_pred": "Sniffin' Glue", "EM": "0", "F1": "0", "sample_index": 264}
+{"qid": "dev_265", "final_pred": "Anabolic-Androgenic Steroids. Question", "EM": "0", "F1": "0.4", "sample_index": 265}
+{"qid": "dev_266", "final_pred": "Don S. Davis", "EM": "1", "F1": "1.0", "sample_index": 266}
+{"qid": "dev_267", "final_pred": "Don Robey", "EM": "0", "F1": "0", "sample_index": 267}
+{"qid": "dev_268", "final_pred": "2,739,551", "EM": "0", "F1": "0", "sample_index": 268}
+{"qid": "dev_269", "final_pred": "Anna Clyne", "EM": "1", "F1": "1.0", "sample_index": 269}
+{"qid": "dev_270", "final_pred": "USS Essex (CV-9)", "EM": "0", "F1": "0.8", "sample_index": 270}
+{"qid": "dev_271", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 271}
+{"qid": "dev_272", "final_pred": "Catwoman", "EM": "1", "F1": "1.0", "sample_index": 272}
+{"qid": "dev_273", "final_pred": "20", "EM": "0", "F1": "0", "sample_index": 273}
+{"qid": "dev_274", "final_pred": "Laura Benanti", "EM": "0", "F1": "0.4", "sample_index": 274}
+{"qid": "dev_275", "final_pred": "more than 20", "EM": "0", "F1": "0.5", "sample_index": 275}
+{"qid": "dev_276", "final_pred": "Eucryphia", "EM": "1", "F1": "1.0", "sample_index": 276}
+{"qid": "dev_277", "final_pred": "Fusignano", "EM": "0", "F1": "0", "sample_index": 277}
+{"qid": "dev_278", "final_pred": "Pipeline. Butch Van Artsdalen was known for surfing 25-foot waves at the Banzai Pipeline. So the answer is Pipeline", "EM": "0", "F1": "0", "sample_index": 278}
+{"qid": "dev_279", "final_pred": "not a magazine", "EM": "0", "F1": "0", "sample_index": 279}
+{"qid": "dev_280", "final_pred": "James Franco", "EM": "1", "F1": "1.0", "sample_index": 280}
+{"qid": "dev_281", "final_pred": "DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the answer is DI Humphrey Goodman. So the", "EM": "0", "F1": "0.06185567010309278", "sample_index": 281}
+{"qid": "dev_282", "final_pred": "October", "EM": "0", "F1": "0", "sample_index": 282}
+{"qid": "dev_283", "final_pred": "Sacred Planet", "EM": "1", "F1": "1.0", "sample_index": 283}
+{"qid": "dev_284", "final_pred": "Edmonton, Calgary, or Red Deer, but it is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the answer is Edmonton, Calgary, or Red Deer. It is not clear which one is the correct answer. So the", "EM": "0", "F1": "0", "sample_index": 284}
+{"qid": "dev_285", "final_pred": "Ferdi Taygan", "EM": "1", "F1": "1.0", "sample_index": 285}
+{"qid": "dev_286", "final_pred": "martial arts", "EM": "0", "F1": "0", "sample_index": 286}
+{"qid": "dev_287", "final_pred": "University of Oxford", "EM": "0", "F1": "0.28571428571428575", "sample_index": 287}
+{"qid": "dev_288", "final_pred": "I Know What You Did Last Summer", "EM": "0", "F1": "0", "sample_index": 288}
+{"qid": "dev_289", "final_pred": "\"Hey Pa! There's a Goat on the Roof\"", "EM": "1", "F1": "1.0", "sample_index": 289}
+{"qid": "dev_290", "final_pred": "14-2", "EM": "0", "F1": "0", "sample_index": 290}
+{"qid": "dev_291", "final_pred": "8,227", "EM": "0", "F1": "0", "sample_index": 291}
+{"qid": "dev_292", "final_pred": "The Wolf. So the answer is The Wolf", "EM": "0", "F1": "0", "sample_index": 292}
+{"qid": "dev_293", "final_pred": "supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri III. So the answer is supervisor of the royal works under Henri", "EM": "0", "F1": "0.06666666666666667", "sample_index": 293}
+{"qid": "dev_294", "final_pred": "Janet Jackson", "EM": "0", "F1": "0.6666666666666666", "sample_index": 294}
+{"qid": "dev_295", "final_pred": "Prussian Army", "EM": "0", "F1": "0.5", "sample_index": 295}
+{"qid": "dev_296", "final_pred": "Canary Islands", "EM": "0", "F1": "0", "sample_index": 296}
+{"qid": "dev_297", "final_pred": "Treaty of Gandamak", "EM": "1", "F1": "1.0", "sample_index": 297}
+{"qid": "dev_298", "final_pred": "California", "EM": "0", "F1": "0", "sample_index": 298}
+{"qid": "dev_299", "final_pred": "late 1970s and early  1980s. Question", "EM": "0", "F1": "0.5", "sample_index": 299}
+{"qid": "dev_300", "final_pred": "UK", "EM": "0", "F1": "0", "sample_index": 300}
+{"qid": "dev_301", "final_pred": "25", "EM": "0", "F1": "0", "sample_index": 301}
+{"qid": "dev_302", "final_pred": "23 November", "EM": "0", "F1": "0.8", "sample_index": 302}
+{"qid": "dev_303", "final_pred": "The Soloist", "EM": "1", "F1": "1.0", "sample_index": 303}
+{"qid": "dev_304", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 304}
+{"qid": "dev_305", "final_pred": "1901", "EM": "1", "F1": "1.0", "sample_index": 305}
+{"qid": "dev_306", "final_pred": "Bolton", "EM": "1", "F1": "1.0", "sample_index": 306}
+{"qid": "dev_307", "final_pred": "Sir George Cayley", "EM": "0", "F1": "0.8", "sample_index": 307}
+{"qid": "dev_308", "final_pred": "Leonberger", "EM": "0", "F1": "0.33333333333333337", "sample_index": 308}
+{"qid": "dev_309", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 309}
+{"qid": "dev_310", "final_pred": " 2013. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 310}
+{"qid": "dev_311", "final_pred": "Rolling Stone. So the answer is Rolling Stone", "EM": "0", "F1": "0.4444444444444445", "sample_index": 311}
+{"qid": "dev_312", "final_pred": "Battle Creek, Michigan. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 312}
+{"qid": "dev_313", "final_pred": "Am Rong", "EM": "1", "F1": "1.0", "sample_index": 313}
+{"qid": "dev_314", "final_pred": "11 months", "EM": "0", "F1": "0", "sample_index": 314}
+{"qid": "dev_315", "final_pred": "New Mexico", "EM": "0", "F1": "0", "sample_index": 315}
+{"qid": "dev_316", "final_pred": "Northumbrian", "EM": "1", "F1": "1.0", "sample_index": 316}
+{"qid": "dev_317", "final_pred": "Oldham County", "EM": "1", "F1": "1.0", "sample_index": 317}
+{"qid": "dev_318", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 318}
+{"qid": "dev_319", "final_pred": "None", "EM": "0", "F1": "0", "sample_index": 319}
+{"qid": "dev_320", "final_pred": "Serri. So the answer is Serri", "EM": "0", "F1": "0.33333333333333337", "sample_index": 320}
+{"qid": "dev_321", "final_pred": "FIFA Women's World Cup", "EM": "0", "F1": "0", "sample_index": 321}
+{"qid": "dev_322", "final_pred": "1944", "EM": "1", "F1": "1.0", "sample_index": 322}
+{"qid": "dev_323", "final_pred": "Wilmette, Illinois", "EM": "0", "F1": "0.6666666666666666", "sample_index": 323}
+{"qid": "dev_324", "final_pred": "Oedipus Rex", "EM": "1", "F1": "1.0", "sample_index": 324}
+{"qid": "dev_325", "final_pred": "Steve Jobs", "EM": "1", "F1": "1.0", "sample_index": 325}
+{"qid": "dev_326", "final_pred": "", "EM": "0", "F1": "0", "sample_index": 326}
+{"qid": "dev_327", "final_pred": "Graduation", "EM": "0", "F1": "0", "sample_index": 327}
+{"qid": "dev_328", "final_pred": "yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the answer is yes.  So the", "EM": "0", "F1": "0", "sample_index": 328}
+{"qid": "dev_329", "final_pred": "the \"Spring City\"", "EM": "1", "F1": "1.0", "sample_index": 329}
+{"qid": "dev_330", "final_pred": "London, England. So the answer is London, England", "EM": "0", "F1": "0", "sample_index": 330}
+{"qid": "dev_331", "final_pred": "minor basilica", "EM": "1", "F1": "1.0", "sample_index": 331}
+{"qid": "dev_332", "final_pred": "over 150 million. Question", "EM": "0", "F1": "0.5714285714285715", "sample_index": 332}
+{"qid": "dev_333", "final_pred": "Aqua", "EM": "1", "F1": "1.0", "sample_index": 333}
+{"qid": "dev_334", "final_pred": "Reynolds v. Sims", "EM": "0", "F1": "0", "sample_index": 334}
+{"qid": "dev_335", "final_pred": "CBS", "EM": "1", "F1": "1.0", "sample_index": 335}
+{"qid": "dev_336", "final_pred": "Pakistan", "EM": "0", "F1": "0", "sample_index": 336}
+{"qid": "dev_337", "final_pred": "The Four Seasons", "EM": "1", "F1": "1.0", "sample_index": 337}
+{"qid": "dev_338", "final_pred": "yes", "EM": "0", "F1": "0", "sample_index": 338}
+{"qid": "dev_339", "final_pred": "76,416", "EM": "1", "F1": "1.0", "sample_index": 339}
+{"qid": "dev_340", "final_pred": "Matt Flynn", "EM": "1", "F1": "1.0", "sample_index": 340}
+{"qid": "dev_341", "final_pred": "Happy Death Day", "EM": "1", "F1": "1.0", "sample_index": 341}
+{"qid": "dev_342", "final_pred": "Gerry Adams", "EM": "0", "F1": "0.8", "sample_index": 342}
+{"qid": "dev_343", "final_pred": "the Battle of Belleau Wood. Question", "EM": "0", "F1": "0.888888888888889", "sample_index": 343}
+{"qid": "dev_344", "final_pred": "Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy. So the answer is Royal Australian Navy", "EM": "0", "F1": "0.018518518518518517", "sample_index": 344}
+{"qid": "dev_345", "final_pred": "470,000", "EM": "0", "F1": "0", "sample_index": 345}
+{"qid": "dev_346", "final_pred": "Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvoord Foundry. So the answer is Van Santvo", "EM": "0", "F1": "0.025", "sample_index": 346}
+{"qid": "dev_347", "final_pred": "Jack Ryan", "EM": "1", "F1": "1.0", "sample_index": 347}
+{"qid": "dev_348", "final_pred": "wheat berries", "EM": "0", "F1": "0", "sample_index": 348}
+{"qid": "dev_349", "final_pred": "2009", "EM": "1", "F1": "1.0", "sample_index": 349}
+{"qid": "dev_350", "final_pred": "February 17, 2017. So the answer is Current Mood", "EM": "0", "F1": "0.18181818181818182", "sample_index": 350}
+{"qid": "dev_351", "final_pred": "Edward Albee", "EM": "0", "F1": "0.6666666666666666", "sample_index": 351}
+{"qid": "dev_352", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 352}
+{"qid": "dev_353", "final_pred": "producer. So the answer is producer", "EM": "0", "F1": "0", "sample_index": 353}
+{"qid": "dev_354", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 354}
+{"qid": "dev_355", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 355}
+{"qid": "dev_356", "final_pred": "Worcester County. So the answer is Worcester County", "EM": "0", "F1": "0.4444444444444445", "sample_index": 356}
+{"qid": "dev_357", "final_pred": "J. G. Farrell", "EM": "0", "F1": "0.5", "sample_index": 357}
+{"qid": "dev_358", "final_pred": "New York City", "EM": "0", "F1": "0.8571428571428571", "sample_index": 358}
+{"qid": "dev_359", "final_pred": "Dan Lin, Roy Lee, Phil Lord, Christopher Miller, and Chris McKay", "EM": "0", "F1": "0.9", "sample_index": 359}
+{"qid": "dev_360", "final_pred": "Buckingham Palace. Question", "EM": "0", "F1": "0", "sample_index": 360}
+{"qid": "dev_361", "final_pred": "St. Louis . So the answer is St. Louis", "EM": "0", "F1": "0.2", "sample_index": 361}
+{"qid": "dev_362", "final_pred": "Phil Collins", "EM": "1", "F1": "1.0", "sample_index": 362}
+{"qid": "dev_363", "final_pred": "video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the answer is video game. So the", "EM": "0", "F1": "0.044444444444444446", "sample_index": 363}
+{"qid": "dev_364", "final_pred": "University of Edinburgh. Question", "EM": "0", "F1": "0.3333333333333333", "sample_index": 364}
+{"qid": "dev_365", "final_pred": "An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the answer is An Imaginary Country. So the", "EM": "0", "F1": "0", "sample_index": 365}
+{"qid": "dev_366", "final_pred": "Scotty's Builders Supply. However, it seems that the correct answer is actually Home Depot, as it is a Fortune 500 American company that operates a chain of retail home improvement stores. So the answer is Home Depot. I will provide more information about Scotty's Builders Supply. Scotty's Builders Supply was an American retailer of home improvement and construction products and services. It was founded in 1947 and was based in Winter Haven, Florida. The company operated a chain of retail home improvement stores, primarily in the southeastern United States", "EM": "0", "F1": "0", "sample_index": 366}
+{"qid": "dev_367", "final_pred": "true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman Trophy. So the answer is true freshman to win the Heisman", "EM": "0", "F1": "0.03636363636363637", "sample_index": 367}
+{"qid": "dev_368", "final_pred": "1987", "EM": "1", "F1": "1.0", "sample_index": 368}
+{"qid": "dev_369", "final_pred": "James Packer", "EM": "1", "F1": "1.0", "sample_index": 369}
+{"qid": "dev_370", "final_pred": "documentary", "EM": "1", "F1": "1.0", "sample_index": 370}
+{"qid": "dev_371", "final_pred": "England", "EM": "1", "F1": "1.0", "sample_index": 371}
+{"qid": "dev_372", "final_pred": "Hero Jaejoong", "EM": "0", "F1": "0", "sample_index": 372}
+{"qid": "dev_373", "final_pred": "Hot toddy. Kir is a French cocktail made with cassis and white wine. It is not typically drunk before bed. So the answer is Hot toddy. So the answer is Hot toddy", "EM": "0", "F1": "0.12903225806451613", "sample_index": 373}
+{"qid": "dev_374", "final_pred": "not available", "EM": "0", "F1": "0", "sample_index": 374}
+{"qid": "dev_375", "final_pred": "The Tonight Show", "EM": "0", "F1": "0.4", "sample_index": 375}
+{"qid": "dev_376", "final_pred": "Hudson Bay Mining and Smelting Company", "EM": "1", "F1": "1.0", "sample_index": 376}
+{"qid": "dev_377", "final_pred": "Scandinavian design", "EM": "1", "F1": "1.0", "sample_index": 377}
+{"qid": "dev_378", "final_pred": "The Hunger Games: Catching Fire", "EM": "0", "F1": "0", "sample_index": 378}
+{"qid": "dev_379", "final_pred": "its architectural achievement", "EM": "0", "F1": "0", "sample_index": 379}
+{"qid": "dev_380", "final_pred": "José Echegaray y Eizaguirre", "EM": "1", "F1": "1.0", "sample_index": 380}
+{"qid": "dev_381", "final_pred": "Knowsley United Women", "EM": "1", "F1": "1.0", "sample_index": 381}
+{"qid": "dev_382", "final_pred": "The Red Hot Chili Peppers", "EM": "0", "F1": "0", "sample_index": 382}
+{"qid": "dev_383", "final_pred": "Sleepy Hollow National Historic District. However, the question asks for a district located near a village in the town of Philipstown, New York. Sleepy Hollow is not located in Philipstown. So the answer is not Sleepy Hollow National Historic District. The correct answer is not provided in the given context. So the answer is unknown", "EM": "0", "F1": "0.0784313725490196", "sample_index": 383}
+{"qid": "dev_384", "final_pred": "Philip K. Dick", "EM": "1", "F1": "1.0", "sample_index": 384}
+{"qid": "dev_385", "final_pred": "New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants. So the answer is New York Giants", "EM": "0", "F1": "0.05555555555555556", "sample_index": 385}
+{"qid": "dev_386", "final_pred": "1961", "EM": "1", "F1": "1.0", "sample_index": 386}
+{"qid": "dev_387", "final_pred": "Copenhagen", "EM": "1", "F1": "1.0", "sample_index": 387}
+{"qid": "dev_388", "final_pred": "William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White. So the answer is William Allen White", "EM": "0", "F1": "0", "sample_index": 388}
+{"qid": "dev_389", "final_pred": "Sharman Joshi", "EM": "0", "F1": "0", "sample_index": 389}
+{"qid": "dev_390", "final_pred": "horror movies. So the answer is horror movies", "EM": "0", "F1": "0.18181818181818182", "sample_index": 390}
+{"qid": "dev_391", "final_pred": "Sasha Pieterse", "EM": "0", "F1": "0", "sample_index": 391}
+{"qid": "dev_392", "final_pred": "Before the Fall", "EM": "0", "F1": "0", "sample_index": 392}
+{"qid": "dev_393", "final_pred": "Essex", "EM": "1", "F1": "1.0", "sample_index": 393}
+{"qid": "dev_394", "final_pred": "Ken Russell", "EM": "0", "F1": "0", "sample_index": 394}
+{"qid": "dev_395", "final_pred": "French Open", "EM": "1", "F1": "1.0", "sample_index": 395}
+{"qid": "dev_396", "final_pred": "Bismarck", "EM": "1", "F1": "1.0", "sample_index": 396}
+{"qid": "dev_397", "final_pred": "Manchester United", "EM": "0", "F1": "0.3636363636363636", "sample_index": 397}
+{"qid": "dev_398", "final_pred": "Massive Entertainment", "EM": "1", "F1": "1.0", "sample_index": 398}
+{"qid": "dev_399", "final_pred": "Australian Online Video Awards", "EM": "0", "F1": "0", "sample_index": 399}
+{"qid": "dev_400", "final_pred": "King's College London", "EM": "0", "F1": "0", "sample_index": 400}
+{"qid": "dev_401", "final_pred": "Icehouse pieces", "EM": "1", "F1": "1.0", "sample_index": 401}
+{"qid": "dev_402", "final_pred": "Jim Shapiro", "EM": "0", "F1": "0", "sample_index": 402}
+{"qid": "dev_403", "final_pred": "1973", "EM": "0", "F1": "0", "sample_index": 403}
+{"qid": "dev_404", "final_pred": "1963-1991", "EM": "0", "F1": "0", "sample_index": 404}
+{"qid": "dev_405", "final_pred": "Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania, United States. So the answer is Indiana, Pennsylvania", "EM": "0", "F1": "0", "sample_index": 405}
+{"qid": "dev_406", "final_pred": "Dime Magazine", "EM": "0", "F1": "0.22222222222222224", "sample_index": 406}
+{"qid": "dev_407", "final_pred": "Ian McEwan. So the answer is Ian McEwan", "EM": "0", "F1": "0", "sample_index": 407}
+{"qid": "dev_408", "final_pred": "728,000 ft²", "EM": "1", "F1": "1.0", "sample_index": 408}
+{"qid": "dev_409", "final_pred": "Guilty Simpson and Black Milk", "EM": "0", "F1": "0.16666666666666666", "sample_index": 409}
+{"qid": "dev_410", "final_pred": "Shanghai", "EM": "1", "F1": "1.0", "sample_index": 410}
+{"qid": "dev_411", "final_pred": "Tim Burton", "EM": "0", "F1": "0", "sample_index": 411}
+{"qid": "dev_412", "final_pred": "French", "EM": "0", "F1": "0.6666666666666666", "sample_index": 412}
+{"qid": "dev_413", "final_pred": "a family member", "EM": "1", "F1": "1.0", "sample_index": 413}
+{"qid": "dev_414", "final_pred": "Don McBrearty", "EM": "0", "F1": "0", "sample_index": 414}
+{"qid": "dev_415", "final_pred": "Dirty Pretty Things", "EM": "1", "F1": "1.0", "sample_index": 415}
+{"qid": "dev_416", "final_pred": "Krusty the Clown", "EM": "0", "F1": "0", "sample_index": 416}
+{"qid": "dev_417", "final_pred": "Viaport Rotterdam", "EM": "1", "F1": "1.0", "sample_index": 417}
+{"qid": "dev_418", "final_pred": "Chauncey Billups", "EM": "0", "F1": "0.5714285714285715", "sample_index": 418}
+{"qid": "dev_419", "final_pred": "13,940", "EM": "0", "F1": "0", "sample_index": 419}
+{"qid": "dev_420", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 420}
+{"qid": "dev_421", "final_pred": "documentary films. So the answer is documentary films", "EM": "0", "F1": "0.25", "sample_index": 421}
+{"qid": "dev_422", "final_pred": "more than 10", "EM": "0", "F1": "0", "sample_index": 422}
+{"qid": "dev_423", "final_pred": "player", "EM": "0", "F1": "0", "sample_index": 423}
+{"qid": "dev_424", "final_pred": "196 cm (6 ft 5 in).. So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the answer is 196 cm (6 ft 5 in). So the", "EM": "0", "F1": "0", "sample_index": 424}
+{"qid": "dev_425", "final_pred": "MGM Resorts International", "EM": "1", "F1": "1.0", "sample_index": 425}
+{"qid": "dev_426", "final_pred": "Bedknobs and Broomsticks", "EM": "1", "F1": "1.0", "sample_index": 426}
+{"qid": "dev_427", "final_pred": "New River", "EM": "0", "F1": "0.5", "sample_index": 427}
+{"qid": "dev_428", "final_pred": "Conservative Party", "EM": "0", "F1": "0.8", "sample_index": 428}
+{"qid": "dev_429", "final_pred": "Wes Archer", "EM": "1", "F1": "1.0", "sample_index": 429}
+{"qid": "dev_430", "final_pred": "Western Bulldogs", "EM": "0", "F1": "0", "sample_index": 430}
+{"qid": "dev_431", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 431}
+{"qid": "dev_432", "final_pred": "Delmer Daves", "EM": "0", "F1": "0.8", "sample_index": 432}
+{"qid": "dev_433", "final_pred": "X Ambassadors", "EM": "1", "F1": "1.0", "sample_index": 433}
+{"qid": "dev_434", "final_pred": "Walt Disney Productions", "EM": "1", "F1": "1.0", "sample_index": 434}
+{"qid": "dev_435", "final_pred": "1,149 miles", "EM": "0", "F1": "0", "sample_index": 435}
+{"qid": "dev_436", "final_pred": "Kansas", "EM": "0", "F1": "0.4", "sample_index": 436}
+{"qid": "dev_437", "final_pred": "Transnational Boxing Rankings Board (TBRB)", "EM": "0", "F1": "0", "sample_index": 437}
+{"qid": "dev_438", "final_pred": "1908", "EM": "0", "F1": "0", "sample_index": 438}
+{"qid": "dev_439", "final_pred": "Palm Springs", "EM": "0", "F1": "0", "sample_index": 439}
+{"qid": "dev_440", "final_pred": "President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United States. So the answer is President of the United", "EM": "0", "F1": "0.07619047619047618", "sample_index": 440}
+{"qid": "dev_441", "final_pred": "Between the Lines", "EM": "0", "F1": "0", "sample_index": 441}
+{"qid": "dev_442", "final_pred": "\"Sexual Behavior in the Human Male\"", "EM": "0", "F1": "0.4444444444444445", "sample_index": 442}
+{"qid": "dev_443", "final_pred": "Amber Benson", "EM": "0", "F1": "0", "sample_index": 443}
+{"qid": "dev_444", "final_pred": "Bedknobs and Broomsticks", "EM": "1", "F1": "1.0", "sample_index": 444}
+{"qid": "dev_445", "final_pred": "45 Albert Square", "EM": "0", "F1": "0.4444444444444444", "sample_index": 445}
+{"qid": "dev_446", "final_pred": "Startime", "EM": "0", "F1": "0", "sample_index": 446}
+{"qid": "dev_447", "final_pred": "Phoenix Television", "EM": "1", "F1": "1.0", "sample_index": 447}
+{"qid": "dev_448", "final_pred": "Planet Terror", "EM": "1", "F1": "1.0", "sample_index": 448}
+{"qid": "dev_449", "final_pred": "Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa. So the answer is Peshwa", "EM": "0", "F1": "0.03125", "sample_index": 449}
+{"qid": "dev_450", "final_pred": "Donald Trump Jr. Donald Trump Jr. is the eldest child of the 45th President of the United States, Donald Trump, and his first wife, Ivana. He was born on December  31, 1977. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr. So the answer is Donald Trump Jr", "EM": "0", "F1": "0.046875", "sample_index": 450}
+{"qid": "dev_451", "final_pred": "Lord Dunmore", "EM": "0", "F1": "0.6666666666666666", "sample_index": 451}
+{"qid": "dev_452", "final_pred": "Graduados", "EM": "1", "F1": "1.0", "sample_index": 452}
+{"qid": "dev_453", "final_pred": "Private Secretary", "EM": "0", "F1": "0.6666666666666666", "sample_index": 453}
+{"qid": "dev_454", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 454}
+{"qid": "dev_455", "final_pred": "Ogallala Aquifer", "EM": "1", "F1": "1.0", "sample_index": 455}
+{"qid": "dev_456", "final_pred": "Ibn Arabi", "EM": "0", "F1": "0", "sample_index": 456}
+{"qid": "dev_457", "final_pred": "Freyja", "EM": "0", "F1": "0", "sample_index": 457}
+{"qid": "dev_458", "final_pred": "the 1984 Summer Olympics", "EM": "0", "F1": "0.28571428571428575", "sample_index": 458}
+{"qid": "dev_459", "final_pred": "Edward Smith-Stanley,  14th Earl of Derby. Question", "EM": "0", "F1": "0", "sample_index": 459}
+{"qid": "dev_460", "final_pred": "Kansas City crime family", "EM": "1", "F1": "1.0", "sample_index": 460}
+{"qid": "dev_461", "final_pred": "Albert Park", "EM": "1", "F1": "1.0", "sample_index": 461}
+{"qid": "dev_462", "final_pred": "2004", "EM": "0", "F1": "0", "sample_index": 462}
+{"qid": "dev_463", "final_pred": "The Sixth Sense. Question", "EM": "0", "F1": "0", "sample_index": 463}
+{"qid": "dev_464", "final_pred": "Apatosaurus", "EM": "1", "F1": "1.0", "sample_index": 464}
+{"qid": "dev_465", "final_pred": "BraveStarr", "EM": "1", "F1": "1.0", "sample_index": 465}
+{"qid": "dev_466", "final_pred": "they are connected as the same thing. Gajabrishta is an elephant. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the answer is they are the same. So the", "EM": "0", "F1": "0", "sample_index": 466}
+{"qid": "dev_467", "final_pred": "the Battle of Guam", "EM": "1", "F1": "1.0", "sample_index": 467}
+{"qid": "dev_468", "final_pred": "Mark Rosman", "EM": "0", "F1": "0", "sample_index": 468}
+{"qid": "dev_469", "final_pred": "The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon. So the answer is The Neon Demon", "EM": "0", "F1": "0", "sample_index": 469}
+{"qid": "dev_470", "final_pred": "actress", "EM": "0", "F1": "0", "sample_index": 470}
+{"qid": "dev_471", "final_pred": "executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the answer is executive search. So the", "EM": "0", "F1": "0.04347826086956522", "sample_index": 471}
+{"qid": "dev_472", "final_pred": "novelist. So the answer is novelist", "EM": "0", "F1": "0", "sample_index": 472}
+{"qid": "dev_473", "final_pred": "Roman Catholic", "EM": "0", "F1": "0.3333333333333333", "sample_index": 473}
+{"qid": "dev_474", "final_pred": "Edmonton, Alberta", "EM": "1", "F1": "1.0", "sample_index": 474}
+{"qid": "dev_475", "final_pred": "Sean Hannity", "EM": "0", "F1": "0", "sample_index": 475}
+{"qid": "dev_476", "final_pred": "FBS", "EM": "0", "F1": "0.33333333333333337", "sample_index": 476}
+{"qid": "dev_477", "final_pred": "Tea Moderna", "EM": "1", "F1": "1.0", "sample_index": 477}
+{"qid": "dev_478", "final_pred": "Armenia", "EM": "0", "F1": "0", "sample_index": 478}
+{"qid": "dev_479", "final_pred": "Shepardson Microsystems Inc. (SMI). .\nQuestion", "EM": "0", "F1": "0", "sample_index": 479}
+{"qid": "dev_480", "final_pred": "Warner Bros. Records", "EM": "0", "F1": "0.8", "sample_index": 480}
+{"qid": "dev_481", "final_pred": "Cannibal Corpse", "EM": "0", "F1": "0", "sample_index": 481}
+{"qid": "dev_482", "final_pred": "translation", "EM": "0", "F1": "0", "sample_index": 482}
+{"qid": "dev_483", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 483}
+{"qid": "dev_484", "final_pred": "four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the answer is four months in jail. So the", "EM": "0", "F1": "0.07017543859649122", "sample_index": 484}
+{"qid": "dev_485", "final_pred": " 1963. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 485}
+{"qid": "dev_486", "final_pred": "Punk", "EM": "0", "F1": "0", "sample_index": 486}
+{"qid": "dev_487", "final_pred": "Portal 2", "EM": "0", "F1": "0", "sample_index": 487}
+{"qid": "dev_488", "final_pred": "adrenal gland. So the answer is adrenal gland", "EM": "0", "F1": "0", "sample_index": 488}
+{"qid": "dev_489", "final_pred": "0", "EM": "0", "F1": "0", "sample_index": 489}
+{"qid": "dev_490", "final_pred": "Plyler v. Doe", "EM": "0", "F1": "0", "sample_index": 490}
+{"qid": "dev_491", "final_pred": "Diana Krall", "EM": "0", "F1": "0", "sample_index": 491}
+{"qid": "dev_492", "final_pred": "1974", "EM": "0", "F1": "0", "sample_index": 492}
+{"qid": "dev_493", "final_pred": "DTM", "EM": "1", "F1": "1.0", "sample_index": 493}
+{"qid": "dev_494", "final_pred": "2002", "EM": "1", "F1": "1.0", "sample_index": 494}
+{"qid": "dev_495", "final_pred": "4,613", "EM": "1", "F1": "1.0", "sample_index": 495}
+{"qid": "dev_496", "final_pred": "Jersey City", "EM": "0", "F1": "0", "sample_index": 496}
+{"qid": "dev_497", "final_pred": "137", "EM": "0", "F1": "0", "sample_index": 497}
+{"qid": "dev_498", "final_pred": "Ronald Reagan", "EM": "0", "F1": "0.8", "sample_index": 498}
+{"qid": "dev_499", "final_pred": "documentary ", "EM": "1", "F1": "1.0", "sample_index": 499}
+{"qid": "dev_500", "final_pred": "Forbidden Quest", "EM": "0", "F1": "0", "sample_index": 500}
+{"qid": "dev_501", "final_pred": "Nairobi, Kenya", "EM": "0", "F1": "0", "sample_index": 501}
+{"qid": "dev_502", "final_pred": "189", "EM": "0", "F1": "0", "sample_index": 502}
+{"qid": "dev_503", "final_pred": "22 November 1761", "EM": "0", "F1": "0.8", "sample_index": 503}
+{"qid": "dev_504", "final_pred": "1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964- 1974. So the answer is 1964-", "EM": "0", "F1": "0.0625", "sample_index": 504}
+{"qid": "dev_505", "final_pred": "Integra SJ", "EM": "0", "F1": "0", "sample_index": 505}
+{"qid": "dev_506", "final_pred": "Nuptse", "EM": "0", "F1": "0", "sample_index": 506}
+{"qid": "dev_507", "final_pred": "New College", "EM": "0", "F1": "0.5", "sample_index": 507}
+{"qid": "dev_508", "final_pred": "Royal Botanic Gardens, Kew. Question", "EM": "0", "F1": "0.5714285714285715", "sample_index": 508}
+{"qid": "dev_509", "final_pred": "Jay-Z", "EM": "0", "F1": "0", "sample_index": 509}
+{"qid": "dev_510", "final_pred": "film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing arts. So the answer is film and the performing", "EM": "0", "F1": "0.07407407407407407", "sample_index": 510}
+{"qid": "dev_511", "final_pred": "Canadian", "EM": "1", "F1": "1.0", "sample_index": 511}
+{"qid": "dev_512", "final_pred": "3 years after the May Revolution. So the answer is 1810. So the answer is  1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810. So the answer is 1810", "EM": "0", "F1": "0.05063291139240507", "sample_index": 512}
+{"qid": "dev_513", "final_pred": "director. They also share the profession of being a producer. So the answer is also producer. So the answer is both director and producer. So the answer is director and producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer. So the answer is director, producer", "EM": "0", "F1": "0.052631578947368425", "sample_index": 513}
+{"qid": "dev_514", "final_pred": "4", "EM": "0", "F1": "0", "sample_index": 514}
+{"qid": "dev_515", "final_pred": "Dublin", "EM": "1", "F1": "1.0", "sample_index": 515}
+{"qid": "dev_516", "final_pred": "Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the answer is Quo Vadis. So the", "EM": "0", "F1": "0", "sample_index": 516}
+{"qid": "dev_517", "final_pred": "Toshi Ichiyanagi", "EM": "1", "F1": "1.0", "sample_index": 517}
+{"qid": "dev_518", "final_pred": "Kings Point, New York", "EM": "1", "F1": "1.0", "sample_index": 518}
+{"qid": "dev_519", "final_pred": "Lord Chancellor", "EM": "0", "F1": "0.6666666666666666", "sample_index": 519}
+{"qid": "dev_520", "final_pred": "Guardians of the Galaxy Vol. 2", "EM": "1", "F1": "1.0", "sample_index": 520}
+{"qid": "dev_521", "final_pred": "sponsorship scandal", "EM": "1", "F1": "1.0", "sample_index": 521}
+{"qid": "dev_522", "final_pred": "Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the answer is Sigmund Freud. So the", "EM": "0", "F1": "0.047058823529411764", "sample_index": 522}
+{"qid": "dev_523", "final_pred": "Mount Everest", "EM": "1", "F1": "1.0", "sample_index": 523}
+{"qid": "dev_524", "final_pred": "Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the answer is Nobel Prize in Literature. So the", "EM": "0", "F1": "0.07017543859649122", "sample_index": 524}
+{"qid": "dev_525", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 525}
+{"qid": "dev_526", "final_pred": "1999", "EM": "1", "F1": "1.0", "sample_index": 526}
+{"qid": "dev_527", "final_pred": "Roland TR-707", "EM": "0", "F1": "0", "sample_index": 527}
+{"qid": "dev_528", "final_pred": "Social Code", "EM": "1", "F1": "1.0", "sample_index": 528}
+{"qid": "dev_529", "final_pred": "3 December 2015", "EM": "0", "F1": "0.8", "sample_index": 529}
+{"qid": "dev_530", "final_pred": "The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied invasion of Germany. So the answer is The Western Allied", "EM": "0", "F1": "0.10526315789473684", "sample_index": 530}
+{"qid": "dev_531", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 531}
+{"qid": "dev_532", "final_pred": "September 24,  2017. Question", "EM": "0", "F1": "0.5714285714285715", "sample_index": 532}
+{"qid": "dev_533", "final_pred": "Julie Frost", "EM": "0", "F1": "0", "sample_index": 533}
+{"qid": "dev_534", "final_pred": "2016", "EM": "1", "F1": "1.0", "sample_index": 534}
+{"qid": "dev_535", "final_pred": "Motion City Soundtrack", "EM": "1", "F1": "1.0", "sample_index": 535}
+{"qid": "dev_536", "final_pred": "42", "EM": "0", "F1": "0", "sample_index": 536}
+{"qid": "dev_537", "final_pred": "Sydney", "EM": "0", "F1": "0", "sample_index": 537}
+{"qid": "dev_538", "final_pred": "4 June 1790", "EM": "0", "F1": "0", "sample_index": 538}
+{"qid": "dev_539", "final_pred": "Etihad Stadium", "EM": "0", "F1": "0", "sample_index": 539}
+{"qid": "dev_540", "final_pred": "Archbishop of Canterbury", "EM": "1", "F1": "1.0", "sample_index": 540}
+{"qid": "dev_541", "final_pred": "Executive Council of the General Anthroposophical Society. Question", "EM": "0", "F1": "0.7999999999999999", "sample_index": 541}
+{"qid": "dev_542", "final_pred": " 1951. Question", "EM": "0", "F1": "0", "sample_index": 542}
+{"qid": "dev_543", "final_pred": "Associate degree", "EM": "0", "F1": "0", "sample_index": 543}
+{"qid": "dev_544", "final_pred": "gypsy moth", "EM": "0", "F1": "0.6666666666666666", "sample_index": 544}
+{"qid": "dev_545", "final_pred": "Nebula Award, the Philip K. Dick Award, and the Hugo Award. So the answer is Nebula Award, the Philip K. Dick Award, and the Hugo Award. So the answer is Nebula Award, the Philip K. Dick Award, and the Hugo Award. So the answer is Nebula Award, the Philip K. Dick Award, and the Hugo Award. So the answer is Nebula Award, the Philip K. Dick Award, and the Hugo Award", "EM": "0", "F1": "0.2727272727272727", "sample_index": 545}
+{"qid": "dev_546", "final_pred": "methamphetamine", "EM": "0", "F1": "0", "sample_index": 546}
+{"qid": "dev_547", "final_pred": "Charlotte Brontë", "EM": "0", "F1": "0", "sample_index": 547}
+{"qid": "dev_548", "final_pred": "Sunderland A.F.C. Gennaro Gattuso is an Italian footballer and the manager of Milan. So the answer is Sunderland A.F.C. and Milan", "EM": "0", "F1": "0", "sample_index": 548}
+{"qid": "dev_549", "final_pred": "Hernando", "EM": "0", "F1": "0", "sample_index": 549}
+{"qid": "dev_550", "final_pred": "World War II. Subhas Chandra Bose was an Indian nationalist whose defiant patriotism made him a hero in India, but whose attempt during World War II to rid India of British rule with the help of Nazi Germany and Imperial Japan left an ambivalent legacy. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II. So the answer is World War II", "EM": "0", "F1": "0.03947368421052631", "sample_index": 550}
+{"qid": "dev_551", "final_pred": "Eddie Izzard", "EM": "1", "F1": "1.0", "sample_index": 551}
+{"qid": "dev_552", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 552}
+{"qid": "dev_553", "final_pred": "72", "EM": "0", "F1": "0", "sample_index": 553}
+{"qid": "dev_554", "final_pred": "magazine. So the answer is magazine", "EM": "0", "F1": "0.22222222222222224", "sample_index": 554}
+{"qid": "dev_555", "final_pred": "Kanailal", "EM": "0", "F1": "0", "sample_index": 555}
+{"qid": "dev_556", "final_pred": "no. Question", "EM": "0", "F1": "0", "sample_index": 556}
+{"qid": "dev_557", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 557}
+{"qid": "dev_558", "final_pred": "Polypodium", "EM": "1", "F1": "1.0", "sample_index": 558}
+{"qid": "dev_559", "final_pred": "Carl Jung", "EM": "0", "F1": "0", "sample_index": 559}
+{"qid": "dev_560", "final_pred": "President George W. Bush", "EM": "0", "F1": "0", "sample_index": 560}
+{"qid": "dev_561", "final_pred": "Vib Gyor", "EM": "0", "F1": "0.33333333333333337", "sample_index": 561}
+{"qid": "dev_562", "final_pred": "Europe", "EM": "1", "F1": "1.0", "sample_index": 562}
+{"qid": "dev_563", "final_pred": "LSU. However, the question asks about 2013, which is after Les Miles left LSU. So the answer is not LSU. The correct answer is not given in the text. So the answer is unknown", "EM": "0", "F1": "0", "sample_index": 563}
+{"qid": "dev_564", "final_pred": "Euripides", "EM": "1", "F1": "1.0", "sample_index": 564}
+{"qid": "dev_565", "final_pred": "singer", "EM": "0", "F1": "0.4", "sample_index": 565}
+{"qid": "dev_566", "final_pred": "September 25,  2017. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 566}
+{"qid": "dev_567", "final_pred": "Zleep Hotels", "EM": "0", "F1": "0", "sample_index": 567}
+{"qid": "dev_568", "final_pred": "My Beautiful Dark Twisted Fantasy", "EM": "1", "F1": "1.0", "sample_index": 568}
+{"qid": "dev_569", "final_pred": "Christian", "EM": "0", "F1": "0.6666666666666666", "sample_index": 569}
+{"qid": "dev_570", "final_pred": "Port Moresby, Papua New Guinea", "EM": "1", "F1": "1.0", "sample_index": 570}
+{"qid": "dev_571", "final_pred": "not provided", "EM": "0", "F1": "0", "sample_index": 571}
+{"qid": "dev_572", "final_pred": "Margery Williams", "EM": "1", "F1": "1.0", "sample_index": 572}
+{"qid": "dev_573", "final_pred": "Leslie Knope", "EM": "1", "F1": "1.0", "sample_index": 573}
+{"qid": "dev_574", "final_pred": "Giotto", "EM": "1", "F1": "1.0", "sample_index": 574}
+{"qid": "dev_575", "final_pred": "Start", "EM": "0", "F1": "0.6666666666666666", "sample_index": 575}
+{"qid": "dev_576", "final_pred": "March 18,  2013. Question", "EM": "0", "F1": "0.5714285714285715", "sample_index": 576}
+{"qid": "dev_577", "final_pred": "University of Kansas", "EM": "0", "F1": "0.5", "sample_index": 577}
+{"qid": "dev_578", "final_pred": "Tumwater", "EM": "0", "F1": "0.6666666666666666", "sample_index": 578}
+{"qid": "dev_579", "final_pred": "Anywhere But Here", "EM": "0", "F1": "0", "sample_index": 579}
+{"qid": "dev_580", "final_pred": "Queen and I", "EM": "0", "F1": "0.3333333333333333", "sample_index": 580}
+{"qid": "dev_581", "final_pred": "Germany", "EM": "1", "F1": "1.0", "sample_index": 581}
+{"qid": "dev_582", "final_pred": "Life After Death", "EM": "0", "F1": "0", "sample_index": 582}
+{"qid": "dev_583", "final_pred": "most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single season. So the answer is most career passing yards in a single", "EM": "0", "F1": "0.03278688524590164", "sample_index": 583}
+{"qid": "dev_584", "final_pred": "Æthelwald", "EM": "0", "F1": "0", "sample_index": 584}
+{"qid": "dev_585", "final_pred": "First Folio. Question", "EM": "0", "F1": "0", "sample_index": 585}
+{"qid": "dev_586", "final_pred": "Vince Guaraldi", "EM": "0", "F1": "0.4", "sample_index": 586}
+{"qid": "dev_587", "final_pred": "1861", "EM": "0", "F1": "0", "sample_index": 587}
+{"qid": "dev_588", "final_pred": "Chad", "EM": "0", "F1": "0.5", "sample_index": 588}
+{"qid": "dev_589", "final_pred": "Violin Sonata No. 4 and Violin Sonata No. 5. (", "EM": "0", "F1": "0.16666666666666666", "sample_index": 589}
+{"qid": "dev_590", "final_pred": "orange", "EM": "0", "F1": "0.6666666666666666", "sample_index": 590}
+{"qid": "dev_591", "final_pred": "Quantrill's Raiders", "EM": "0", "F1": "0", "sample_index": 591}
+{"qid": "dev_592", "final_pred": "2006", "EM": "0", "F1": "0", "sample_index": 592}
+{"qid": "dev_593", "final_pred": "Blonde Redhead", "EM": "1", "F1": "1.0", "sample_index": 593}
+{"qid": "dev_594", "final_pred": "Bristol Olympus", "EM": "0", "F1": "0.6666666666666666", "sample_index": 594}
+{"qid": "dev_595", "final_pred": "Krzysztof Zanussi", "EM": "1", "F1": "1.0", "sample_index": 595}
+{"qid": "dev_596", "final_pred": "Belgium", "EM": "0", "F1": "0", "sample_index": 596}
+{"qid": "dev_597", "final_pred": "Hermione Baddeley", "EM": "1", "F1": "1.0", "sample_index": 597}
+{"qid": "dev_598", "final_pred": "Finding Nemo", "EM": "1", "F1": "1.0", "sample_index": 598}
+{"qid": "dev_599", "final_pred": "July 26,  1959. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 599}
+{"qid": "dev_600", "final_pred": "Kenny Young", "EM": "1", "F1": "1.0", "sample_index": 600}
+{"qid": "dev_601", "final_pred": "John Luessenhop", "EM": "0", "F1": "0", "sample_index": 601}
+{"qid": "dev_602", "final_pred": "T-28 Trojan. So the answer is T-28 Trojan", "EM": "0", "F1": "0", "sample_index": 602}
+{"qid": "dev_603", "final_pred": "T.R.M. Howard", "EM": "0", "F1": "0.3333333333333333", "sample_index": 603}
+{"qid": "dev_604", "final_pred": "400", "EM": "0", "F1": "0", "sample_index": 604}
+{"qid": "dev_605", "final_pred": "yes", "EM": "0", "F1": "0", "sample_index": 605}
+{"qid": "dev_606", "final_pred": "1986", "EM": "1", "F1": "1.0", "sample_index": 606}
+{"qid": "dev_607", "final_pred": "euphemism", "EM": "0", "F1": "0", "sample_index": 607}
+{"qid": "dev_608", "final_pred": "MTV Russia", "EM": "0", "F1": "0", "sample_index": 608}
+{"qid": "dev_609", "final_pred": "Andrew Johnson", "EM": "1", "F1": "1.0", "sample_index": 609}
+{"qid": "dev_610", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 610}
+{"qid": "dev_611", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 611}
+{"qid": "dev_612", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 612}
+{"qid": "dev_613", "final_pred": "Bhabananda Deka. So the answer is Bhabananda Deka", "EM": "0", "F1": "0.4", "sample_index": 613}
+{"qid": "dev_614", "final_pred": "16th Street and Georgetown Road", "EM": "1", "F1": "1.0", "sample_index": 614}
+{"qid": "dev_615", "final_pred": "500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the answer is 500th episode. So the", "EM": "0", "F1": "0.06557377049180328", "sample_index": 615}
+{"qid": "dev_616", "final_pred": "Revolution PAC", "EM": "0", "F1": "0", "sample_index": 616}
+{"qid": "dev_617", "final_pred": "194", "EM": "0", "F1": "0", "sample_index": 617}
+{"qid": "dev_618", "final_pred": "Pennacook", "EM": "0", "F1": "0.6666666666666666", "sample_index": 618}
+{"qid": "dev_619", "final_pred": "glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the answer is glam-style funk metal. So the", "EM": "0", "F1": "0.020833333333333336", "sample_index": 619}
+{"qid": "dev_620", "final_pred": "2012", "EM": "0", "F1": "0", "sample_index": 620}
+{"qid": "dev_621", "final_pred": "Ottawa", "EM": "0", "F1": "0", "sample_index": 621}
+{"qid": "dev_622", "final_pred": "Louis XIV", "EM": "1", "F1": "1.0", "sample_index": 622}
+{"qid": "dev_623", "final_pred": "Peabody Ducks", "EM": "0", "F1": "0.6666666666666666", "sample_index": 623}
+{"qid": "dev_624", "final_pred": "Jean-Loup Chrétien", "EM": "0", "F1": "0.6666666666666666", "sample_index": 624}
+{"qid": "dev_625", "final_pred": "Jamaica", "EM": "0", "F1": "0", "sample_index": 625}
+{"qid": "dev_626", "final_pred": "625 acres", "EM": "0", "F1": "0.3333333333333333", "sample_index": 626}
+{"qid": "dev_627", "final_pred": "Zachary Levi. Zachary Levi was born on September 29, 1980. So the answer is correct", "EM": "0", "F1": "0.25", "sample_index": 627}
+{"qid": "dev_628", "final_pred": " 1950. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 628}
+{"qid": "dev_629", "final_pred": "Jennifer Love Hewitt. Note", "EM": "0", "F1": "0", "sample_index": 629}
+{"qid": "dev_630", "final_pred": "Carrefour", "EM": "1", "F1": "1.0", "sample_index": 630}
+{"qid": "dev_631", "final_pred": "publisher", "EM": "0", "F1": "0.4", "sample_index": 631}
+{"qid": "dev_632", "final_pred": "New York Yankees. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 632}
+{"qid": "dev_633", "final_pred": "Ballarat Bitter", "EM": "0", "F1": "0.4444444444444445", "sample_index": 633}
+{"qid": "dev_634", "final_pred": "Apsley Cherry-Garrard", "EM": "0", "F1": "0.6666666666666666", "sample_index": 634}
+{"qid": "dev_635", "final_pred": "Babylon. So the answer is Babylon", "EM": "0", "F1": "0.33333333333333337", "sample_index": 635}
+{"qid": "dev_636", "final_pred": "Kingdom of Fife. Question", "EM": "0", "F1": "0.25", "sample_index": 636}
+{"qid": "dev_637", "final_pred": "University of Vienna", "EM": "1", "F1": "1.0", "sample_index": 637}
+{"qid": "dev_638", "final_pred": "Canal 13", "EM": "0", "F1": "0", "sample_index": 638}
+{"qid": "dev_639", "final_pred": "not applicable. So the answer is none", "EM": "0", "F1": "0", "sample_index": 639}
+{"qid": "dev_640", "final_pred": "Blackpool Gazette & Herald Ltd", "EM": "0", "F1": "0", "sample_index": 640}
+{"qid": "dev_641", "final_pred": "Richard Cheese", "EM": "0", "F1": "0", "sample_index": 641}
+{"qid": "dev_642", "final_pred": "American. So the answer is American", "EM": "0", "F1": "0", "sample_index": 642}
+{"qid": "dev_643", "final_pred": "Denmark", "EM": "0", "F1": "0.5", "sample_index": 643}
+{"qid": "dev_644", "final_pred": "personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products. So the answer is personal care products", "EM": "0", "F1": "0.05504587155963303", "sample_index": 644}
+{"qid": "dev_645", "final_pred": "Rosie O'Donnell", "EM": "1", "F1": "1.0", "sample_index": 645}
+{"qid": "dev_646", "final_pred": "Urijah Faber", "EM": "0", "F1": "0.8", "sample_index": 646}
+{"qid": "dev_647", "final_pred": "Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the answer is Peer. So the", "EM": "0", "F1": "0.02197802197802198", "sample_index": 647}
+{"qid": "dev_648", "final_pred": "none", "EM": "0", "F1": "0", "sample_index": 648}
+{"qid": "dev_649", "final_pred": "MIT Technology Review. Question", "EM": "0", "F1": "0", "sample_index": 649}
+{"qid": "dev_650", "final_pred": "13", "EM": "1", "F1": "1.0", "sample_index": 650}
+{"qid": "dev_651", "final_pred": "February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February 20, 1978. So the answer is February", "EM": "0", "F1": "0.10344827586206896", "sample_index": 651}
+{"qid": "dev_652", "final_pred": "mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion. So the answer is mother goddess religion", "EM": "0", "F1": "0", "sample_index": 652}
+{"qid": "dev_653", "final_pred": "different types of musicians. So the answer is no. Mark Gaudet is a jazz musician and Jan Axel Blomberg is a heavy metal drummer. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the answer is different types of musicians. So the", "EM": "0", "F1": "0.014814814814814815", "sample_index": 653}
+{"qid": "dev_654", "final_pred": "Miami Canal", "EM": "0", "F1": "0.5", "sample_index": 654}
+{"qid": "dev_655", "final_pred": "England", "EM": "1", "F1": "1.0", "sample_index": 655}
+{"qid": "dev_656", "final_pred": "Jesse Palmer", "EM": "0", "F1": "0", "sample_index": 656}
+{"qid": "dev_657", "final_pred": "Tron", "EM": "1", "F1": "1.0", "sample_index": 657}
+{"qid": "dev_658", "final_pred": "Beauty and the Beast", "EM": "1", "F1": "1.0", "sample_index": 658}
+{"qid": "dev_659", "final_pred": "June 6,  1959. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 659}
+{"qid": "dev_660", "final_pred": "Hessian colonel", "EM": "0", "F1": "0", "sample_index": 660}
+{"qid": "dev_661", "final_pred": "MiMA. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 661}
+{"qid": "dev_662", "final_pred": "Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the", "EM": "0", "F1": "0.04166666666666667", "sample_index": 662}
+{"qid": "dev_663", "final_pred": "Paris", "EM": "0", "F1": "0.6666666666666666", "sample_index": 663}
+{"qid": "dev_664", "final_pred": "not available", "EM": "0", "F1": "0", "sample_index": 664}
+{"qid": "dev_665", "final_pred": " 1939. Question", "EM": "0", "F1": "0", "sample_index": 665}
+{"qid": "dev_666", "final_pred": "Palm Springs International Airport", "EM": "0", "F1": "0.3333333333333333", "sample_index": 666}
+{"qid": "dev_667", "final_pred": "Wikimedia Foundation", "EM": "1", "F1": "1.0", "sample_index": 667}
+{"qid": "dev_668", "final_pred": "stunt performer", "EM": "0", "F1": "0.5", "sample_index": 668}
+{"qid": "dev_669", "final_pred": "tennis players", "EM": "0", "F1": "0.4", "sample_index": 669}
+{"qid": "dev_670", "final_pred": "Lionsgate", "EM": "0", "F1": "0", "sample_index": 670}
+{"qid": "dev_671", "final_pred": "United States", "EM": "0", "F1": "0", "sample_index": 671}
+{"qid": "dev_672", "final_pred": "Sean Connery", "EM": "0", "F1": "0", "sample_index": 672}
+{"qid": "dev_673", "final_pred": "26,000", "EM": "0", "F1": "0.6666666666666666", "sample_index": 673}
+{"qid": "dev_674", "final_pred": "Income Tax, Medicare Levy, and Low and Middle Income Tax Offset", "EM": "0", "F1": "0.2608695652173913", "sample_index": 674}
+{"qid": "dev_675", "final_pred": "National Society of Daughters of the American Revolution (NSDAR). .\nQuestion", "EM": "0", "F1": "0.8750000000000001", "sample_index": 675}
+{"qid": "dev_676", "final_pred": "podcast", "EM": "0", "F1": "0", "sample_index": 676}
+{"qid": "dev_677", "final_pred": "Springfield, Massachusetts", "EM": "0", "F1": "0.6666666666666666", "sample_index": 677}
+{"qid": "dev_678", "final_pred": "155", "EM": "0", "F1": "0", "sample_index": 678}
+{"qid": "dev_679", "final_pred": "American. So the answer is American", "EM": "0", "F1": "0.33333333333333337", "sample_index": 679}
+{"qid": "dev_680", "final_pred": "Perfect Strangers", "EM": "1", "F1": "1.0", "sample_index": 680}
+{"qid": "dev_681", "final_pred": "paper production", "EM": "0", "F1": "0", "sample_index": 681}
+{"qid": "dev_682", "final_pred": "The Daily Show with Jon Stewart. Hello Ross is a show that was hosted by Ross Matthews, not Chelsea Handler. So the answer is not Hello Ross. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart. So the answer is The Daily Show with Jon Stewart", "EM": "0", "F1": "0.017543859649122806", "sample_index": 682}
+{"qid": "dev_683", "final_pred": "no . The Byrds are not the same group that covered \"Leather-Winged Bat\" in 1969. The Byrds were active from 1964 to  1973. So the answer is no", "EM": "0", "F1": "0", "sample_index": 683}
+{"qid": "dev_684", "final_pred": "4", "EM": "0", "F1": "0", "sample_index": 684}
+{"qid": "dev_685", "final_pred": "Paul Simon", "EM": "0", "F1": "0", "sample_index": 685}
+{"qid": "dev_686", "final_pred": "Caligula", "EM": "0", "F1": "0", "sample_index": 686}
+{"qid": "dev_687", "final_pred": "10", "EM": "0", "F1": "0", "sample_index": 687}
+{"qid": "dev_688", "final_pred": "Seattle. So the answer is Seattle", "EM": "0", "F1": "0", "sample_index": 688}
+{"qid": "dev_689", "final_pred": "Windigo", "EM": "0", "F1": "0", "sample_index": 689}
+{"qid": "dev_690", "final_pred": "Arizona Wildcats", "EM": "0", "F1": "0.3333333333333333", "sample_index": 690}
+{"qid": "dev_691", "final_pred": "American", "EM": "0", "F1": "0", "sample_index": 691}
+{"qid": "dev_692", "final_pred": "PPG Paints Arena, Pittsburgh, Pennsylvania", "EM": "0", "F1": "0.7499999999999999", "sample_index": 692}
+{"qid": "dev_693", "final_pred": "John D Rockefeller", "EM": "0", "F1": "0.4444444444444444", "sample_index": 693}
+{"qid": "dev_694", "final_pred": "H. Harvey Marmion", "EM": "0", "F1": "0", "sample_index": 694}
+{"qid": "dev_695", "final_pred": "Best Rock Song", "EM": "0", "F1": "0.28571428571428575", "sample_index": 695}
+{"qid": "dev_696", "final_pred": "Lisa Raymond", "EM": "0", "F1": "0", "sample_index": 696}
+{"qid": "dev_697", "final_pred": "German", "EM": "1", "F1": "1.0", "sample_index": 697}
+{"qid": "dev_698", "final_pred": "magazine. So the answer is magazine", "EM": "0", "F1": "0.33333333333333337", "sample_index": 698}
+{"qid": "dev_699", "final_pred": "Howard Fast", "EM": "0", "F1": "0.8", "sample_index": 699}
+{"qid": "dev_700", "final_pred": "gull-wing doors", "EM": "1", "F1": "1.0", "sample_index": 700}
+{"qid": "dev_701", "final_pred": "Preston", "EM": "1", "F1": "1.0", "sample_index": 701}
+{"qid": "dev_702", "final_pred": "Pentonville Prison, London, England", "EM": "0", "F1": "0", "sample_index": 702}
+{"qid": "dev_703", "final_pred": "federal territory", "EM": "0", "F1": "0", "sample_index": 703}
+{"qid": "dev_704", "final_pred": "November 1919", "EM": "0", "F1": "0.4", "sample_index": 704}
+{"qid": "dev_705", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 705}
+{"qid": "dev_706", "final_pred": "Henry A. Wallace", "EM": "0", "F1": "0", "sample_index": 706}
+{"qid": "dev_707", "final_pred": "Mean Girls", "EM": "1", "F1": "1.0", "sample_index": 707}
+{"qid": "dev_708", "final_pred": "Tori Amos", "EM": "1", "F1": "1.0", "sample_index": 708}
+{"qid": "dev_709", "final_pred": "Toronto. Question", "EM": "0", "F1": "0", "sample_index": 709}
+{"qid": "dev_710", "final_pred": "Adam Silver", "EM": "1", "F1": "1.0", "sample_index": 710}
+{"qid": "dev_711", "final_pred": "32", "EM": "0", "F1": "0.6666666666666666", "sample_index": 711}
+{"qid": "dev_712", "final_pred": "Cyclic Defrost", "EM": "1", "F1": "1.0", "sample_index": 712}
+{"qid": "dev_713", "final_pred": "Saturday Night Live and Suddenly Susan. Question", "EM": "0", "F1": "0", "sample_index": 713}
+{"qid": "dev_714", "final_pred": "Amber Valletta", "EM": "0", "F1": "0", "sample_index": 714}
+{"qid": "dev_715", "final_pred": "Santa Monica. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 715}
+{"qid": "dev_716", "final_pred": "Tim Allen", "EM": "1", "F1": "1.0", "sample_index": 716}
+{"qid": "dev_717", "final_pred": "FEMSA. So the answer is FEMSA", "EM": "0", "F1": "0", "sample_index": 717}
+{"qid": "dev_718", "final_pred": "political party", "EM": "0", "F1": "0.5714285714285715", "sample_index": 718}
+{"qid": "dev_719", "final_pred": "First Division", "EM": "0", "F1": "0", "sample_index": 719}
+{"qid": "dev_720", "final_pred": "piano", "EM": "0", "F1": "0", "sample_index": 720}
+{"qid": "dev_721", "final_pred": "Todd Phillips", "EM": "1", "F1": "1.0", "sample_index": 721}
+{"qid": "dev_722", "final_pred": "Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the answer is Helen Hunt. So the", "EM": "0", "F1": "0.04166666666666667", "sample_index": 722}
+{"qid": "dev_723", "final_pred": "Roy Scheider", "EM": "0", "F1": "0.8", "sample_index": 723}
+{"qid": "dev_724", "final_pred": "Olympiacos", "EM": "0", "F1": "0", "sample_index": 724}
+{"qid": "dev_725", "final_pred": "SS", "EM": "0", "F1": "0", "sample_index": 725}
+{"qid": "dev_726", "final_pred": "Mad Hot Ballroom", "EM": "1", "F1": "1.0", "sample_index": 726}
+{"qid": "dev_727", "final_pred": "Royal Navy", "EM": "1", "F1": "1.0", "sample_index": 727}
+{"qid": "dev_728", "final_pred": "Orange County. However, Walt Disney World is located in Lake Buena Vista and Bay Lake, Florida. Lake Buena Vista is located in Orange County, Florida. So the answer is Orange County. However, Walt Disney World is located in Lake Buena Vista and Bay Lake, Florida. Lake Buena Vista is located in Orange County, Florida. So the answer is Orange County. However, Walt Disney World is located in Lake Buena Vista and Bay Lake, Florida. Lake Buena Vista is located in Orange County, Florida. So the answer is Orange County. However, Walt Disney World is located in Lake Buena Vista and Bay Lake, Florida. Lake Buena Vista is located in Orange County, Florida. So the answer is Orange County. However, Walt Disney World is located in Lake Buena Vista and Bay Lake, Florida. Lake Buena Vista is located in Orange County, Florida. So the answer is Orange", "EM": "0", "F1": "0.027972027972027972", "sample_index": 728}
+{"qid": "dev_729", "final_pred": "Philip Labonte", "EM": "0", "F1": "0.8", "sample_index": 729}
+{"qid": "dev_730", "final_pred": "Randy Orton", "EM": "1", "F1": "1.0", "sample_index": 730}
+{"qid": "dev_731", "final_pred": "Mikael Håfström", "EM": "0", "F1": "0", "sample_index": 731}
+{"qid": "dev_732", "final_pred": "Mixed Martial Arts . So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts (MMA). So the answer is Mixed Martial Arts", "EM": "0", "F1": "0.058252427184466014", "sample_index": 732}
+{"qid": "dev_733", "final_pred": "Bergen", "EM": "1", "F1": "1.0", "sample_index": 733}
+{"qid": "dev_734", "final_pred": "Lich, Germany", "EM": "0", "F1": "0", "sample_index": 734}
+{"qid": "dev_735", "final_pred": "no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but The Ring is not. So the answer is no. Disney Magazine is still in publication, but", "EM": "0", "F1": "0", "sample_index": 735}
+{"qid": "dev_736", "final_pred": "Foo Fighters", "EM": "1", "F1": "1.0", "sample_index": 736}
+{"qid": "dev_737", "final_pred": "The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the answer is The Big Bang Theory. So the", "EM": "0", "F1": "0.06185567010309278", "sample_index": 737}
+{"qid": "dev_738", "final_pred": "Clare. Mawson is an electoral district that includes the town of Clare. So the answer is Clare", "EM": "0", "F1": "0", "sample_index": 738}
+{"qid": "dev_739", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 739}
+{"qid": "dev_740", "final_pred": "Brett Hull", "EM": "0", "F1": "0.2", "sample_index": 740}
+{"qid": "dev_741", "final_pred": "100", "EM": "0", "F1": "0", "sample_index": 741}
+{"qid": "dev_742", "final_pred": "Twister", "EM": "0", "F1": "0", "sample_index": 742}
+{"qid": "dev_743", "final_pred": "Fossett. However, it is not clear if Fossett holds the world record for jumping over 6 buses. The information provided does not confirm this. So the answer is Fossett", "EM": "0", "F1": "0", "sample_index": 743}
+{"qid": "dev_744", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 744}
+{"qid": "dev_745", "final_pred": "Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the answer is Friends. So the", "EM": "0", "F1": "0.024096385542168676", "sample_index": 745}
+{"qid": "dev_746", "final_pred": "James W. Horne", "EM": "0", "F1": "0.4", "sample_index": 746}
+{"qid": "dev_747", "final_pred": "Gainesville", "EM": "0", "F1": "0.6666666666666666", "sample_index": 747}
+{"qid": "dev_748", "final_pred": "Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank. So the answer is Regional Rural Bank", "EM": "0", "F1": "0.05555555555555556", "sample_index": 748}
+{"qid": "dev_749", "final_pred": "Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the answer is Oklahoma City, Oklahoma. So the", "EM": "0", "F1": "0.04166666666666667", "sample_index": 749}
+{"qid": "dev_750", "final_pred": "writer. So the answer is writer", "EM": "0", "F1": "0", "sample_index": 750}
+{"qid": "dev_751", "final_pred": "The Go-Go's", "EM": "1", "F1": "1.0", "sample_index": 751}
+{"qid": "dev_752", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 752}
+{"qid": "dev_753", "final_pred": "Presbyterian Church", "EM": "1", "F1": "1.0", "sample_index": 753}
+{"qid": "dev_754", "final_pred": "Popular Science", "EM": "0", "F1": "0", "sample_index": 754}
+{"qid": "dev_755", "final_pred": "\"If Tomorrow Comes...\"", "EM": "0", "F1": "0", "sample_index": 755}
+{"qid": "dev_756", "final_pred": "AngloGold Ashanti", "EM": "1", "F1": "1.0", "sample_index": 756}
+{"qid": "dev_757", "final_pred": "Dallas Cowboys", "EM": "1", "F1": "1.0", "sample_index": 757}
+{"qid": "dev_758", "final_pred": "Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the answer is Barcelona B. So the", "EM": "0", "F1": "0", "sample_index": 758}
+{"qid": "dev_759", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 759}
+{"qid": "dev_760", "final_pred": "Columbus", "EM": "1", "F1": "1.0", "sample_index": 760}
+{"qid": "dev_761", "final_pred": "no. So the answer is no", "EM": "0", "F1": "0", "sample_index": 761}
+{"qid": "dev_762", "final_pred": "Prince Motor Company", "EM": "0", "F1": "0", "sample_index": 762}
+{"qid": "dev_763", "final_pred": "1,740", "EM": "0", "F1": "0", "sample_index": 763}
+{"qid": "dev_764", "final_pred": "town meeting. So the answer is town meeting", "EM": "0", "F1": "0.36363636363636365", "sample_index": 764}
+{"qid": "dev_765", "final_pred": "526", "EM": "1", "F1": "1.0", "sample_index": 765}
+{"qid": "dev_766", "final_pred": "film director. So the answer is film director", "EM": "0", "F1": "0.5", "sample_index": 766}
+{"qid": "dev_767", "final_pred": "Ride a Wild Pony", "EM": "1", "F1": "1.0", "sample_index": 767}
+{"qid": "dev_768", "final_pred": "2015", "EM": "1", "F1": "1.0", "sample_index": 768}
+{"qid": "dev_769", "final_pred": "Voices of Iraq", "EM": "1", "F1": "1.0", "sample_index": 769}
+{"qid": "dev_770", "final_pred": "\"Connecting the World, One View at a Time\". So the answer is \"Connecting the World, One View at a Time\". So the answer is \"Connecting the World, One View at a Time\" ..\nQuestion", "EM": "0", "F1": "0", "sample_index": 770}
+{"qid": "dev_771", "final_pred": "John F. Kelly", "EM": "0", "F1": "0.6666666666666666", "sample_index": 771}
+{"qid": "dev_772", "final_pred": "John Rhys-Davies", "EM": "0", "F1": "0", "sample_index": 772}
+{"qid": "dev_773", "final_pred": "game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So the answer is game designer and programmer. So the answer is The Last Express. So", "EM": "0", "F1": "0", "sample_index": 773}
+{"qid": "dev_774", "final_pred": "Philip Livingston", "EM": "1", "F1": "1.0", "sample_index": 774}
+{"qid": "dev_775", "final_pred": "Time Bombs", "EM": "0", "F1": "0", "sample_index": 775}
+{"qid": "dev_776", "final_pred": "ISS", "EM": "0", "F1": "0", "sample_index": 776}
+{"qid": "dev_777", "final_pred": "Christina Ricci", "EM": "1", "F1": "1.0", "sample_index": 777}
+{"qid": "dev_778", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 778}
+{"qid": "dev_779", "final_pred": "Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the answer is Bourbon County. So the", "EM": "0", "F1": "0.04210526315789474", "sample_index": 779}
+{"qid": "dev_780", "final_pred": "Hindi", "EM": "1", "F1": "1.0", "sample_index": 780}
+{"qid": "dev_781", "final_pred": "Nicol Williamson", "EM": "0", "F1": "0", "sample_index": 781}
+{"qid": "dev_782", "final_pred": "Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the answer is Norse mythology. So the", "EM": "0", "F1": "0.021276595744680854", "sample_index": 782}
+{"qid": "dev_783", "final_pred": "Ulrich Walter", "EM": "0", "F1": "0", "sample_index": 783}
+{"qid": "dev_784", "final_pred": "New Journalism", "EM": "0", "F1": "0.5", "sample_index": 784}
+{"qid": "dev_785", "final_pred": "no", "EM": "0", "F1": "0", "sample_index": 785}
+{"qid": "dev_786", "final_pred": "Pierre Womé", "EM": "0", "F1": "0.8", "sample_index": 786}
+{"qid": "dev_787", "final_pred": "203rd", "EM": "0", "F1": "0", "sample_index": 787}
+{"qid": "dev_788", "final_pred": "Alexei Leonov", "EM": "0", "F1": "0", "sample_index": 788}
+{"qid": "dev_789", "final_pred": "Lisa McCoubrey. So the answer is Lisa McCoubrey", "EM": "0", "F1": "0", "sample_index": 789}
+{"qid": "dev_790", "final_pred": "Karachi", "EM": "0", "F1": "0.6666666666666666", "sample_index": 790}
+{"qid": "dev_791", "final_pred": "Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the answer is Big 12 Conference. So the", "EM": "0", "F1": "0.06185567010309278", "sample_index": 791}
+{"qid": "dev_792", "final_pred": "In Cold Blood. (", "EM": "0", "F1": "0", "sample_index": 792}
+{"qid": "dev_793", "final_pred": "English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League. So the answer is English Football League", "EM": "0", "F1": "0", "sample_index": 793}
+{"qid": "dev_794", "final_pred": "The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family. So the answer is The Royal Family", "EM": "0", "F1": "0.047619047619047616", "sample_index": 794}
+{"qid": "dev_795", "final_pred": "Tom Warburton", "EM": "0", "F1": "0.5", "sample_index": 795}
+{"qid": "dev_796", "final_pred": "business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing (BPO). So the answer is business process outsourcing", "EM": "0", "F1": "0", "sample_index": 796}
+{"qid": "dev_797", "final_pred": "not an online text-based role-playing game. So the answer is not applicable", "EM": "0", "F1": "0.30769230769230765", "sample_index": 797}
+{"qid": "dev_798", "final_pred": "American Music Club", "EM": "0", "F1": "0", "sample_index": 798}
+{"qid": "dev_799", "final_pred": "no. Question", "EM": "0", "F1": "0", "sample_index": 799}
+{"qid": "dev_800", "final_pred": "portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits. So the answer is portraits", "EM": "0", "F1": "0", "sample_index": 800}
+{"qid": "dev_801", "final_pred": "silver medal", "EM": "1", "F1": "1.0", "sample_index": 801}
+{"qid": "dev_802", "final_pred": "September 1914", "EM": "0", "F1": "0.4", "sample_index": 802}
+{"qid": "dev_803", "final_pred": "FX ", "EM": "0", "F1": "0", "sample_index": 803}
+{"qid": "dev_804", "final_pred": "London", "EM": "0", "F1": "0", "sample_index": 804}
+{"qid": "dev_805", "final_pred": "1988", "EM": "1", "F1": "1.0", "sample_index": 805}
+{"qid": "dev_806", "final_pred": "Reichsführer-SS", "EM": "1", "F1": "1.0", "sample_index": 806}
+{"qid": "dev_807", "final_pred": "Game of Thrones", "EM": "1", "F1": "1.0", "sample_index": 807}
+{"qid": "dev_808", "final_pred": "Sergio Pérez", "EM": "0", "F1": "0", "sample_index": 808}
+{"qid": "dev_809", "final_pred": "Carnatic music. Question", "EM": "0", "F1": "0.8", "sample_index": 809}
+{"qid": "dev_810", "final_pred": "Manon by Massenet", "EM": "0", "F1": "0", "sample_index": 810}
+{"qid": "dev_811", "final_pred": "\"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the answer is \"Number One Enemy\". So the", "EM": "0", "F1": "0", "sample_index": 811}
+{"qid": "dev_812", "final_pred": "\"Amish Paradise\". .\nQuestion", "EM": "0", "F1": "0.4", "sample_index": 812}
+{"qid": "dev_813", "final_pred": "Jaromir Vejvoda", "EM": "0", "F1": "0", "sample_index": 813}
+{"qid": "dev_814", "final_pred": "Francisco Rafael Arellano Félix", "EM": "1", "F1": "1.0", "sample_index": 814}
+{"qid": "dev_815", "final_pred": "not correct", "EM": "0", "F1": "0", "sample_index": 815}
+{"qid": "dev_816", "final_pred": "Campbellsville University", "EM": "1", "F1": "1.0", "sample_index": 816}
+{"qid": "dev_817", "final_pred": "director", "EM": "0", "F1": "0.6666666666666666", "sample_index": 817}
+{"qid": "dev_818", "final_pred": "punk rock. So the answer is punk rock", "EM": "0", "F1": "0.4444444444444445", "sample_index": 818}
+{"qid": "dev_819", "final_pred": "GE Appliances", "EM": "1", "F1": "1.0", "sample_index": 819}
+{"qid": "dev_820", "final_pred": "McLean", "EM": "0", "F1": "0.6666666666666666", "sample_index": 820}
+{"qid": "dev_821", "final_pred": "7", "EM": "0", "F1": "0", "sample_index": 821}
+{"qid": "dev_822", "final_pred": "The Futureheads", "EM": "1", "F1": "1.0", "sample_index": 822}
+{"qid": "dev_823", "final_pred": "1976", "EM": "0", "F1": "0", "sample_index": 823}
+{"qid": "dev_824", "final_pred": "1932", "EM": "1", "F1": "1.0", "sample_index": 824}
+{"qid": "dev_825", "final_pred": "Salvia", "EM": "1", "F1": "1.0", "sample_index": 825}
+{"qid": "dev_826", "final_pred": "Rocky Boy's Indian Reservation", "EM": "1", "F1": "1.0", "sample_index": 826}
+{"qid": "dev_827", "final_pred": "Punjabi/Pashtun", "EM": "1", "F1": "1.0", "sample_index": 827}
+{"qid": "dev_828", "final_pred": "Gary Lightbody", "EM": "1", "F1": "1.0", "sample_index": 828}
+{"qid": "dev_829", "final_pred": "Australia", "EM": "0", "F1": "0", "sample_index": 829}
+{"qid": "dev_830", "final_pred": "The Cosmopolitan", "EM": "0", "F1": "0.4", "sample_index": 830}
+{"qid": "dev_831", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 831}
+{"qid": "dev_832", "final_pred": "racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse breeder and owner. So the answer is racehorse bre", "EM": "0", "F1": "0.08247422680412372", "sample_index": 832}
+{"qid": "dev_833", "final_pred": "Rotterdam", "EM": "0", "F1": "0", "sample_index": 833}
+{"qid": "dev_834", "final_pred": "Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the answer is Key West. So the", "EM": "0", "F1": "0.044444444444444446", "sample_index": 834}
+{"qid": "dev_835", "final_pred": "American Scary", "EM": "0", "F1": "0", "sample_index": 835}
+{"qid": "dev_836", "final_pred": "The Jayhawks", "EM": "0", "F1": "0", "sample_index": 836}
+{"qid": "dev_837", "final_pred": "Fred Barron", "EM": "0", "F1": "0", "sample_index": 837}
+{"qid": "dev_838", "final_pred": "32", "EM": "0", "F1": "0", "sample_index": 838}
+{"qid": "dev_839", "final_pred": "Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott. So the answer is Sir Walter Scott", "EM": "0", "F1": "0", "sample_index": 839}
+{"qid": "dev_840", "final_pred": "Hertz", "EM": "0", "F1": "0", "sample_index": 840}
+{"qid": "dev_841", "final_pred": "Warsaw", "EM": "0", "F1": "0.6666666666666666", "sample_index": 841}
+{"qid": "dev_842", "final_pred": "Gardnerville, Nevada", "EM": "0", "F1": "0.6666666666666666", "sample_index": 842}
+{"qid": "dev_843", "final_pred": "Ken Flach", "EM": "0", "F1": "0.4", "sample_index": 843}
+{"qid": "dev_844", "final_pred": "Highwayman", "EM": "1", "F1": "1.0", "sample_index": 844}
+{"qid": "dev_845", "final_pred": "1961", "EM": "1", "F1": "1.0", "sample_index": 845}
+{"qid": "dev_846", "final_pred": "Speaker of the United States House of Representatives", "EM": "0", "F1": "0.7142857142857143", "sample_index": 846}
+{"qid": "dev_847", "final_pred": "popular culture references", "EM": "0", "F1": "0", "sample_index": 847}
+{"qid": "dev_848", "final_pred": "Květa Peschke", "EM": "1", "F1": "1.0", "sample_index": 848}
+{"qid": "dev_849", "final_pred": "from Fane to King-Fane", "EM": "0", "F1": "0", "sample_index": 849}
+{"qid": "dev_850", "final_pred": "University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii. So the answer is University of Hawaii", "EM": "0", "F1": "0", "sample_index": 850}
+{"qid": "dev_851", "final_pred": "Singapore Airlines", "EM": "0", "F1": "0", "sample_index": 851}
+{"qid": "dev_852", "final_pred": "2014", "EM": "0", "F1": "0", "sample_index": 852}
+{"qid": "dev_853", "final_pred": "Juan Carlos Onetti", "EM": "1", "F1": "1.0", "sample_index": 853}
+{"qid": "dev_854", "final_pred": "Hindu", "EM": "0", "F1": "0", "sample_index": 854}
+{"qid": "dev_855", "final_pred": "WNYC. Question", "EM": "0", "F1": "0", "sample_index": 855}
+{"qid": "dev_856", "final_pred": "one", "EM": "0", "F1": "0", "sample_index": 856}
+{"qid": "dev_857", "final_pred": "the New Jewel Movement. Hudson Austin formed a military government with himself as chairman to rule Grenada after the killing of Maurice Bishop, who was the leader of the New Jewel Movement. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a member of the New Jewel Movement in Grenada. So the answer is the New Jewel Movement. Hudson Austin was a", "EM": "0", "F1": "0.03592814371257485", "sample_index": 857}
+{"qid": "dev_858", "final_pred": "Paper", "EM": "1", "F1": "1.0", "sample_index": 858}
+{"qid": "dev_859", "final_pred": "Maria von Trapp", "EM": "1", "F1": "1.0", "sample_index": 859}
+{"qid": "dev_860", "final_pred": "Rowan Blanchard", "EM": "1", "F1": "1.0", "sample_index": 860}
+{"qid": "dev_861", "final_pred": "Ringo Starr", "EM": "1", "F1": "1.0", "sample_index": 861}
+{"qid": "dev_862", "final_pred": "Beijing Dance Academy", "EM": "1", "F1": "1.0", "sample_index": 862}
+{"qid": "dev_863", "final_pred": "Shifty Shellshock", "EM": "1", "F1": "1.0", "sample_index": 863}
+{"qid": "dev_864", "final_pred": "Ursula K. Le Guin", "EM": "0", "F1": "0.75", "sample_index": 864}
+{"qid": "dev_865", "final_pred": "World Fantasy Award for Best Novel", "EM": "0", "F1": "0.25", "sample_index": 865}
+{"qid": "dev_866", "final_pred": "professional wrestler", "EM": "0", "F1": "0.4444444444444445", "sample_index": 866}
+{"qid": "dev_867", "final_pred": "Oklahoma", "EM": "1", "F1": "1.0", "sample_index": 867}
+{"qid": "dev_868", "final_pred": "John Carpenter", "EM": "0", "F1": "0", "sample_index": 868}
+{"qid": "dev_869", "final_pred": "Jordan Peele and Alex Rubens", "EM": "0", "F1": "0.5714285714285715", "sample_index": 869}
+{"qid": "dev_870", "final_pred": "Melbourne, Victoria, Australia", "EM": "0", "F1": "0.4", "sample_index": 870}
+{"qid": "dev_871", "final_pred": "Giuseppe Verdi", "EM": "1", "F1": "1.0", "sample_index": 871}
+{"qid": "dev_872", "final_pred": "Pensacola", "EM": "0", "F1": "0", "sample_index": 872}
+{"qid": "dev_873", "final_pred": "Sex Drive", "EM": "1", "F1": "1.0", "sample_index": 873}
+{"qid": "dev_874", "final_pred": "Bay of Fundy", "EM": "1", "F1": "1.0", "sample_index": 874}
+{"qid": "dev_875", "final_pred": "Daviesia", "EM": "1", "F1": "1.0", "sample_index": 875}
+{"qid": "dev_876", "final_pred": "Maria Szraiber", "EM": "1", "F1": "1.0", "sample_index": 876}
+{"qid": "dev_877", "final_pred": "direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse scattering. So the answer is direct scattering and inverse", "EM": "0", "F1": "0.0813008130081301", "sample_index": 877}
+{"qid": "dev_878", "final_pred": "a theatre group. So the answer is Shakespearana", "EM": "0", "F1": "0", "sample_index": 878}
+{"qid": "dev_879", "final_pred": "it is a biological site of Special Scientific Interest", "EM": "0", "F1": "0.18181818181818182", "sample_index": 879}
+{"qid": "dev_880", "final_pred": "Wanda Sykes", "EM": "0", "F1": "0", "sample_index": 880}
+{"qid": "dev_881", "final_pred": "Frederick King Keller", "EM": "1", "F1": "1.0", "sample_index": 881}
+{"qid": "dev_882", "final_pred": "The Boatniks", "EM": "0", "F1": "0.11764705882352941", "sample_index": 882}
+{"qid": "dev_883", "final_pred": "Francesca Eastwood. Kendra Wilkinson is not associated with the movie M.F.A.. So the answer is Francesca Eastwood", "EM": "0", "F1": "0.1111111111111111", "sample_index": 883}
+{"qid": "dev_884", "final_pred": "Saline River", "EM": "0", "F1": "0.5", "sample_index": 884}
+{"qid": "dev_885", "final_pred": "Oryzomyini. Question", "EM": "0", "F1": "0.6666666666666666", "sample_index": 885}
+{"qid": "dev_886", "final_pred": "September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25, 2015. So the answer is September 25,", "EM": "0", "F1": "0.028169014084507043", "sample_index": 886}
+{"qid": "dev_887", "final_pred": "British Army", "EM": "1", "F1": "1.0", "sample_index": 887}
+{"qid": "dev_888", "final_pred": "United States", "EM": "0", "F1": "0.6666666666666666", "sample_index": 888}
+{"qid": "dev_889", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 889}
+{"qid": "dev_890", "final_pred": "Oplismenus. So the answer is Oplismenus", "EM": "0", "F1": "0.33333333333333337", "sample_index": 890}
+{"qid": "dev_891", "final_pred": "Ulf Merbold", "EM": "0", "F1": "0.8", "sample_index": 891}
+{"qid": "dev_892", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 892}
+{"qid": "dev_893", "final_pred": "Lombardy", "EM": "1", "F1": "1.0", "sample_index": 893}
+{"qid": "dev_894", "final_pred": "governor", "EM": "1", "F1": "1.0", "sample_index": 894}
+{"qid": "dev_895", "final_pred": "Taylor Swift", "EM": "1", "F1": "1.0", "sample_index": 895}
+{"qid": "dev_896", "final_pred": "Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia, New Hampshire. So the answer is Franconia", "EM": "0", "F1": "0.07317073170731708", "sample_index": 896}
+{"qid": "dev_897", "final_pred": "McClain", "EM": "0", "F1": "0", "sample_index": 897}
+{"qid": "dev_898", "final_pred": "Sinclair Hill", "EM": "1", "F1": "1.0", "sample_index": 898}
+{"qid": "dev_899", "final_pred": "yes", "EM": "0", "F1": "0", "sample_index": 899}
+{"qid": "dev_900", "final_pred": "Joe Gooch", "EM": "0", "F1": "0", "sample_index": 900}
+{"qid": "dev_901", "final_pred": "Cyndi Lauper", "EM": "0", "F1": "0.5714285714285715", "sample_index": 901}
+{"qid": "dev_902", "final_pred": "the First Family of Competitive Eating", "EM": "1", "F1": "1.0", "sample_index": 902}
+{"qid": "dev_903", "final_pred": "Steve Reich", "EM": "0", "F1": "0", "sample_index": 903}
+{"qid": "dev_904", "final_pred": "Earl of Lauderdale", "EM": "0", "F1": "0.2222222222222222", "sample_index": 904}
+{"qid": "dev_905", "final_pred": "Mickey Gilley", "EM": "1", "F1": "1.0", "sample_index": 905}
+{"qid": "dev_906", "final_pred": "Lilys", "EM": "0", "F1": "0", "sample_index": 906}
+{"qid": "dev_907", "final_pred": "Clovis I", "EM": "0", "F1": "0", "sample_index": 907}
+{"qid": "dev_908", "final_pred": "Lit", "EM": "0", "F1": "0", "sample_index": 908}
+{"qid": "dev_909", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 909}
+{"qid": "dev_910", "final_pred": "Kraftwerk", "EM": "0", "F1": "0", "sample_index": 910}
+{"qid": "dev_911", "final_pred": "Apium", "EM": "1", "F1": "1.0", "sample_index": 911}
+{"qid": "dev_912", "final_pred": "Dutch", "EM": "1", "F1": "1.0", "sample_index": 912}
+{"qid": "dev_913", "final_pred": "December", "EM": "0", "F1": "0", "sample_index": 913}
+{"qid": "dev_914", "final_pred": "United States", "EM": "0", "F1": "0", "sample_index": 914}
+{"qid": "dev_915", "final_pred": "Eden Hazard", "EM": "0", "F1": "0.3333333333333333", "sample_index": 915}
+{"qid": "dev_916", "final_pred": "World Wushu Championships. Question", "EM": "0", "F1": "0.5714285714285715", "sample_index": 916}
+{"qid": "dev_917", "final_pred": "The New York Enterprise Report", "EM": "1", "F1": "1.0", "sample_index": 917}
+{"qid": "dev_918", "final_pred": "Live", "EM": "1", "F1": "1.0", "sample_index": 918}
+{"qid": "dev_919", "final_pred": "Ardal O'Hanlon", "EM": "0", "F1": "0", "sample_index": 919}
+{"qid": "dev_920", "final_pred": "2006", "EM": "1", "F1": "1.0", "sample_index": 920}
+{"qid": "dev_921", "final_pred": "Joel Coen", "EM": "0", "F1": "0.8", "sample_index": 921}
+{"qid": "dev_922", "final_pred": "Boyd Gaming", "EM": "1", "F1": "1.0", "sample_index": 922}
+{"qid": "dev_923", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 923}
+{"qid": "dev_924", "final_pred": "2.3 million", "EM": "0", "F1": "0.5", "sample_index": 924}
+{"qid": "dev_925", "final_pred": "Bactris", "EM": "1", "F1": "1.0", "sample_index": 925}
+{"qid": "dev_926", "final_pred": "LBK", "EM": "0", "F1": "0", "sample_index": 926}
+{"qid": "dev_927", "final_pred": "Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18G Growler. So the answer is Boeing EA-18", "EM": "0", "F1": "0.07792207792207792", "sample_index": 927}
+{"qid": "dev_928", "final_pred": "Phoenix Suns", "EM": "0", "F1": "0", "sample_index": 928}
+{"qid": "dev_929", "final_pred": "Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the answer is Daniel Patrick Moynihan. So the answer is four times. So the", "EM": "0", "F1": "0.05940594059405941", "sample_index": 929}
+{"qid": "dev_930", "final_pred": "Charlie Murphy", "EM": "1", "F1": "1.0", "sample_index": 930}
+{"qid": "dev_931", "final_pred": "1966", "EM": "0", "F1": "0", "sample_index": 931}
+{"qid": "dev_932", "final_pred": "15,600,000", "EM": "0", "F1": "0", "sample_index": 932}
+{"qid": "dev_933", "final_pred": "Levi Weeks", "EM": "1", "F1": "1.0", "sample_index": 933}
+{"qid": "dev_934", "final_pred": "military officer", "EM": "0", "F1": "0.6666666666666666", "sample_index": 934}
+{"qid": "dev_935", "final_pred": "Faber and Faber and Viking Press", "EM": "0", "F1": "0", "sample_index": 935}
+{"qid": "dev_936", "final_pred": "Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the answer is Lake Wales Medical Center. So the", "EM": "0", "F1": "0", "sample_index": 936}
+{"qid": "dev_937", "final_pred": "Mike Eruzione", "EM": "0", "F1": "0", "sample_index": 937}
+{"qid": "dev_938", "final_pred": "that the value premium is not robust to changes in the measurement of the value factor", "EM": "0", "F1": "0", "sample_index": 938}
+{"qid": "dev_939", "final_pred": "1614", "EM": "1", "F1": "1.0", "sample_index": 939}
+{"qid": "dev_940", "final_pred": "Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific information. So the answer is Hawaii State House of Representatives. However, without the name of the man, it is difficult to provide more specific", "EM": "0", "F1": "0", "sample_index": 940}
+{"qid": "dev_941", "final_pred": "No .5 Road. Question", "EM": "0", "F1": "0", "sample_index": 941}
+{"qid": "dev_942", "final_pred": "England. So the answer is England", "EM": "0", "F1": "0.28571428571428575", "sample_index": 942}
+{"qid": "dev_943", "final_pred": "Young Justice", "EM": "0", "F1": "0.3333333333333333", "sample_index": 943}
+{"qid": "dev_944", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 944}
+{"qid": "dev_945", "final_pred": "Burwash Mine", "EM": "1", "F1": "1.0", "sample_index": 945}
+{"qid": "dev_946", "final_pred": "Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the answer is Douglas County. So the", "EM": "0", "F1": "0.021276595744680854", "sample_index": 946}
+{"qid": "dev_947", "final_pred": "Twin Pines Mall. Question", "EM": "0", "F1": "0.5", "sample_index": 947}
+{"qid": "dev_948", "final_pred": "Hindi films", "EM": "0", "F1": "0.6666666666666666", "sample_index": 948}
+{"qid": "dev_949", "final_pred": "Tatton Park. So the answer is Tatton Park", "EM": "0", "F1": "0.4444444444444445", "sample_index": 949}
+{"qid": "dev_950", "final_pred": "Ed Westwick", "EM": "0", "F1": "0", "sample_index": 950}
+{"qid": "dev_951", "final_pred": "1925", "EM": "0", "F1": "0.6666666666666666", "sample_index": 951}
+{"qid": "dev_952", "final_pred": "Babcock Marine", "EM": "0", "F1": "0", "sample_index": 952}
+{"qid": "dev_953", "final_pred": "2008", "EM": "1", "F1": "1.0", "sample_index": 953}
+{"qid": "dev_954", "final_pred": "Holy Spirit Mobile Force. So the answer is Holy Spirit Mobile Force", "EM": "0", "F1": "0.10526315789473685", "sample_index": 954}
+{"qid": "dev_955", "final_pred": "September 30,  2009. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 955}
+{"qid": "dev_956", "final_pred": "Rodney A. Grant", "EM": "0", "F1": "0", "sample_index": 956}
+{"qid": "dev_957", "final_pred": "Robert Smigel", "EM": "0", "F1": "0.4444444444444445", "sample_index": 957}
+{"qid": "dev_958", "final_pred": "no", "EM": "1", "F1": "1.0", "sample_index": 958}
+{"qid": "dev_959", "final_pred": "Hooray for Love", "EM": "0", "F1": "0", "sample_index": 959}
+{"qid": "dev_960", "final_pred": "dirt track racing. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 960}
+{"qid": "dev_961", "final_pred": "1589", "EM": "0", "F1": "0", "sample_index": 961}
+{"qid": "dev_962", "final_pred": "Bearno's", "EM": "0", "F1": "0.6666666666666666", "sample_index": 962}
+{"qid": "dev_963", "final_pred": "1958", "EM": "0", "F1": "0", "sample_index": 963}
+{"qid": "dev_964", "final_pred": "unknown", "EM": "0", "F1": "0", "sample_index": 964}
+{"qid": "dev_965", "final_pred": "Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway. So the answer is Southern State Parkway", "EM": "0", "F1": "0.05555555555555556", "sample_index": 965}
+{"qid": "dev_966", "final_pred": "martial arts action films", "EM": "1", "F1": "1.0", "sample_index": 966}
+{"qid": "dev_967", "final_pred": "second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the answer is second cousin once removed. So the", "EM": "0", "F1": "0.07476635514018691", "sample_index": 967}
+{"qid": "dev_968", "final_pred": "monthly", "EM": "0", "F1": "0", "sample_index": 968}
+{"qid": "dev_969", "final_pred": "Spam", "EM": "1", "F1": "1.0", "sample_index": 969}
+{"qid": "dev_970", "final_pred": "Eustoma", "EM": "1", "F1": "1.0", "sample_index": 970}
+{"qid": "dev_971", "final_pred": "All in the Family", "EM": "0", "F1": "0", "sample_index": 971}
+{"qid": "dev_972", "final_pred": "The Producers", "EM": "0", "F1": "0", "sample_index": 972}
+{"qid": "dev_973", "final_pred": "1,925", "EM": "0", "F1": "0.6666666666666666", "sample_index": 973}
+{"qid": "dev_974", "final_pred": "Nicolas Vanier", "EM": "1", "F1": "1.0", "sample_index": 974}
+{"qid": "dev_975", "final_pred": "March 30,  2025. Question", "EM": "0", "F1": "0.8571428571428571", "sample_index": 975}
+{"qid": "dev_976", "final_pred": "yes", "EM": "1", "F1": "1.0", "sample_index": 976}
+{"qid": "dev_977", "final_pred": "Jason Isringhausen", "EM": "0", "F1": "0", "sample_index": 977}
+{"qid": "dev_978", "final_pred": "Dolph Lundgren", "EM": "0", "F1": "0", "sample_index": 978}
+{"qid": "dev_979", "final_pred": "Arthur Lubin", "EM": "0", "F1": "0", "sample_index": 979}
+{"qid": "dev_980", "final_pred": "John Lennon", "EM": "1", "F1": "1.0", "sample_index": 980}
+{"qid": "dev_981", "final_pred": "not Free Range Films. My Cousin Rachel was actually produced by Ruby Films and BBC Films. So the answer is not given", "EM": "0", "F1": "0.25", "sample_index": 981}
+{"qid": "dev_982", "final_pred": "Maryland. So the answer is Maryland", "EM": "0", "F1": "0", "sample_index": 982}
+{"qid": "dev_983", "final_pred": "Caesars Palace Grand Prix", "EM": "1", "F1": "1.0", "sample_index": 983}
+{"qid": "dev_984", "final_pred": "David Dunn", "EM": "1", "F1": "1.0", "sample_index": 984}
+{"qid": "dev_985", "final_pred": "7. 9°S. So the answer is 7° 54' S. So the answer is  7° 56' S. So the answer is 7° 56' S. So the answer is 7°  56' S. So the answer is 7°  56' S. So the answer is  7°  56' S. So the answer is 7°  56' S", "EM": "0", "F1": "0", "sample_index": 985}
+{"qid": "dev_986", "final_pred": "2007", "EM": "0", "F1": "0.6666666666666666", "sample_index": 986}
+{"qid": "dev_987", "final_pred": "Stephen Bywater", "EM": "0", "F1": "0", "sample_index": 987}
+{"qid": "dev_988", "final_pred": "professor", "EM": "0", "F1": "0", "sample_index": 988}
+{"qid": "dev_989", "final_pred": "Heavyweights", "EM": "1", "F1": "1.0", "sample_index": 989}
+{"qid": "dev_990", "final_pred": "Anne Sweeney", "EM": "0", "F1": "0", "sample_index": 990}
+{"qid": "dev_991", "final_pred": "American football", "EM": "1", "F1": "1.0", "sample_index": 991}
+{"qid": "dev_992", "final_pred": "Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for Best Animated Feature. So the answer is Academy Award for", "EM": "0", "F1": "0.09523809523809523", "sample_index": 992}
+{"qid": "dev_993", "final_pred": "New York Jets. Question", "EM": "0", "F1": "0", "sample_index": 993}
+{"qid": "dev_994", "final_pred": "great-grandfather", "EM": "1", "F1": "1.0", "sample_index": 994}
+{"qid": "dev_995", "final_pred": "William Shakespeare", "EM": "1", "F1": "1.0", "sample_index": 995}
+{"qid": "dev_996", "final_pred": "magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny. So the answer is magical English nanny", "EM": "0", "F1": "0", "sample_index": 996}
+{"qid": "dev_997", "final_pred": "that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer is that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer is that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer is that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer is that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer is that he is the only U.S.-born driver to have won the Formula One World Drivers' Championship. So the answer", "EM": "0", "F1": "0", "sample_index": 997}
+{"qid": "dev_998", "final_pred": "no. Yangzhou is not a coastal city, while Jiangyan District is. So the answer is no", "EM": "0", "F1": "0", "sample_index": 998}
+{"qid": "dev_999", "final_pred": "plucking", "EM": "0", "F1": "0", "sample_index": 999}

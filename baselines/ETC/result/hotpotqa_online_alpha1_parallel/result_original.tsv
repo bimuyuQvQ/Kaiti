@@ -1,0 +1,10 @@
+EM,0.305
+F1,0.4268116860801546
+Precision,0.44555953026871303
+Recall,0.492444246031746
+Accuracy,0.305
+retrieve_count,1.686
+generate_count,1.686
+hallucinated_count,1.686
+token_count,96.781
+sentence_count,10.244
