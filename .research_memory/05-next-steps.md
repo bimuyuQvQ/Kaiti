@@ -233,3 +233,11 @@
 - [P0] 下一轮方案设计聚焦“可验证证据干预”：多跳缺口查询负责找到关键证据，证据/桥接验证器负责判断该次干预是否可靠，skip 与查询仍作为同一动态动作空间联合决策。
 - [P0] 最小新实验应直接检验两个可证伪问题：查询改进能否提高 gold 支持句或两跳标题 Recall@3；在 gold 支持句已经检索到时，受约束桥接或验证过滤能否把 53 个零收益候选中的一部分转成正收益，且不增加负收益。
 - [P1] 设计时必须加入强反证：原问题查询、ETC-QFS、prefix-gap、oracle gold evidence、检索后不干预、当前自由生成桥接、验证后桥接。若 oracle gold evidence 也无法显著改善错误样本，则该生成器/桥接机制的可利用上限不足，应停止此主线。
+# 2026-07-18 可逆证据干预主线下一步
+
+- [x] 完成 gold append、gold restart、首次 ETC 真实 BM25 restart 三组诊断；确认 append-only 前缀锚定是独立瓶颈，真实证据 restart 在同状态下把 F1 oracle 从 `+0.12037` 提高到 `+0.26243`。
+- [P0] 暂定动作空间：`KEEP / APPEND / REVISE`，动作参数包括查询候选和 rollback point；ETC 首次触发仅作为动态候选锚点，不再作为需要替换的主贡献。
+- [P0] 下一版实现前先写方法规格：如何识别最早不受支持的 claim、如何生成局部修订候选、如何在不访问 gold answer 的情况下比较 KEEP/APPEND/REVISE 风险。
+- [P0] 最小实验必须包含：原 ETC append、固定 ETC + restart、gold append、gold restart、局部 rollback revision、带/不带风险门控；主指标同时报告答案 F1/Accuracy、正确→错误污染率、错误→正确率和修订幅度。
+- [P1] 收集训练数据时不再密集扫描所有时机；优先在 ETC 触发及一个早期对照状态收集多查询×多干预算子的配对结果，把算力用于干预选择而非时机网格。
+- [P1] 新颖性审计重点转向检索增强生成中的 rollback、revision、self-correction、conflict-aware RAG 与 post-retrieval gating，避免把“重生成/反思”当作未经比较的新贡献。

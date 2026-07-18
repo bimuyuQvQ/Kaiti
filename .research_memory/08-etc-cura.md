@@ -247,3 +247,29 @@ LCB_t(q)=g_\theta(s_t,q)-c_\delta.
 - 查询来源的证据召回：原问题查询的 gold 标题/支持句命中率最高（`73.95%/62.18%`）；prefix-gap 仅 `47.06%/26.05%`，说明当前 gap query 质量弱；ETC-QFS 为 `66.67%/44.44%`，但只有 18 个动作且只出现在 ETC 时机，不能与另外两种来源直接公平排名。原问题查询虽召回更好，平均收益却未最高，进一步说明“查到证据”与“把证据变成正确答案”是两个不同阶段。
 - 当前研究决策：停止把“学习新检索时机”作为主线；ETC 时机保留为强基线和候选状态。更有依据的新主线应联合解决两件事：（1）面向多跳缺口构造能覆盖关键证据的查询；（2）对检索后的桥接句做证据充分性/忠实性判断，决定是否让该证据干预原生成。统一叙事是“动态选择可验证的证据干预动作”，而不是把自适应阈值、查询技巧和过滤器拼接。
 - 服务器最终结果：`baselines/ETC/result/cura_hotpotqa_dense20_0d0a0d5_shard00_3gpu/evidence_attribution_v3.json`。v1/v2 诊断文件保留，不删除；v2 曾错误尝试把生成式桥接句当作抽取式证据句，不能用于研究结论。
+# 2026-07-18 Gold 证据与可逆干预诊断
+
+## 已确认实验事实
+
+- 新增 `collect_gold_oracle.py`，严格复用 dense bundle 的 token 级状态和 canonical skip。gold append 实验把 HotpotQA gold supporting sentences 代替 BM25 Top-3，但仍使用 ETC 当前的“带前缀读证据→生成一句桥接句→追加后续写”流程。20 样本、119 状态全部通过协议审计。
+- gold append 的保守 v2 F1：正/零/负 `17/99/3`，平均动作收益 `+0.07623`，状态 oracle `+0.08884`，样本 oracle `+0.25774`，8/20 样本存在正收益；Accuracy 为 `4/115/0`，样本 oracle `+0.15`，3/20 样本可完全纠正。
+- 真实查询的全时机样本 oracle 为 `+0.25417`，gold append 仅高 `+0.00357`；但二者具有互补性，真实查询+gold append 的联合样本 oracle 为 `+0.30774`。因此“gold 单独几乎不高”不能解释成查询完全无用，而应解释为正确证据在 append-only 流程中并不单调占优。
+- 固定在首次 ETC 触发状态做公平比较：现有三个真实查询的状态 oracle 平均 `+0.12037`、3/18 状态正收益；gold append 平均 `+0.17989`、5/18 正收益；说明查询/证据质量仍有空间，但不足以解释全部失败。
+- 关键案例 `dev_12`：gold 证据明确包含 1999，但无检索前缀已错误承诺 1994；6 个 gold append 状态全部继续生成 1994。普通检索偶然生成带 “However” 的纠错句，反而得到 1999。这确认了“正确证据无法撤销已承诺错误”的前缀锚定问题。
+- 新增 gold restart 诊断：使用完全相同的 gold supporting sentences，但去掉 source prefix、从问题重新生成一次。20 样本仅 20 个动作，F1 正/零/负 `12/7/1`，平均收益 `+0.41845`，带 skip 门控的 oracle `+0.46845`；Accuracy `6/13/1`，平均 `+0.25`，oracle `+0.30`，6 个错误→正确、1 个正确→错误。相对 gold append，重启使 Accuracy oracle 从 `+0.15` 翻倍到 `+0.30`。
+- 新增真实 BM25 restart 诊断：固定首次 ETC 触发，复用 source bundle 的 question/ETC-QFS/prefix-gap 查询与完全相同的 Top-3 文档，只把 append 改成无 source prefix 的完整重启。18 个有 ETC 触发的样本、54 个动作通过审计，另 2 个样本无 ETC 触发并保持 skip。保守 F1 为 `14/38/2`，平均动作收益 `+0.13781`，状态 oracle `+0.26243`，7/20 样本可改善；Accuracy 为 `10/42/2`，平均 `+0.14815`，样本 oracle `+0.20`，4/20 样本可完全纠正。动作级出现 10 次错误→正确，同时有 2 次正确→错误。
+- 同一首次 ETC 状态下，真实 restart 的状态 oracle `+0.26243`，明显高于原 append 的 `+0.12037`；正收益状态从 3/18 增至 7/18。这个对比不依赖 gold，证明“干预算子”本身具有独立研究价值。
+- 真实 restart 按查询来源的 F1 平均收益：prefix-gap `+0.21501`、question `+0.11111`、ETC-QFS `+0.08730`。prefix-gap 同时出现 1 个负收益，question 也有 1 个负收益，ETC-QFS 无负收益；样本仅 18，不能据此确定最终查询策略。
+
+## 研究决策
+
+- 正式停止把“学习一个比 ETC 更好的检索时机”作为论文主贡献；ETC 首次触发保留为强而简单的动态锚点。
+- 新主线转为“可逆的及时证据干预”：动态动作不再只有 `skip/retrieve`，而是 `KEEP / APPEND / REVISE`，其中 REVISE 回滚到尚未被错误承诺污染的位置，再基于证据重新生成。
+- 查询与修订不是两个拼接技巧：动作应联合表示为 `(query, intervention_operator, rollback_point)`。查询负责找到能验证或反驳当前主张的证据；干预算子负责决定保留、追加还是撤销；风险校准负责避免 restart 中已观察到的正确→错误污染。
+- 下一关键假设：可以用部署时可见的“前缀—证据冲突、证据充分性、修订候选与证据的一致性、KEEP/APPEND/REVISE 反事实差异”等特征，预测哪一种干预动作会提高最终回答质量。若简单强基线（固定 ETC + 多查询 + 总是 restart）已足够好，则论文贡献必须来自安全选择和局部回滚，而不是把 restart 本身包装成方法。
+
+## 服务器结果目录
+
+- gold append：`result/cura_hotpotqa_gold_oracle20_49925a9_shard00_3gpu` 与 `shard01`。
+- gold restart：`result/cura_hotpotqa_gold_restart20_e0df420_shard00_3gpu` 与 `shard01`。
+- 真实 BM25 restart：`result/cura_hotpotqa_real_restart20_b8870ad_shard00_3gpu` 与 `shard01`。
