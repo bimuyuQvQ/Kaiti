@@ -31,6 +31,7 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
     state_oracle_gains: List[float] = []
     sample_oracle_gains: List[float] = []
     skip_consistency_diffs: List[float] = []
+    skip_inconsistencies: List[Dict[str, Any]] = []
     total_states = 0
     total_actions = 0
 
@@ -51,7 +52,22 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
             skip = skip_rows[0]
             skip_score = float(skip["scores"][metric])
             baseline_score = float(bundle["no_retrieval_scores"][metric])
-            skip_consistency_diffs.append(skip_score - baseline_score)
+            consistency_diff = skip_score - baseline_score
+            skip_consistency_diffs.append(consistency_diff)
+            if abs(consistency_diff) > 1e-12 or skip["extracted_answer"] != bundle["no_retrieval_extracted_answer"]:
+                skip_inconsistencies.append(
+                    {
+                        "sample_index": bundle["sample_index"],
+                        "qid": bundle["qid"],
+                        "state_id": state_id,
+                        "checkpoint_type": states[state_id]["checkpoint_type"],
+                        "no_retrieval_answer": bundle["no_retrieval_extracted_answer"],
+                        "no_retrieval_score": baseline_score,
+                        "skip_answer": skip["extracted_answer"],
+                        "skip_score": skip_score,
+                        "score_diff": consistency_diff,
+                    }
+                )
             state_best = skip_score
             for action in actions:
                 if action["action_type"] != "retrieve":
@@ -98,6 +114,8 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
         "skip_vs_no_retrieval_max_abs_diff": max(
             (abs(value) for value in skip_consistency_diffs), default=0.0
         ),
+        "skip_inconsistency_count": len(skip_inconsistencies),
+        "skip_inconsistencies": skip_inconsistencies,
         "by_query_source": grouped(benefits_by_source),
         "by_checkpoint_type": grouped(benefits_by_checkpoint),
     }
@@ -129,4 +147,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
