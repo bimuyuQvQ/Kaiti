@@ -32,6 +32,7 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
     sample_oracle_gains: List[float] = []
     skip_consistency_diffs: List[float] = []
     skip_inconsistencies: List[Dict[str, Any]] = []
+    nonzero_benefit_cases: List[Dict[str, Any]] = []
     total_states = 0
     total_actions = 0
 
@@ -79,6 +80,22 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
                 query = queries[action["query_candidate_id"]]
                 benefits_by_source[query["source"]].append(benefit)
                 benefits_by_checkpoint[states[state_id]["checkpoint_type"]].append(benefit)
+                if abs(benefit) > 1e-12:
+                    nonzero_benefit_cases.append(
+                        {
+                            "sample_index": bundle["sample_index"],
+                            "qid": bundle["qid"],
+                            "checkpoint_type": states[state_id]["checkpoint_type"],
+                            "query_source": query["source"],
+                            "query_text": query["text"],
+                            "benefit": benefit,
+                            "skip_answer": skip["extracted_answer"],
+                            "skip_score": skip_score,
+                            "retrieve_answer": action["extracted_answer"],
+                            "retrieve_score": score,
+                            "injected_sentence": action.get("generation_metadata", {}).get("injected_sentence"),
+                        }
+                    )
                 if skip["scores"]["accuracy"] == 0 and action["scores"]["accuracy"] == 1:
                     flips["wrong_to_correct"] += 1
                 if skip["scores"]["accuracy"] == 1 and action["scores"]["accuracy"] == 0:
@@ -116,6 +133,7 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
         ),
         "skip_inconsistency_count": len(skip_inconsistencies),
         "skip_inconsistencies": skip_inconsistencies,
+        "nonzero_benefit_cases": nonzero_benefit_cases,
         "by_query_source": grouped(benefits_by_source),
         "by_checkpoint_type": grouped(benefits_by_checkpoint),
     }
