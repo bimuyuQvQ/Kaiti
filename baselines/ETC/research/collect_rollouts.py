@@ -242,4 +242,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import torch
+
+    with torch.inference_mode():
+        main()
