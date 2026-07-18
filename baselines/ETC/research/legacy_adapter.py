@@ -56,7 +56,14 @@ def install_last_layer_attention_capture(model: Any) -> None:
 
         if "attention" not in captured:
             raise RuntimeError("未能捕获 Llama 最后一层注意力")
-        outputs.attentions = (captured["attention"],)
+        attention_tuple = (captured["attention"],)
+        if hasattr(outputs, "__setitem__"):
+            # Accelerate's post-forward hook moves ModelOutput by dictionary
+            # keys. A plain attribute assignment would be lost because the
+            # original None-valued `attentions` field is absent from the keys.
+            outputs["attentions"] = attention_tuple
+        else:
+            outputs.attentions = attention_tuple
         return outputs
 
     setattr(model, model_forward_name, memory_efficient_forward)
