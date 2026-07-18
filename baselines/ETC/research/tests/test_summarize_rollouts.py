@@ -15,8 +15,8 @@ class SummarizeTests(unittest.TestCase):
                 {"state_id": "s2", "checkpoint_type": "first_etc_trigger"},
             ],
             "queries": [
-                {"candidate_id": "q1", "source": "question"},
-                {"candidate_id": "q2", "source": "etc_qfs"},
+                {"candidate_id": "q1", "source": "question", "text": "question text"},
+                {"candidate_id": "q2", "source": "etc_qfs", "text": "etc query"},
             ],
             "actions": [
                 {"state_id": "s1", "action_type": "skip", "extracted_answer": "", "scores": {"f1": 0.0, "accuracy": 0}},
