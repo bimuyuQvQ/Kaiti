@@ -194,16 +194,29 @@ def load_bundles(run_dir: str | Path) -> List[Dict[str, Any]]:
     return bundles
 
 
+def load_bundle_sets(run_dirs: Iterable[str | Path]) -> List[Dict[str, Any]]:
+    bundles: List[Dict[str, Any]] = []
+    observed = set()
+    for run_dir in run_dirs:
+        for bundle in load_bundles(run_dir):
+            key = (bundle["sample_index"], bundle["qid"])
+            if key in observed:
+                raise ValueError(f"多个运行目录包含重复样本: {key}")
+            observed.add(key)
+            bundles.append(bundle)
+    return sorted(bundles, key=lambda row: row["sample_index"])
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run_dir", required=True)
+    parser.add_argument("--run_dir", required=True, action="append")
     parser.add_argument("--metric", default="f1")
     parser.add_argument("--extractor_version", default=None)
     parser.add_argument("--allow_skip_inconsistency", action="store_true")
     parser.add_argument("--output", default=None)
     args = parser.parse_args()
     summary = summarize_bundles(
-        load_bundles(args.run_dir),
+        load_bundle_sets(args.run_dir),
         args.metric,
         extractor_version=args.extractor_version,
         require_skip_consistency=not args.allow_skip_inconsistency,

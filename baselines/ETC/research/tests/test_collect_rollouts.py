@@ -3,7 +3,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from baselines.ETC.research.collect_rollouts import ConfigNamespace, build_audit
+from baselines.ETC.research.collect_rollouts import (
+    ConfigNamespace,
+    build_audit,
+    resolve_sample_indices,
+)
 
 
 class CollectRolloutTests(unittest.TestCase):
@@ -12,6 +16,13 @@ class CollectRolloutTests(unittest.TestCase):
         self.assertEqual(config.es_index_name, "wiki")
         self.assertIn("es_index_name", config)
         self.assertNotIn("missing", config)
+
+    def test_sample_shard_indices_are_global_and_bounded(self):
+        self.assertEqual(resolve_sample_indices(20, 5, 10), [10, 11, 12, 13, 14])
+        self.assertEqual(resolve_sample_indices(12, -1, 10), [10, 11])
+        self.assertEqual(resolve_sample_indices(12, 10, 10), [10, 11])
+        with self.assertRaises(ValueError):
+            resolve_sample_indices(12, 1, 12)
 
     @staticmethod
     def _bundle(skip_prediction="The answer is x."):

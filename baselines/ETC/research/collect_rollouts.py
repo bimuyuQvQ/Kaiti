@@ -28,6 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--research_config", required=True)
     parser.add_argument("--run_dir", required=True)
     parser.add_argument("--sample", type=int, default=None)
+    parser.add_argument("--start_index", type=int, default=0)
     parser.add_argument("--model_max_memory_gib", type=int, default=None)
     return parser.parse_args()
 
@@ -38,6 +39,17 @@ def load_json(path: str | Path) -> Dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"配置必须是 JSON 对象: {path}")
     return value
+
+
+def resolve_sample_indices(total: int, requested_sample: int, start_index: int) -> List[int]:
+    if total <= 0:
+        raise ValueError("数据集不能为空")
+    if start_index < 0 or start_index >= total:
+        raise ValueError(f"start_index 超出数据集范围: {start_index}/{total}")
+    if requested_sample == 0 or requested_sample < -1:
+        raise ValueError("sample 必须为 -1 或正数")
+    count = total - start_index if requested_sample == -1 else min(requested_sample, total - start_index)
+    return list(range(start_index, start_index + count))
 
 
 def write_json_exclusive(path: str | Path, value: Any) -> None:
@@ -211,11 +223,13 @@ def main() -> None:
             "model_max_memory_gib": cli.model_max_memory_gib,
         }
     requested_sample = cli.sample if cli.sample is not None else int(research_config.get("sample", -1))
-    if requested_sample == 0 or requested_sample < -1:
-        raise ValueError("sample 必须为 -1 或正数")
     effective_config = {
         "legacy": legacy_config,
-        "research": {**research_config, "sample": requested_sample},
+        "research": {
+            **research_config,
+            "sample": requested_sample,
+            "start_index": cli.start_index,
+        },
     }
 
     run_dir = Path(cli.run_dir)
@@ -239,11 +253,10 @@ def main() -> None:
     args = ConfigNamespace(legacy_config)
     dataset = load_dataset(args)
     rows = dataset.dataset
-    sample_count = len(rows) if requested_sample == -1 else min(len(rows), requested_sample)
-    rows = rows.select(range(sample_count))
+    sample_indices = resolve_sample_indices(len(rows), requested_sample, cli.start_index)
 
     pending = []
-    for sample_index in range(sample_count):
+    for sample_index in sample_indices:
         bundle_path = bundle_dir / f"sample_{sample_index:06d}.json"
         if bundle_path.exists():
             existing = load_json(bundle_path)
@@ -259,7 +272,7 @@ def main() -> None:
             bundle = runner.run_sample(rows[sample_index], sample_index)
             write_json_exclusive(bundle_dir / f"sample_{sample_index:06d}.json", bundle)
 
-    bundle_paths = [bundle_dir / f"sample_{index:06d}.json" for index in range(sample_count)]
+    bundle_paths = [bundle_dir / f"sample_{index:06d}.json" for index in sample_indices]
     missing = [str(path) for path in bundle_paths if not path.exists()]
     if missing:
         raise RuntimeError(f"仍缺少 {len(missing)} 个 sample bundle")

@@ -1,6 +1,9 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from baselines.ETC.research.summarize_rollouts import summarize_bundles
+from baselines.ETC.research.summarize_rollouts import load_bundle_sets, summarize_bundles
 
 
 class SummarizeTests(unittest.TestCase):
@@ -77,6 +80,19 @@ class SummarizeTests(unittest.TestCase):
         summary = summarize_bundles([bundle], extractor_version=version)
         self.assertEqual(summary["extractor_version"], version)
         self.assertEqual(summary["skip_inconsistency_count"], 0)
+
+    def test_multiple_run_dirs_reject_duplicate_samples(self):
+        with tempfile.TemporaryDirectory() as directory:
+            roots = [Path(directory) / "a", Path(directory) / "b"]
+            for root in roots:
+                bundle_dir = root / "sample_bundles"
+                bundle_dir.mkdir(parents=True)
+                (bundle_dir / "sample_000000.json").write_text(
+                    json.dumps({"sample_index": 0, "qid": "q0"}),
+                    encoding="utf-8",
+                )
+            with self.assertRaisesRegex(ValueError, "重复样本"):
+                load_bundle_sets(roots)
 
 
 if __name__ == "__main__":
