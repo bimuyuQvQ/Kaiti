@@ -109,6 +109,7 @@ def build_gold_index(payload: Any) -> Dict[str, Dict[str, Any]]:
         normalized_titles: List[str] = []
         sentences: List[str] = []
         normalized_sentences: List[str] = []
+        documents_by_title: Dict[str, Dict[str, Any]] = {}
         for title, sentence_id in pairs:
             title_key = normalize_title(title)
             if title_key not in contexts:
@@ -123,6 +124,12 @@ def build_gold_index(payload: Any) -> Dict[str, Dict[str, Any]]:
             if sentence_key and sentence_key not in normalized_sentences:
                 sentences.append(sentence)
                 normalized_sentences.append(sentence_key)
+            document = documents_by_title.setdefault(
+                title_key,
+                {"title": title, "sentences": [], "sentence_ids": []},
+            )
+            document["sentences"].append(sentence)
+            document["sentence_ids"].append(sentence_id)
         index[question_key] = {
             "question": question,
             "answer": str(row.get("answer", "")),
@@ -130,6 +137,15 @@ def build_gold_index(payload: Any) -> Dict[str, Dict[str, Any]]:
             "normalized_gold_titles": normalized_titles,
             "gold_support_sentences": sentences,
             "normalized_gold_support_sentences": normalized_sentences,
+            "gold_documents": [
+                {
+                    "title": document["title"],
+                    "text": " ".join(document["sentences"]),
+                    "sentences": document["sentences"],
+                    "sentence_ids": document["sentence_ids"],
+                }
+                for document in documents_by_title.values()
+            ],
         }
     return index
 

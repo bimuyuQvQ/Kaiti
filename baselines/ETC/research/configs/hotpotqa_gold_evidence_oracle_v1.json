@@ -1,0 +1,21 @@
+{
+  "method": "gold_supporting_facts_oracle_v1",
+  "dataset": "hotpotqa",
+  "answer_extractor": "first_answer_span_v1",
+  "sensitivity_answer_extractors": [
+    "first_answer_sentence_v2"
+  ],
+  "model_max_memory_gib": 14,
+  "attention_capture": "last_layer_only_eager_v1",
+  "evidence_source": "hotpotqa_gold_supporting_sentences",
+  "evidence_granularity": "supporting_sentences",
+  "bridge_generation": "legacy_etc_one_sentence_exact_prefix_v2",
+  "skip_continuation": "reuse_source_canonical_no_retrieval_v2",
+  "post_action_retrieval": "disabled",
+  "label_metrics": [
+    "f1",
+    "accuracy"
+  ],
+  "deployment_available": false,
+  "purpose": "diagnostic_upper_bound_not_deployable_method"
+}
