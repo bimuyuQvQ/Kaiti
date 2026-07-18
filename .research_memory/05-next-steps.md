@@ -217,3 +217,12 @@
 - [x] 真实 1 条冒烟目录 `baselines/ETC/result/cura_hotpotqa_dense_timing_smoke1_a5d7062_3gpu`：7 状态、22 动作、15 retrieve，token 位置为 9/10/12/16/24/25/26；ETC 仅在 10，证明候选已解耦。协议审计通过，耗时 261 秒；v2 下 15 个动作均为零收益。
 - [x] 新增全局样本索引分片与多运行目录联合汇总，32 个单测通过。
 - [~] 20 条密集诊断已用两个 3-GPU worker 并行启动：样本 0～9 为 `result/cura_hotpotqa_dense20_0d0a0d5_shard00_3gpu`（PID 2122660），样本 10～19 为 `result/cura_hotpotqa_dense20_0d0a0d5_shard01_3gpu`（PID 2122661）；预计墙钟约 45 分钟。
+# 2026-07-18 密集时机 20 条联合结果
+
+- [x] 两个分片均完成并通过协议审计：20 样本、119 状态、375 动作、256 retrieve；skip 不一致数为 0。
+- [x] 保守 v2 F1：正/零/负 `19/233/4`，平均动作收益 `+0.04655`，状态 oracle `+0.07073`，样本 timing-query oracle `+0.25417`，7/20 样本有正 oracle。
+- [x] v2 Accuracy：正/零/负 `10/246/0`，平均动作收益 `+0.03906`，样本 oracle `+0.20`，4/20 样本有正 oracle。
+- [x] v2 F1 按时机：ETC 首触发 `+0.09568`，token 网格 `+0.04583`，句界 `+0.03585`，答案前 `0`。ETC 仍是最强平均时机。
+- [x] 相比旧三时机 v2，密集采样把样本 oracle 从 `+0.22917` 提到 `+0.25417`、正 oracle 样本从 6 增到 7；边际增益仅 `+0.025 F1`。
+- [x] 唯一新增样本为 dev_11：token 12 用原问题查询将 `David Diamond`（F1 0.5）修正为 `David Weissman`（F1 1.0），而 ETC 到 token 17 才触发且未产生该改善。这是真实但孤立的 ETC 漏检窗口案例。
+- [ ] 当前不能把“学习新时机”作为已证实的强贡献；扩大到 50～100 个 qid 后做样本级 bootstrap。若 ETC 外时机边际 oracle 仍很小，主线应转向查询/证据效用，而非强调替代 ETC 时机。
