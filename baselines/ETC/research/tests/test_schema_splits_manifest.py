@@ -34,7 +34,18 @@ class SchemaSplitManifestTests(unittest.TestCase):
             self.assertEqual(first.config_sha256, second.config_sha256)
             self.assertEqual(next(iter(first.input_files.values())), sha256_file(path))
 
+    def test_manifest_run_id_changes_with_git_commit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "input.txt"
+            path.write_text("固定输入", encoding="utf-8")
+            from unittest.mock import patch
+
+            with patch("baselines.ETC.research.manifest.current_git_commit", return_value="commit-a"):
+                first = build_manifest({}, [path], directory)
+            with patch("baselines.ETC.research.manifest.current_git_commit", return_value="commit-b"):
+                second = build_manifest({}, [path], directory)
+            self.assertNotEqual(first.run_id, second.run_id)
+
 
 if __name__ == "__main__":
     unittest.main()
-

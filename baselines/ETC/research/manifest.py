@@ -45,9 +45,11 @@ def build_manifest(
 ) -> RunManifest:
     config_hash = hashlib.sha256(canonical_json(config).encode("utf-8")).hexdigest()
     input_files = {str(Path(path).resolve()): sha256_file(path) for path in input_paths}
+    git_commit = current_git_commit(repo_root)
     immutable = {
         "schema_version": SCHEMA_VERSION,
         "extractor_version": EXTRACTOR_VERSION,
+        "git_commit": git_commit,
         "config_sha256": config_hash,
         "input_files": input_files,
     }
@@ -56,11 +58,10 @@ def build_manifest(
         created_at_utc=created_at_utc or datetime.now(timezone.utc).isoformat(),
         schema_version=SCHEMA_VERSION,
         extractor_version=EXTRACTOR_VERSION,
-        git_commit=current_git_commit(repo_root),
+        git_commit=git_commit,
         config_sha256=config_hash,
         config=config,
         input_files=input_files,
         python_version=sys.version.split()[0],
         platform=platform.platform(),
     )
-
