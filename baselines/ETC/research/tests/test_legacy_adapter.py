@@ -4,12 +4,21 @@ from types import SimpleNamespace
 from baselines.ETC.research.legacy_adapter import install_last_layer_attention_capture, resolve_max_memory
 
 
+class FakeAttention:
+    def __init__(self):
+        self.config = SimpleNamespace(_attn_implementation="sdpa")
+
+    def forward(self, hidden, **kwargs):
+        return hidden, "last-attention"
+
+
 class FakeLayer:
     def __init__(self):
-        self.self_attn = SimpleNamespace(config=SimpleNamespace(_attn_implementation="sdpa"))
+        self.self_attn = FakeAttention()
 
     def forward(self, hidden, output_attentions=False, **kwargs):
-        return (hidden, "last-attention") if output_attentions else (hidden,)
+        hidden, attention = self.self_attn.forward(hidden, output_attentions=output_attentions)
+        return (hidden, attention) if output_attentions else (hidden,)
 
 
 class FakeInnerModel:

@@ -22,10 +22,11 @@ def install_last_layer_attention_capture(model: Any) -> None:
     if getattr(model, "_cura_last_attention_installed", False):
         return
     last_layer = model.model.layers[-1]
+    last_attention = last_layer.self_attn
     model_forward_name = "_old_forward" if hasattr(model, "_old_forward") else "forward"
-    layer_forward_name = "_old_forward" if hasattr(last_layer, "_old_forward") else "forward"
+    attention_forward_name = "_old_forward" if hasattr(last_attention, "_old_forward") else "forward"
     original_model_forward = getattr(model, model_forward_name)
-    original_layer_forward = getattr(last_layer, layer_forward_name)
+    original_attention_forward = getattr(last_attention, attention_forward_name)
 
     def memory_efficient_forward(*args: Any, **kwargs: Any) -> Any:
         if not kwargs.get("output_attentions", False):
@@ -33,26 +34,23 @@ def install_last_layer_attention_capture(model: Any) -> None:
 
         captured: Dict[str, Any] = {}
         original_implementation = model.config._attn_implementation
-        attention_config = last_layer.self_attn.config
+        attention_config = last_attention.config
         original_attention_implementation = attention_config._attn_implementation
 
-        def capture_last_layer(*layer_args: Any, **layer_kwargs: Any) -> Any:
-            layer_kwargs["output_attentions"] = True
-            outputs = original_layer_forward(*layer_args, **layer_kwargs)
+        def capture_last_attention(*attention_args: Any, **attention_kwargs: Any) -> Any:
+            outputs = original_attention_forward(*attention_args, **attention_kwargs)
             captured["attention"] = outputs[1]
-            # The outer model is called with output_attentions=False and expects
-            # a one-element decoder-layer result.
-            return (outputs[0],)
+            return outputs
 
         try:
             model.config._attn_implementation = "eager"
             attention_config._attn_implementation = "eager"
-            setattr(last_layer, layer_forward_name, capture_last_layer)
+            setattr(last_attention, attention_forward_name, capture_last_attention)
             forwarded = dict(kwargs)
             forwarded["output_attentions"] = False
             outputs = original_model_forward(*args, **forwarded)
         finally:
-            setattr(last_layer, layer_forward_name, original_layer_forward)
+            setattr(last_attention, attention_forward_name, original_attention_forward)
             model.config._attn_implementation = original_implementation
             attention_config._attn_implementation = original_attention_implementation
 
