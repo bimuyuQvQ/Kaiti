@@ -9,6 +9,7 @@
 - skip/retrieve 配对轨迹的反事实收益计算与完整性审计。
 - v2 检查点保存在线生成的精确 token 前缀；skip 直接复用 canonical 无检索轨迹，任何漂移都会使协议审计失败。
 - `first_answer_span_v1` 仍是主口径；`first_answer_sentence_v2` 仅作为答案后解释污染的并列敏感性口径。
+- `hotpotqa_cura_dense_timing_v1.json` 在逐句边界与固定 token 网格上采样状态，并把 ETC 首次触发仅作为一个锚点候选；超过预算时保留 ETC/答案前锚点并对其余时间轴分层取样。
 
 MVP 配置见 `configs/hotpotqa_cura_mvp.json`。该配置当前是实验契约，不会直接启动模型或完整评测。
 

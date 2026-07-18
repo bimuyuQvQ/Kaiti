@@ -1,0 +1,49 @@
+{
+  "method": "cura_dense_timing_diagnostic_v1",
+  "dataset": "hotpotqa",
+  "sample": 20,
+  "split_salt": "etc_cura_split_v1",
+  "answer_extractor": "first_answer_span_v1",
+  "sensitivity_answer_extractors": [
+    "first_answer_sentence_v2"
+  ],
+  "model_max_memory_gib": 14,
+  "attention_capture": "last_layer_only_eager_v1",
+  "timing_candidates": {
+    "mode": "dense_timing_v1",
+    "include_etc_trigger": true,
+    "include_sentence_boundaries": true,
+    "include_before_answer": true,
+    "token_stride": 12,
+    "max_token_grid_checkpoints": 4,
+    "max_candidates_per_sample": 8,
+    "selection_policy": "temporal_stratified_preserve_anchors_v1"
+  },
+  "query_candidates": [
+    "question",
+    "etc_qfs",
+    "prefix_gap_v1"
+  ],
+  "prefix_gap": {
+    "max_new_tokens": 24,
+    "do_sample": false,
+    "prompt_version": "prefix_gap_prompt_v1"
+  },
+  "retriever": "BM25",
+  "es_index_name": "wiki",
+  "retrieve_topk": 3,
+  "retrieval_injection": "legacy_etc_one_sentence_exact_prefix_v2",
+  "skip_continuation": "reuse_canonical_no_retrieval_v2",
+  "post_action_retrieval": "disabled",
+  "label_metrics": [
+    "f1",
+    "accuracy"
+  ],
+  "required_policies": [
+    "etc_baseline",
+    "fixed_first_sentence",
+    "fixed_token_grid",
+    "dense_timing_oracle",
+    "cura_pre"
+  ]
+}

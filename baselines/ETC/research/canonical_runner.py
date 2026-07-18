@@ -31,7 +31,13 @@ class CanonicalTrajectoryRunner:
         self.generator = etc_model.generator
         self.tokenizer = etc_model.tokenizer
         self.max_tokens = int(etc_model.generate_max_length)
-        self.max_checkpoints = int(research_config.get("max_checkpoints_per_sample", 3))
+        self.timing_config = dict(research_config.get("timing_candidates", {}))
+        self.max_checkpoints = int(
+            self.timing_config.get(
+                "max_candidates_per_sample",
+                research_config.get("max_checkpoints_per_sample", 3),
+            )
+        )
         self.extractor = research_config.get("answer_extractor", EXTRACTOR_VERSION)
         self.sensitivity_extractors = list(
             research_config.get(
@@ -90,7 +96,12 @@ class CanonicalTrajectoryRunner:
     ) -> Tuple[str, List[int], List[CheckpointState]]:
         generated = ""
         final_generated_token_ids: List[int] = []
-        collector = CheckpointCollector(qid, sample_index, self.max_checkpoints)
+        collector = CheckpointCollector(
+            qid,
+            sample_index,
+            self.max_checkpoints,
+            timing_config=self.timing_config,
+        )
 
         while self._answer_token_count(generated) < self.max_tokens:
             remaining = max(1, self.max_tokens - self._answer_token_count(generated))
