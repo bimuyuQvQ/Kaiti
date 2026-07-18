@@ -4,6 +4,7 @@
   "sample": 100,
   "split_salt": "etc_cura_split_v1",
   "answer_extractor": "first_answer_span_v1",
+  "model_max_memory_gib": 18,
   "checkpoints": [
     "first_etc_trigger",
     "first_sentence_boundary",
@@ -36,4 +37,3 @@
     "cura_post"
   ]
 }
-

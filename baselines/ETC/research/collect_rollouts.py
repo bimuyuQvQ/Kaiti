@@ -16,6 +16,7 @@ from tqdm import tqdm
 
 from .canonical_runner import CanonicalTrajectoryRunner
 from .jsonl_io import read_jsonl
+from .legacy_adapter import build_research_etc
 from .manifest import build_manifest
 from .rollout import audit_rollouts
 from .schema import ActionRollout, RetrievedDocument, stable_id, to_dict
@@ -208,9 +209,7 @@ def main() -> None:
             pending.append(sample_index)
 
     if pending:
-        from generate import ETC
-
-        model = ETC(args)
+        model = build_research_etc(args, research_config)
         runner = CanonicalTrajectoryRunner(model, dataset, research_config)
         for sample_index in tqdm(pending, desc="CURA paired rollout"):
             bundle = runner.run_sample(rows[sample_index], sample_index)
