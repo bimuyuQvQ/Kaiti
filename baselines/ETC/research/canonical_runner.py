@@ -198,6 +198,7 @@ class CanonicalTrajectoryRunner:
         ground_truth_id: Any,
         candidate: Optional[QueryCandidate] = None,
         documents: Optional[Sequence[RetrievedDocument]] = None,
+        extra_generation_metadata: Optional[Dict[str, Any]] = None,
     ) -> ActionRollout:
         answer = extract_answer(prediction, self.extractor)
         candidate_id = candidate.candidate_id if candidate else None
@@ -215,6 +216,7 @@ class CanonicalTrajectoryRunner:
                 "rollout_version": "single_retrieval_rollout_v1",
                 "max_answer_tokens": self.max_tokens,
                 "post_action_retrieval": "disabled",
+                **(extra_generation_metadata or {}),
             },
         )
 
@@ -252,6 +254,10 @@ class CanonicalTrajectoryRunner:
                     ground_truth_id,
                     candidate,
                     documents,
+                    {
+                        "retrieval_query_text": candidate.text,
+                        "injected_sentence": injected_sentence,
+                    },
                 )
             )
         return actions
@@ -285,8 +291,13 @@ class CanonicalTrajectoryRunner:
             "ground_truth": entry["answer"],
             "ground_truth_id": ground_truth_id,
             "no_retrieval_prediction": no_retrieval_prediction,
+            "no_retrieval_extracted_answer": extract_answer(no_retrieval_prediction, self.extractor),
+            "no_retrieval_scores": self._score(
+                extract_answer(no_retrieval_prediction, self.extractor),
+                entry["answer"],
+                ground_truth_id,
+            ),
             "states": [to_dict(item) for item in states],
             "queries": [to_dict(item) for item in candidate_rows],
             "actions": [to_dict(item) for item in action_rows],
         }
-
