@@ -6,14 +6,14 @@ import argparse
 import json
 import re
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from .summarize_rollouts import _benefit_bucket, _scores, load_bundle_sets
 
 
-AUDIT_VERSION = "query_evidence_attribution_v2"
+AUDIT_VERSION = "query_evidence_attribution_v3"
 
 
 def normalize_text(value: Any) -> str:
@@ -152,6 +152,19 @@ def _contains_any(document_text: str, needles: Sequence[str]) -> bool:
     return any(needle and needle in document_text for needle in needles)
 
 
+def _token_f1(left: str, right: str) -> float:
+    left_tokens = left.split()
+    right_tokens = right.split()
+    if not left_tokens or not right_tokens:
+        return 0.0
+    common = sum((Counter(left_tokens) & Counter(right_tokens)).values())
+    if not common:
+        return 0.0
+    precision = common / len(left_tokens)
+    recall = common / len(right_tokens)
+    return 2 * precision * recall / (precision + recall)
+
+
 def _summarize_rows(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     count = len(rows)
     if not count:
@@ -162,9 +175,9 @@ def _summarize_rows(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
             "any_gold_title_hit_rate": 0.0,
             "full_gold_title_hit_rate": 0.0,
             "support_sentence_hit_rate": 0.0,
-            "injected_support_sentence_hit_rate": 0.0,
             "answer_hit_rate": 0.0,
-            "injected_answer_hit_rate": 0.0,
+            "bridge_answer_hit_rate": 0.0,
+            "mean_bridge_gold_token_f1": 0.0,
             "mean_gold_title_recall": 0.0,
         }
     mean = lambda key: sum(float(row[key]) for row in rows) / count
@@ -175,27 +188,31 @@ def _summarize_rows(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
         "any_gold_title_hit_rate": mean("any_gold_title_hit"),
         "full_gold_title_hit_rate": mean("full_gold_title_hit"),
         "support_sentence_hit_rate": mean("support_sentence_hit"),
-        "injected_support_sentence_hit_rate": mean("injected_support_sentence_hit"),
         "answer_hit_rate": mean("answer_hit"),
-        "injected_answer_hit_rate": mean("injected_answer_hit"),
+        "bridge_answer_hit_rate": mean("bridge_answer_hit"),
+        "mean_bridge_gold_token_f1": mean("bridge_gold_token_f1_max"),
         "mean_gold_title_recall": mean("gold_title_recall"),
     }
 
 
-def _failure_label(row: Mapping[str, Any]) -> str:
+def _retrieval_stage(row: Mapping[str, Any]) -> str:
     if not row["any_gold_title_hit"]:
         return "gold_title_miss"
     if not row["support_sentence_hit"]:
         return "gold_title_hit_but_support_sentence_miss"
-    if not row["injected_support_sentence_hit"]:
-        return "support_sentence_retrieved_but_not_injected"
+    return "support_sentence_retrieved"
+
+
+def _outcome_stage(row: Mapping[str, Any]) -> str:
     if row["benefit_bucket"] == "positive":
-        return "support_sentence_injected_and_gain"
+        return "gain"
     if row["benefit_bucket"] == "negative":
-        return "support_sentence_injected_but_harm"
+        return "harm"
     if row["skip_score_bucket"] == "correct":
-        return "support_sentence_injected_at_metric_ceiling"
-    return "support_sentence_injected_but_no_gain"
+        return "metric_ceiling_no_change"
+    if row["bridge_answer_hit"]:
+        return "bridge_answer_present_but_no_gain"
+    return "bridge_answer_absent_and_no_gain"
 
 
 def _score_bucket(value: float, epsilon: float = 1e-12) -> str:
@@ -256,6 +273,13 @@ def attribute_bundles(
                 action.get("generation_metadata", {}).get("injected_sentence") or ""
             )
             normalized_injected_sentence = normalize_text(injected_sentence)
+            bridge_gold_token_f1 = max(
+                (
+                    _token_f1(normalized_injected_sentence, sentence)
+                    for sentence in gold["normalized_gold_support_sentences"]
+                ),
+                default=0.0,
+            )
             row = {
                 "sample_index": bundle["sample_index"],
                 "qid": bundle["qid"],
@@ -277,27 +301,30 @@ def attribute_bundles(
                 "gold_title_recall": len(hit_titles) / len(gold_titles) if gold_titles else 0.0,
                 "first_gold_title_rank": _first_rank(documents, gold_titles),
                 "support_sentence_hit": support_hit,
-                "injected_support_sentence_hit": _contains_any(
-                    normalized_injected_sentence, gold["normalized_gold_support_sentences"]
-                ),
                 "answer_hit": bool(answer_key and answer_key in merged_document_text),
-                "injected_answer_hit": bool(
-                    answer_key and answer_key in normalized_injected_sentence
-                ),
+                "bridge_answer_hit": bool(answer_key and answer_key in normalized_injected_sentence),
+                "bridge_gold_token_f1_max": bridge_gold_token_f1,
+                "bridge_sentence": injected_sentence,
                 "injected_sentence": injected_sentence,
             }
-            row["attribution_label"] = _failure_label(row)
+            row["retrieval_stage"] = _retrieval_stage(row)
+            row["outcome_stage"] = _outcome_stage(row)
+            row["attribution_label"] = f"{row['retrieval_stage']}__{row['outcome_stage']}"
             rows.append(row)
 
     by_bucket: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     by_source: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     by_label: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     by_skip_score: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    by_retrieval_stage: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    by_outcome_stage: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for row in rows:
         by_bucket[row["benefit_bucket"]].append(row)
         by_source[row["query_source"]].append(row)
         by_label[row["attribution_label"]].append(row)
         by_skip_score[row["skip_score_bucket"]].append(row)
+        by_retrieval_stage[row["retrieval_stage"]].append(row)
+        by_outcome_stage[row["outcome_stage"]].append(row)
     return {
         "audit_version": AUDIT_VERSION,
         "metric": metric,
@@ -318,6 +345,14 @@ def attribute_bundles(
             key: _summarize_rows(by_skip_score.get(key, []))
             for key in ("wrong", "partial", "correct")
         },
+        "retrieval_stage_counts": {
+            key: {"actions": len(group), "samples": len({row["sample_index"] for row in group})}
+            for key, group in sorted(by_retrieval_stage.items())
+        },
+        "outcome_stage_counts": {
+            key: {"actions": len(group), "samples": len({row["sample_index"] for row in group})}
+            for key, group in sorted(by_outcome_stage.items())
+        },
         "attribution_counts": {
             key: {"actions": len(group), "samples": len({row["sample_index"] for row in group})}
             for key, group in sorted(by_label.items())
@@ -325,7 +360,8 @@ def attribute_bundles(
         "diagnostic_cases": rows,
         "interpretation_caveat": (
             "标题命中不保证检索到正确 chunk；支持句字符串命中是更强但仍不完美的证据代理。"
-            "注入命中用于进一步区分检索、证据选择和生成利用，但严格字符串匹配可能低估语义等价证据。"
+            "桥接句是模型基于检索上下文生成的句子，不是抽取式证据句；答案字符串命中和词元 F1 "
+            "只用于诊断桥接是否显式携带答案，可能低估别名和语义等价表达。"
             "动作共享样本和状态，动作级比例不能当作独立样本显著性检验。"
         ),
     }

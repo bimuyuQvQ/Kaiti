@@ -120,22 +120,35 @@ class EvidenceAttributionTests(unittest.TestCase):
         }
         result = attribute_bundles([bundle], build_gold_index(self.payload))
         self.assertEqual(result["by_benefit_bucket"]["positive"]["count"], 1)
-        self.assertEqual(result["attribution_counts"]["gold_title_miss"]["actions"], 1)
         self.assertEqual(
-            result["attribution_counts"]["support_sentence_injected_but_no_gain"]["actions"], 1
-        )
-        self.assertEqual(
-            result["attribution_counts"]["support_sentence_retrieved_but_not_injected"]["actions"],
+            result["attribution_counts"][
+                "gold_title_miss__bridge_answer_absent_and_no_gain"
+            ]["actions"],
             1,
         )
         self.assertEqual(
-            result["attribution_counts"]["support_sentence_injected_at_metric_ceiling"]["actions"],
+            result["attribution_counts"][
+                "support_sentence_retrieved__bridge_answer_present_but_no_gain"
+            ]["actions"],
+            1,
+        )
+        self.assertEqual(
+            result["attribution_counts"][
+                "support_sentence_retrieved__bridge_answer_absent_and_no_gain"
+            ]["actions"],
+            1,
+        )
+        self.assertEqual(
+            result["attribution_counts"][
+                "support_sentence_retrieved__metric_ceiling_no_change"
+            ]["actions"],
             1,
         )
         positive = next(row for row in result["diagnostic_cases"] if row["benefit"] > 0)
         self.assertEqual(positive["first_gold_title_rank"], 2)
         self.assertTrue(positive["answer_hit"])
-        self.assertTrue(positive["injected_support_sentence_hit"])
+        self.assertTrue(positive["bridge_answer_hit"])
+        self.assertGreater(positive["bridge_gold_token_f1_max"], 0)
 
     def test_rejects_missing_gold_question(self):
         bundle = {
