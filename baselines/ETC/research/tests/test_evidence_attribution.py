@@ -11,13 +11,14 @@ from baselines.ETC.research.evidence_attribution import (
 VERSION = "first_answer_sentence_v2"
 
 
-def action(state, kind, score, query_id=None, documents=None):
+def action(state, kind, score, query_id=None, documents=None, injected_sentence=None):
     return {
         "state_id": state,
         "action_type": kind,
         "query_candidate_id": query_id,
         "alternative_scores": {VERSION: {"f1": score}},
         "retrieved_documents": documents or [],
+        "generation_metadata": {"injected_sentence": injected_sentence},
     }
 
 
@@ -62,11 +63,16 @@ class EvidenceAttributionTests(unittest.TestCase):
             "qid": "dev_0",
             "question": "Who connected Alpha and Beta?",
             "ground_truth": "Ada",
-            "states": [{"state_id": "s0", "checkpoint_type": "grid"}],
+            "states": [
+                {"state_id": "s0", "checkpoint_type": "grid"},
+                {"state_id": "s1", "checkpoint_type": "etc"},
+            ],
             "queries": [
                 {"candidate_id": "q_good", "source": "question", "text": "Alpha Beta"},
                 {"candidate_id": "q_bad", "source": "gap", "text": "unrelated"},
                 {"candidate_id": "q_unused", "source": "gap", "text": "Beta Ada"},
+                {"candidate_id": "q_select", "source": "gap", "text": "Alpha"},
+                {"candidate_id": "q_ceiling", "source": "question", "text": "Alpha Beta"},
             ],
             "actions": [
                 action("s0", "skip", 0.0),
@@ -76,6 +82,7 @@ class EvidenceAttributionTests(unittest.TestCase):
                     1.0,
                     "q_good",
                     [{"title": "Alpha_Page", "text": "Ada created Alpha.", "rank": 2}],
+                    "Ada created Alpha.",
                 ),
                 action(
                     "s0",
@@ -90,6 +97,24 @@ class EvidenceAttributionTests(unittest.TestCase):
                     0.0,
                     "q_unused",
                     [{"title": "Beta", "text": "Beta was connected by Ada!", "rank": 1}],
+                    "Beta was connected by Ada!",
+                ),
+                action(
+                    "s0",
+                    "retrieve",
+                    0.0,
+                    "q_select",
+                    [{"title": "Alpha Page", "text": "Ada created Alpha.", "rank": 1}],
+                    "An irrelevant sentence.",
+                ),
+                action("s1", "skip", 1.0),
+                action(
+                    "s1",
+                    "retrieve",
+                    1.0,
+                    "q_ceiling",
+                    [{"title": "Alpha Page", "text": "Ada created Alpha.", "rank": 1}],
+                    "Ada created Alpha.",
                 ),
             ],
         }
@@ -97,11 +122,20 @@ class EvidenceAttributionTests(unittest.TestCase):
         self.assertEqual(result["by_benefit_bucket"]["positive"]["count"], 1)
         self.assertEqual(result["attribution_counts"]["gold_title_miss"]["actions"], 1)
         self.assertEqual(
-            result["attribution_counts"]["support_sentence_hit_but_no_gain"]["actions"], 1
+            result["attribution_counts"]["support_sentence_injected_but_no_gain"]["actions"], 1
+        )
+        self.assertEqual(
+            result["attribution_counts"]["support_sentence_retrieved_but_not_injected"]["actions"],
+            1,
+        )
+        self.assertEqual(
+            result["attribution_counts"]["support_sentence_injected_at_metric_ceiling"]["actions"],
+            1,
         )
         positive = next(row for row in result["diagnostic_cases"] if row["benefit"] > 0)
         self.assertEqual(positive["first_gold_title_rank"], 2)
         self.assertTrue(positive["answer_hit"])
+        self.assertTrue(positive["injected_support_sentence_hit"])
 
     def test_rejects_missing_gold_question(self):
         bundle = {

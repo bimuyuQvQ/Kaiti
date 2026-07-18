@@ -13,7 +13,7 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 from .summarize_rollouts import _benefit_bucket, _scores, load_bundle_sets
 
 
-AUDIT_VERSION = "query_evidence_attribution_v1"
+AUDIT_VERSION = "query_evidence_attribution_v2"
 
 
 def normalize_text(value: Any) -> str:
@@ -162,7 +162,9 @@ def _summarize_rows(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
             "any_gold_title_hit_rate": 0.0,
             "full_gold_title_hit_rate": 0.0,
             "support_sentence_hit_rate": 0.0,
+            "injected_support_sentence_hit_rate": 0.0,
             "answer_hit_rate": 0.0,
+            "injected_answer_hit_rate": 0.0,
             "mean_gold_title_recall": 0.0,
         }
     mean = lambda key: sum(float(row[key]) for row in rows) / count
@@ -173,7 +175,9 @@ def _summarize_rows(rows: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
         "any_gold_title_hit_rate": mean("any_gold_title_hit"),
         "full_gold_title_hit_rate": mean("full_gold_title_hit"),
         "support_sentence_hit_rate": mean("support_sentence_hit"),
+        "injected_support_sentence_hit_rate": mean("injected_support_sentence_hit"),
         "answer_hit_rate": mean("answer_hit"),
+        "injected_answer_hit_rate": mean("injected_answer_hit"),
         "mean_gold_title_recall": mean("gold_title_recall"),
     }
 
@@ -183,11 +187,23 @@ def _failure_label(row: Mapping[str, Any]) -> str:
         return "gold_title_miss"
     if not row["support_sentence_hit"]:
         return "gold_title_hit_but_support_sentence_miss"
+    if not row["injected_support_sentence_hit"]:
+        return "support_sentence_retrieved_but_not_injected"
     if row["benefit_bucket"] == "positive":
-        return "support_sentence_hit_and_gain"
+        return "support_sentence_injected_and_gain"
     if row["benefit_bucket"] == "negative":
-        return "support_sentence_hit_but_harm"
-    return "support_sentence_hit_but_no_gain"
+        return "support_sentence_injected_but_harm"
+    if row["skip_score_bucket"] == "correct":
+        return "support_sentence_injected_at_metric_ceiling"
+    return "support_sentence_injected_but_no_gain"
+
+
+def _score_bucket(value: float, epsilon: float = 1e-12) -> str:
+    if value >= 1.0 - epsilon:
+        return "correct"
+    if value > epsilon:
+        return "partial"
+    return "wrong"
 
 
 def attribute_bundles(
@@ -236,6 +252,10 @@ def attribute_bundles(
                 merged_document_text, gold["normalized_gold_support_sentences"]
             )
             answer_key = normalize_text(bundle.get("ground_truth") or gold.get("answer"))
+            injected_sentence = str(
+                action.get("generation_metadata", {}).get("injected_sentence") or ""
+            )
+            normalized_injected_sentence = normalize_text(injected_sentence)
             row = {
                 "sample_index": bundle["sample_index"],
                 "qid": bundle["qid"],
@@ -247,6 +267,7 @@ def attribute_bundles(
                 "benefit": benefit,
                 "benefit_bucket": _benefit_bucket(benefit),
                 "skip_score": skip_score,
+                "skip_score_bucket": _score_bucket(skip_score),
                 "retrieve_score": retrieve_score,
                 "gold_titles": gold["gold_titles"],
                 "retrieved_titles": retrieved_titles,
@@ -256,8 +277,14 @@ def attribute_bundles(
                 "gold_title_recall": len(hit_titles) / len(gold_titles) if gold_titles else 0.0,
                 "first_gold_title_rank": _first_rank(documents, gold_titles),
                 "support_sentence_hit": support_hit,
+                "injected_support_sentence_hit": _contains_any(
+                    normalized_injected_sentence, gold["normalized_gold_support_sentences"]
+                ),
                 "answer_hit": bool(answer_key and answer_key in merged_document_text),
-                "injected_sentence": action.get("generation_metadata", {}).get("injected_sentence"),
+                "injected_answer_hit": bool(
+                    answer_key and answer_key in normalized_injected_sentence
+                ),
+                "injected_sentence": injected_sentence,
             }
             row["attribution_label"] = _failure_label(row)
             rows.append(row)
@@ -265,10 +292,12 @@ def attribute_bundles(
     by_bucket: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     by_source: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     by_label: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    by_skip_score: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for row in rows:
         by_bucket[row["benefit_bucket"]].append(row)
         by_source[row["query_source"]].append(row)
         by_label[row["attribution_label"]].append(row)
+        by_skip_score[row["skip_score_bucket"]].append(row)
     return {
         "audit_version": AUDIT_VERSION,
         "metric": metric,
@@ -285,6 +314,10 @@ def attribute_bundles(
         "by_query_source": {
             key: _summarize_rows(group) for key, group in sorted(by_source.items())
         },
+        "by_skip_score_bucket": {
+            key: _summarize_rows(by_skip_score.get(key, []))
+            for key in ("wrong", "partial", "correct")
+        },
         "attribution_counts": {
             key: {"actions": len(group), "samples": len({row["sample_index"] for row in group})}
             for key, group in sorted(by_label.items())
@@ -292,6 +325,7 @@ def attribute_bundles(
         "diagnostic_cases": rows,
         "interpretation_caveat": (
             "标题命中不保证检索到正确 chunk；支持句字符串命中是更强但仍不完美的证据代理。"
+            "注入命中用于进一步区分检索、证据选择和生成利用，但严格字符串匹配可能低估语义等价证据。"
             "动作共享样本和状态，动作级比例不能当作独立样本显著性检验。"
         ),
     }
