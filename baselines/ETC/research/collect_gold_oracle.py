@@ -31,6 +31,7 @@ from .summarize_rollouts import load_bundle_sets
 
 
 ORACLE_VERSION = "gold_supporting_facts_oracle_v1"
+RESTART_ORACLE_VERSION = "gold_supporting_facts_restart_oracle_v1"
 
 
 def parse_args() -> argparse.Namespace:
@@ -66,13 +67,31 @@ def select_source_bundles(
     return selected
 
 
-def make_gold_candidate(state: CheckpointState, gold: Dict[str, Any]) -> QueryCandidate:
+def select_intervention_states(
+    state_rows: Sequence[Dict[str, Any]], intervention_mode: str
+) -> List[Dict[str, Any]]:
+    rows = list(state_rows)
+    if not rows:
+        raise ValueError("source bundle 没有可用状态")
+    if intervention_mode == "append_bridge":
+        return rows
+    if intervention_mode != "restart_from_gold":
+        raise ValueError(f"不支持的 oracle_intervention_mode：{intervention_mode}")
+    etc_states = [state for state in rows if state["checkpoint_type"] == "first_etc_trigger"]
+    return [etc_states[0] if etc_states else rows[0]]
+
+
+def make_gold_candidate(
+    state: CheckpointState,
+    gold: Dict[str, Any],
+    action_version: str = ORACLE_VERSION,
+) -> QueryCandidate:
     titles = [document["title"] for document in gold["gold_documents"]]
     text = " ; ".join(titles)
     candidate_id = stable_id(
         "qry",
         {
-            "version": ORACLE_VERSION,
+            "version": action_version,
             "qid": state.qid,
             "state_id": state.state_id,
             "gold_titles": titles,
@@ -81,7 +100,7 @@ def make_gold_candidate(state: CheckpointState, gold: Dict[str, Any]) -> QueryCa
     return QueryCandidate(
         qid=state.qid,
         state_id=state.state_id,
-        source=ORACLE_VERSION,
+        source=action_version,
         text=text,
         normalized_text=normalize_text(text),
         candidate_id=candidate_id,
@@ -173,9 +192,30 @@ def rollout_gold_state(
             "retrieval_query_text": candidate.text,
             "injected_sentence": bridge_sentence,
             "evidence_source": ORACLE_VERSION,
+            "oracle_intervention_mode": "append_bridge",
             "oracle": True,
         },
     )
+
+
+def generate_gold_restart_prediction(
+    runner: CanonicalTrajectoryRunner,
+    documents: Sequence[RetrievedDocument],
+    question: str,
+    demo_text: str,
+) -> str:
+    """用同一 gold 上下文从问题重新生成，用于诊断前缀锚定上界。"""
+
+    prompt = demo_text + "\nContext:\n"
+    for index, document in enumerate(documents, start=1):
+        prompt += f"[{index}] {document.text}\n"
+    prompt += "Answer in the same format as before.\n"
+    prompt += "\nQuestion:" + question + "\nAnswer:"
+    _, prediction, _ = runner._generate_from_ids(
+        runner.tokenizer.encode(prompt),
+        runner.max_tokens,
+    )
+    return prediction.strip()
 
 
 def build_oracle_bundle(
@@ -196,23 +236,61 @@ def build_oracle_bundle(
             raise ValueError(f"状态存在重复 skip：{state_id}")
         skip_by_state[state_id] = action
     documents = make_gold_documents(gold)
-    queries: List[Dict[str, Any]] = []
-    actions: List[Dict[str, Any]] = []
-    for state_row in source_bundle["states"]:
-        state = CheckpointState(**state_row)
-        if state.state_id not in skip_by_state:
-            raise ValueError(f"状态缺少 source skip：{state.state_id}")
-        candidate = make_gold_candidate(state, gold)
-        oracle_action = rollout_gold_state(
+    intervention_mode = str(
+        runner.config.get("oracle_intervention_mode", "append_bridge")
+    )
+    if intervention_mode not in {"append_bridge", "restart_from_gold"}:
+        raise ValueError(f"不支持的 oracle_intervention_mode：{intervention_mode}")
+    action_version = (
+        ORACLE_VERSION if intervention_mode == "append_bridge" else RESTART_ORACLE_VERSION
+    )
+    # restart 与具体前缀无关，每个样本只生成/记录一次。优先借用 ETC
+    # 触发状态作为配对锚点；若该样本没有 ETC 触发，则使用最早状态。
+    state_rows = select_intervention_states(source_bundle["states"], intervention_mode)
+    restart_prediction = None
+    if intervention_mode == "restart_from_gold":
+        restart_prediction = generate_gold_restart_prediction(
             runner,
-            state,
-            candidate,
             documents,
             entry["question"],
             demo_text,
-            entry["answer"],
-            entry.get("answer_id"),
         )
+    queries: List[Dict[str, Any]] = []
+    actions: List[Dict[str, Any]] = []
+    for state_row in state_rows:
+        state = CheckpointState(**state_row)
+        if state.state_id not in skip_by_state:
+            raise ValueError(f"状态缺少 source skip：{state.state_id}")
+        candidate = make_gold_candidate(state, gold, action_version)
+        if intervention_mode == "append_bridge":
+            oracle_action = rollout_gold_state(
+                runner,
+                state,
+                candidate,
+                documents,
+                entry["question"],
+                demo_text,
+                entry["answer"],
+                entry.get("answer_id"),
+            )
+        else:
+            assert restart_prediction is not None
+            oracle_action = runner._make_rollout(
+                state,
+                "retrieve",
+                restart_prediction,
+                entry["answer"],
+                entry.get("answer_id"),
+                candidate,
+                documents,
+                {
+                    "retrieval_query_text": candidate.text,
+                    "injected_sentence": runner.get_top_sentence(restart_prediction).strip(),
+                    "evidence_source": ORACLE_VERSION,
+                    "oracle_intervention_mode": "restart_from_gold",
+                    "oracle": True,
+                },
+            )
         queries.append(to_dict(candidate))
         actions.extend([skip_by_state[state.state_id], to_dict(oracle_action)])
     copied = {
@@ -223,8 +301,10 @@ def build_oracle_bundle(
     return {
         "bundle_version": "cura_gold_evidence_oracle_bundle_v1",
         **copied,
+        "states": state_rows,
         "source_bundle_version": source_bundle.get("bundle_version"),
-        "oracle_version": ORACLE_VERSION,
+        "oracle_version": action_version,
+        "oracle_intervention_mode": intervention_mode,
         "queries": queries,
         "actions": actions,
     }
@@ -252,8 +332,17 @@ def main() -> None:
         load_bundle_sets(cli.source_run_dir), cli.start_index, cli.sample
     )
     gold_index = load_gold_index(cli.gold_data)
+    intervention_mode = str(
+        research_config.get("oracle_intervention_mode", "append_bridge")
+    )
+    if intervention_mode not in {"append_bridge", "restart_from_gold"}:
+        raise ValueError(f"不支持的 oracle_intervention_mode：{intervention_mode}")
+    effective_oracle_version = (
+        ORACLE_VERSION if intervention_mode == "append_bridge" else RESTART_ORACLE_VERSION
+    )
     effective_config = {
-        "oracle_version": ORACLE_VERSION,
+        "oracle_version": effective_oracle_version,
+        "oracle_intervention_mode": intervention_mode,
         "legacy": legacy_config,
         "research": research_config,
         "source_run_dirs": cli.source_run_dir,

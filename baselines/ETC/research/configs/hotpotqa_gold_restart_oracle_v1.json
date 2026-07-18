@@ -1,5 +1,5 @@
 {
-  "method": "gold_supporting_facts_oracle_v1",
+  "method": "gold_supporting_facts_restart_oracle_v1",
   "dataset": "hotpotqa",
   "answer_extractor": "first_answer_span_v1",
   "sensitivity_answer_extractors": [
@@ -9,8 +9,8 @@
   "attention_capture": "last_layer_only_eager_v1",
   "evidence_source": "hotpotqa_gold_supporting_sentences",
   "evidence_granularity": "supporting_sentences",
-  "oracle_intervention_mode": "append_bridge",
-  "bridge_generation": "legacy_etc_one_sentence_exact_prefix_v2",
+  "oracle_intervention_mode": "restart_from_gold",
+  "generation": "full_answer_without_source_prefix_v1",
   "skip_continuation": "reuse_source_canonical_no_retrieval_v2",
   "post_action_retrieval": "disabled",
   "label_metrics": [
@@ -18,5 +18,5 @@
     "accuracy"
   ],
   "deployment_available": false,
-  "purpose": "diagnostic_upper_bound_not_deployable_method"
+  "purpose": "diagnose_append_only_prefix_anchoring"
 }

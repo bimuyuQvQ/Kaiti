@@ -1,8 +1,10 @@
 import unittest
 
 from baselines.ETC.research.collect_gold_oracle import (
+    RESTART_ORACLE_VERSION,
     make_gold_candidate,
     make_gold_documents,
+    select_intervention_states,
     select_source_bundles,
 )
 from baselines.ETC.research.evidence_attribution import build_gold_index, normalize_text
@@ -46,6 +48,9 @@ class GoldOracleTests(unittest.TestCase):
         self.assertTrue(candidate.metadata["oracle"])
         self.assertFalse(candidate.metadata["deployment_available"])
         self.assertEqual(candidate.source, "gold_supporting_facts_oracle_v1")
+        restart_candidate = make_gold_candidate(state, gold, RESTART_ORACLE_VERSION)
+        self.assertEqual(restart_candidate.source, RESTART_ORACLE_VERSION)
+        self.assertNotEqual(candidate.candidate_id, restart_candidate.candidate_id)
 
     def test_source_selection_uses_contiguous_global_indices(self):
         bundles = [
@@ -56,6 +61,16 @@ class GoldOracleTests(unittest.TestCase):
         self.assertEqual([row["sample_index"] for row in selected], [1, 2])
         with self.assertRaisesRegex(ValueError, "不足"):
             select_source_bundles(bundles, start_index=3, sample=2)
+
+    def test_restart_uses_one_etc_anchor_without_repeating_sample_action(self):
+        states = [
+            {"state_id": "early", "checkpoint_type": "sentence_boundary"},
+            {"state_id": "etc", "checkpoint_type": "first_etc_trigger"},
+            {"state_id": "late", "checkpoint_type": "token_grid"},
+        ]
+        self.assertEqual(len(select_intervention_states(states, "append_bridge")), 3)
+        selected = select_intervention_states(states, "restart_from_gold")
+        self.assertEqual([row["state_id"] for row in selected], ["etc"])
 
 
 if __name__ == "__main__":
