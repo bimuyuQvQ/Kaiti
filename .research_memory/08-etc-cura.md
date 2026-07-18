@@ -156,3 +156,13 @@ LCB_t(q)=g_\theta(s_t,q)-c_\delta.
 - 已实现 skip/retrieve 动作 ID、终局指标差收益和严格完整性审计；缺失动作、重复动作、失败状态及未声明状态都会使审计失败。
 - MVP 配置已写入 `research/configs/hotpotqa_cura_mvp.json`。CPU 单测 14/14 通过，`compileall` 与 `git diff --check` 通过。
 - 尚未确认的实验事实不变：真实收益分布、oracle 上界、有害检索率、最佳时机分布和 CURA-post 反证结果都必须由后续配对 rollout 得到。
+
+## 12. 2026-07-18 P1 轨迹采集进展
+
+- 已实现 `canonical_runner.py` 和 `collect_rollouts.py`：无检索在线轨迹、三个预注册检查点、question/ETC-QFS/prefix-gap 候选、同状态 skip/retrieve 分支、ETC top-3 与单句证据注入、样本 bundle 原子落盘和最终分层 JSONL。
+- 已确认普通推理与 ETC 在线检测的显存需求不同：当前 Llama-3-8B 未指定低精度，按 FP32 加载；ETC 每 token 额外做长 prompt 全层 forward 并请求 attention。新 collector 初版还漏掉 `torch.inference_mode()`，导致保留 autograd 图并 OOM；现已修复。
+- 研究适配层不修改 legacy 文件，只在 attention 诊断调用中保持 eager 数学但丢弃前 31 层未使用的 attention，仅捕获最后层。短序列验证结果：最后层 attention shape 相同，attention/logits 最大绝对差均为 `0.0`，`allclose(1e-6)=true`。
+- 当前稳定部署为 3 张 RTX 3090、FP32、模型权重上限 14GiB/卡；1 条 smoke 峰值约 11～13.5GiB/卡，耗时 167 秒。
+- 成功的 1 条 smoke 位于服务器 `baselines/ETC/result/cura_hotpotqa_mvp_smoke1_5be3b7a_3gpu`：3 个状态、7 个检索动作、3 个 skip，完整性审计通过；收益计数为正 0、零 5、负 2。该结果仅用于链路验证，不能作为统计结论。
+- 单样本已观察到两类待分析失败：prefix-gap 可能生成 `... Show more`；答案前检索可能把抽取结果从 `yes` 污染为 `yes. 1`。当前不做启发式清洗，新增保存注入句和查询原文，用于区分检索噪声、查询失败和生成格式污染。
+- 20 条 smoke 正在服务器目录 `baselines/ETC/result/cura_hotpotqa_mvp_smoke20_de845ce_3gpu` 运行。完成后用 `summarize_rollouts.py` 汇总正/零/负收益、分组收益、正确↔错误翻转和 timing-query oracle；当前不得据 1 条样本判断主假设成立。

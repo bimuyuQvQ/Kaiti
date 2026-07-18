@@ -15,8 +15,9 @@
 - [x] 用户已审核并确认实现方案，2026-07-17 开始按增量方式编码。
 - [x] 冻结修正版答案抽取协议为 `first_answer_span_v1`，精确复刻当前评测器，并补齐重复答案、问题尾部和特殊结束符单测；原始口径继续并列报告。
 - [x] P0 研究基础层已新增到 `baselines/ETC/research/`，未修改 legacy ETC 文件；14 个 CPU 单元测试通过。
-- [ ] P1 接入 canonical trajectory runner：采集无检索轨迹、最多 3 个检查点，以及同状态 skip/多查询配对 rollout。
-- [ ] 先在 Linux 双 GPU 环境运行 20 条 smoke 并通过配对完整性审计，不直接跑完整评测。
+- [x] P1 已接入 canonical trajectory runner：采集无检索轨迹、最多 3 个检查点，以及同状态 skip/多查询配对 rollout；单样本 bundle 原子落盘。
+- [x] Linux 端 1 条 smoke 已完成：3 状态、10 动作，完整性审计通过；短序列 legacy/优化 attention 与 logits 最大绝对差均为 0。
+- [~] 20 条 smoke 正在服务器运行：`baselines/ETC/result/cura_hotpotqa_mvp_smoke20_de845ce_3gpu`，进程启动于 2026-07-18，约 171 秒/条；完成后运行诊断汇总器。
 - [ ] 第一阶段必须同时实现或保留以下基线：`ETC-release`、`ETC-online`、`Cal-ETC`、`Always-Retrieve + Filter`、CURA。
 - [ ] 第一批科学诊断：ETC 信号与真实 `B_t(q)` 的相关性、不同生成位置的收益曲线、查询候选 oracle 上界、负收益检索率。
 
