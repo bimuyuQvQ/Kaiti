@@ -5,6 +5,9 @@ from baselines.ETC.research.legacy_adapter import install_last_layer_attention_c
 
 
 class FakeLayer:
+    def __init__(self):
+        self.self_attn = SimpleNamespace(config=SimpleNamespace(_attn_implementation="sdpa"))
+
     def forward(self, hidden, output_attentions=False, **kwargs):
         return (hidden, "last-attention") if output_attentions else (hidden,)
 
