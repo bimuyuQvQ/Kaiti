@@ -4,6 +4,7 @@ from baselines.ETC.research.evidence_attribution import (
     attribute_bundles,
     build_gold_index,
     normalize_text,
+    normalize_title,
 )
 
 
@@ -46,6 +47,8 @@ class EvidenceAttributionTests(unittest.TestCase):
 
     def test_normalization_handles_case_underscore_and_punctuation(self):
         self.assertEqual(normalize_text("Alpha_Page!"), normalize_text("alpha page"))
+        self.assertEqual(normalize_title("Alpha_Page"), normalize_title("alpha page"))
+        self.assertNotEqual(normalize_title("Romeo + Juliet"), normalize_title("Romeo ～ Juliet"))
 
     def test_gold_loader_resolves_supporting_sentences(self):
         gold = build_gold_index(self.payload)

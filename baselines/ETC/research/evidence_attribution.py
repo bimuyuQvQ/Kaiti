@@ -24,6 +24,13 @@ def normalize_text(value: Any) -> str:
     return " ".join(text.split())
 
 
+def normalize_title(value: Any) -> str:
+    """标题匹配保留标点，避免把 ``Romeo + Juliet`` 等不同实体折叠。"""
+
+    text = unicodedata.normalize("NFKC", str(value or "")).replace("_", " ").casefold()
+    return " ".join(text.split())
+
+
 def _unpack_gold_payload(payload: Any) -> List[Dict[str, Any]]:
     if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
         rows = []
@@ -58,7 +65,7 @@ def _context_map(row: Mapping[str, Any]) -> Dict[str, List[str]]:
         raise ValueError("gold 样本缺少 context")
     result: Dict[str, List[str]] = {}
     for title, sentences in pairs:
-        key = normalize_text(title)
+        key = normalize_title(title)
         if key in result:
             raise ValueError(f"context 出现规范化后重复标题: {title}")
         result[key] = [str(sentence) for sentence in sentences]
@@ -103,7 +110,7 @@ def build_gold_index(payload: Any) -> Dict[str, Dict[str, Any]]:
         sentences: List[str] = []
         normalized_sentences: List[str] = []
         for title, sentence_id in pairs:
-            title_key = normalize_text(title)
+            title_key = normalize_title(title)
             if title_key not in contexts:
                 raise ValueError(f"支持事实标题不在 context 中: {title}")
             if sentence_id < 0 or sentence_id >= len(contexts[title_key]):
@@ -136,7 +143,7 @@ def _first_rank(documents: Sequence[Mapping[str, Any]], gold_titles: set[str]) -
     ranks = [
         int(document.get("rank", position + 1))
         for position, document in enumerate(documents)
-        if normalize_text(document.get("title")) in gold_titles
+        if normalize_title(document.get("title")) in gold_titles
     ]
     return min(ranks) if ranks else None
 
@@ -220,7 +227,7 @@ def attribute_bundles(
             benefit = retrieve_score - skip_score
             documents = action.get("retrieved_documents", [])
             retrieved_titles = [str(document.get("title") or "") for document in documents]
-            retrieved_title_keys = {normalize_text(title) for title in retrieved_titles if title}
+            retrieved_title_keys = {normalize_title(title) for title in retrieved_titles if title}
             hit_titles = gold_titles & retrieved_title_keys
             merged_document_text = normalize_text(
                 " ".join(str(document.get("text") or "") for document in documents)
