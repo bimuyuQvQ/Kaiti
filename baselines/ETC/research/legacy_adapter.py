@@ -10,6 +10,57 @@ from typing import Any, Dict, Optional
 logger = logging.getLogger(__name__)
 
 
+def install_last_layer_attention_capture(model: Any) -> None:
+    """Return only last-layer attention while preserving legacy eager math.
+
+    Transformers normally accumulates every layer's attention whenever the top
+    level requests attentions. ETC consumes only the final element. During that
+    diagnostic call we run eager attention exactly as legacy does, but discard
+    earlier layer matrices immediately and attach only the captured final one.
+    """
+
+    if getattr(model, "_cura_last_attention_installed", False):
+        return
+    last_layer = model.model.layers[-1]
+    model_forward_name = "_old_forward" if hasattr(model, "_old_forward") else "forward"
+    layer_forward_name = "_old_forward" if hasattr(last_layer, "_old_forward") else "forward"
+    original_model_forward = getattr(model, model_forward_name)
+    original_layer_forward = getattr(last_layer, layer_forward_name)
+
+    def memory_efficient_forward(*args: Any, **kwargs: Any) -> Any:
+        if not kwargs.get("output_attentions", False):
+            return original_model_forward(*args, **kwargs)
+
+        captured: Dict[str, Any] = {}
+        original_implementation = model.config._attn_implementation
+
+        def capture_last_layer(*layer_args: Any, **layer_kwargs: Any) -> Any:
+            layer_kwargs["output_attentions"] = True
+            outputs = original_layer_forward(*layer_args, **layer_kwargs)
+            captured["attention"] = outputs[1]
+            # The outer model is called with output_attentions=False and expects
+            # a one-element decoder-layer result.
+            return (outputs[0],)
+
+        try:
+            model.config._attn_implementation = "eager"
+            setattr(last_layer, layer_forward_name, capture_last_layer)
+            forwarded = dict(kwargs)
+            forwarded["output_attentions"] = False
+            outputs = original_model_forward(*args, **forwarded)
+        finally:
+            setattr(last_layer, layer_forward_name, original_layer_forward)
+            model.config._attn_implementation = original_implementation
+
+        if "attention" not in captured:
+            raise RuntimeError("未能捕获 Llama 最后一层注意力")
+        outputs.attentions = (captured["attention"],)
+        return outputs
+
+    setattr(model, model_forward_name, memory_efficient_forward)
+    model._cura_last_attention_installed = True
+
+
 def resolve_max_memory(max_memory_gib: int, device_count: Optional[int] = None) -> Dict[int, str]:
     if max_memory_gib <= 0:
         raise ValueError("model_max_memory_gib 必须为正数")
@@ -44,6 +95,7 @@ def build_research_etc(args: Any, research_config: Dict[str, Any]) -> Any:
         device_map="auto",
         max_memory=max_memory,
     )
+    install_last_layer_attention_capture(generator.model)
     generator.space_token = "Ġ" if "llama-3" in args.model_name_or_path.lower() else "▁"
     generator.tokenizer.pad_token = generator.tokenizer.eos_token
     generator.tokens_cannot_merged = {

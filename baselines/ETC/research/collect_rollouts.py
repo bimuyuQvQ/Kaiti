@@ -28,6 +28,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--research_config", required=True)
     parser.add_argument("--run_dir", required=True)
     parser.add_argument("--sample", type=int, default=None)
+    parser.add_argument("--model_max_memory_gib", type=int, default=None)
     return parser.parse_args()
 
 
@@ -166,6 +167,13 @@ def main() -> None:
     cli = parse_args()
     legacy_config = load_json(cli.legacy_config)
     research_config = load_json(cli.research_config)
+    if cli.model_max_memory_gib is not None:
+        if cli.model_max_memory_gib <= 0:
+            raise ValueError("model_max_memory_gib 必须为正数")
+        research_config = {
+            **research_config,
+            "model_max_memory_gib": cli.model_max_memory_gib,
+        }
     requested_sample = cli.sample if cli.sample is not None else int(research_config.get("sample", -1))
     if requested_sample == 0 or requested_sample < -1:
         raise ValueError("sample 必须为 -1 或正数")
