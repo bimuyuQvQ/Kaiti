@@ -1,0 +1,18 @@
+{
+  "method": "retrieved_evidence_restart_at_etc_v1",
+  "dataset": "hotpotqa",
+  "answer_extractor": "first_answer_span_v1",
+  "sensitivity_answer_extractors": [
+    "first_answer_sentence_v2"
+  ],
+  "model_max_memory_gib": 14,
+  "attention_capture": "last_layer_only_eager_v1",
+  "timing": "first_etc_trigger_from_source_bundle",
+  "queries": "reuse_question_etc_qfs_prefix_gap_from_source_bundle",
+  "documents": "reuse_exact_bm25_top3_from_source_actions",
+  "intervention": "restart_without_source_prefix_v1",
+  "skip_continuation": "reuse_source_canonical_no_retrieval_v2",
+  "post_action_retrieval": "disabled",
+  "deployment_available": true,
+  "purpose": "diagnose_real_evidence_restart_operator"
+}

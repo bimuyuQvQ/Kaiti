@@ -198,7 +198,7 @@ def rollout_gold_state(
     )
 
 
-def generate_gold_restart_prediction(
+def generate_restart_prediction(
     runner: CanonicalTrajectoryRunner,
     documents: Sequence[RetrievedDocument],
     question: str,
@@ -249,7 +249,7 @@ def build_oracle_bundle(
     state_rows = select_intervention_states(source_bundle["states"], intervention_mode)
     restart_prediction = None
     if intervention_mode == "restart_from_gold":
-        restart_prediction = generate_gold_restart_prediction(
+        restart_prediction = generate_restart_prediction(
             runner,
             documents,
             entry["question"],
