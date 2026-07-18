@@ -10,7 +10,6 @@ import argparse
 import json
 import os
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any, Dict, Iterable, List
 
 from tqdm import tqdm
@@ -49,7 +48,17 @@ def write_json_exclusive(path: str | Path, value: Any) -> None:
         os.fsync(handle.fileno())
 
 
-def load_dataset(args: SimpleNamespace) -> Any:
+class ConfigNamespace:
+    """Attribute config that also supports legacy ETC's membership checks."""
+
+    def __init__(self, values: Dict[str, Any]) -> None:
+        self.__dict__.update(values)
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.__dict__
+
+
+def load_dataset(args: ConfigNamespace) -> Any:
     from data import BIOASQ, IIRC, HotpotQA, PubmedQA, StrategyQA, WikiMultiHopQA
 
     classes = {
@@ -182,7 +191,7 @@ def main() -> None:
     else:
         write_json_exclusive(manifest_path, manifest)
 
-    args = SimpleNamespace(**legacy_config)
+    args = ConfigNamespace(legacy_config)
     dataset = load_dataset(args)
     rows = dataset.dataset
     sample_count = len(rows) if requested_sample == -1 else min(len(rows), requested_sample)
