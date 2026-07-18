@@ -147,6 +147,7 @@ def build_audit(bundle_paths: Iterable[Path]) -> Dict[str, Any]:
     actions: List[ActionRollout] = []
     expected: Dict[str, List[str]] = {}
     samples_without_states = 0
+    protocol_errors: List[str] = []
     for path in bundle_paths:
         bundle = load_json(path)
         if not bundle["states"]:
@@ -155,11 +156,46 @@ def build_audit(bundle_paths: Iterable[Path]) -> Dict[str, Any]:
         for query in bundle["queries"]:
             query_by_state.setdefault(query["state_id"], []).append(query["candidate_id"])
         for state in bundle["states"]:
+            if not state.get("prefix_token_ids"):
+                protocol_errors.append(f"状态 {state['state_id']} 缺少精确 prefix_token_ids")
             expected[state["state_id"]] = query_by_state.get(state["state_id"], [])
+        actions_by_state: Dict[str, List[Dict[str, Any]]] = {}
+        for row in bundle["actions"]:
+            actions_by_state.setdefault(row["state_id"], []).append(row)
+        for state in bundle["states"]:
+            skips = [
+                row
+                for row in actions_by_state.get(state["state_id"], [])
+                if row["action_type"] == "skip"
+            ]
+            if len(skips) != 1:
+                continue
+            skip = skips[0]
+            metadata = skip.get("generation_metadata", {})
+            if not metadata.get("canonical_skip_reused"):
+                protocol_errors.append(f"状态 {state['state_id']} 未复用 canonical skip")
+            if skip["prediction"] != bundle["no_retrieval_prediction"]:
+                protocol_errors.append(f"状态 {state['state_id']} 的 skip prediction 漂移")
+            if skip["extracted_answer"] != bundle["no_retrieval_extracted_answer"]:
+                protocol_errors.append(f"状态 {state['state_id']} 的 skip 答案漂移")
+            if skip["scores"] != bundle["no_retrieval_scores"]:
+                protocol_errors.append(f"状态 {state['state_id']} 的 skip 指标漂移")
+            if skip.get("alternative_extractions", {}) != bundle.get(
+                "no_retrieval_alternative_extractions", {}
+            ):
+                protocol_errors.append(f"状态 {state['state_id']} 的 skip 敏感性答案漂移")
+            if skip.get("alternative_scores", {}) != bundle.get(
+                "no_retrieval_alternative_scores", {}
+            ):
+                protocol_errors.append(f"状态 {state['state_id']} 的 skip 敏感性指标漂移")
         actions.extend(action_from_dict(row) for row in bundle["actions"])
     report = audit_rollouts(actions, expected)
     value = to_dict(report)
     value["samples_without_states"] = samples_without_states
+    value["protocol_consistency_complete"] = not protocol_errors
+    value["protocol_errors"] = protocol_errors
+    value["errors"].extend(protocol_errors)
+    value["complete"] = bool(value["complete"] and not protocol_errors)
     return value
 
 

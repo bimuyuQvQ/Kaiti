@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional
 
 
-SCHEMA_VERSION = "cura_schema_v1"
+SCHEMA_VERSION = "cura_schema_v2"
 
 
 def canonical_json(value: Any) -> str:
@@ -64,6 +64,7 @@ class CheckpointState:
     checkpoint_index: int
     checkpoint_type: str
     prefix_text: str
+    prefix_token_ids: List[int]
     state_id: str
     token_index: Optional[int] = None
     etc_signal: Optional[float] = None
@@ -80,6 +81,8 @@ class ActionRollout:
     prediction: str
     extracted_answer: str
     scores: Dict[str, float]
+    alternative_extractions: Dict[str, str] = field(default_factory=dict)
+    alternative_scores: Dict[str, Dict[str, float]] = field(default_factory=dict)
     status: str = "complete"
     query_candidate_id: Optional[str] = None
     retrieved_documents: List[RetrievedDocument] = field(default_factory=list)
@@ -99,5 +102,4 @@ class RunManifest:
     input_files: Dict[str, str]
     python_version: str
     platform: str
-    package_version: str = "cura_research_v1"
-
+    package_version: str = "cura_research_v2"

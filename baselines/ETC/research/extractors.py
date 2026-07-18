@@ -12,6 +12,7 @@ from typing import Callable, Optional
 
 
 EXTRACTOR_VERSION = "first_answer_span_v1"
+SENSITIVITY_EXTRACTOR_VERSION = "first_answer_sentence_v2"
 ANSWER_MARKER_RE = re.compile(r"\bthe answer is\b", re.IGNORECASE)
 REPEATED_ANSWER_RE = re.compile(r"\b(?:so\s+)?the answer is\b", re.IGNORECASE)
 QUESTION_TAIL_RE = re.compile(r"(?:(?<=\s)|(?<=\.))Question\b", re.IGNORECASE)
@@ -48,6 +49,24 @@ def extract_first_answer_span_v1(text: str) -> str:
     return text
 
 
+def extract_first_answer_sentence_v2(text: str) -> str:
+    """Sensitivity view that removes answer-following explanations.
+
+    The primary v1 rule remains frozen.  This rule is deliberately small and
+    deterministic: yes/no answers collapse to the leading polarity token;
+    otherwise only the first sentence after the answer marker is retained.
+    """
+
+    answer = extract_first_answer_span_v1(text)
+    polarity = re.match(r"^(yes|no)\b", answer, re.IGNORECASE)
+    if polarity:
+        return polarity.group(1)
+    boundary = re.search(r"[.!?](?=\s+(?:[A-Z0-9]|However\b|Both\b|Because\b))", answer)
+    if boundary:
+        answer = answer[: boundary.start()].strip()
+    return answer
+
+
 def extract_answer(
     text: str,
     mode: str = EXTRACTOR_VERSION,
@@ -55,6 +74,8 @@ def extract_answer(
 ) -> str:
     if mode == "first_answer_span_v1":
         return extract_first_answer_span_v1(text)
+    if mode == "first_answer_sentence_v2":
+        return extract_first_answer_sentence_v2(text)
     if mode == "raw_v1":
         return strip_generation_tail(text).strip()
     if mode == "legacy_original":
@@ -62,4 +83,3 @@ def extract_answer(
             raise ValueError("legacy_original 模式必须显式传入 legacy_extractor")
         return legacy_extractor(strip_generation_tail(text))
     raise ValueError(f"未知答案抽取模式: {mode}")
-

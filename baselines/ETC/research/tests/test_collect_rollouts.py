@@ -1,6 +1,9 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from baselines.ETC.research.collect_rollouts import ConfigNamespace
+from baselines.ETC.research.collect_rollouts import ConfigNamespace, build_audit
 
 
 class CollectRolloutTests(unittest.TestCase):
@@ -9,6 +12,56 @@ class CollectRolloutTests(unittest.TestCase):
         self.assertEqual(config.es_index_name, "wiki")
         self.assertIn("es_index_name", config)
         self.assertNotIn("missing", config)
+
+    @staticmethod
+    def _bundle(skip_prediction="The answer is x."):
+        scores = {"em": 1.0, "accuracy": 1.0, "f1": 1.0, "precision": 1.0, "recall": 1.0}
+        alternative_scores = {"first_answer_sentence_v2": scores}
+        return {
+            "sample_index": 0,
+            "qid": "q0",
+            "no_retrieval_prediction": "The answer is x.",
+            "no_retrieval_extracted_answer": "x",
+            "no_retrieval_scores": scores,
+            "no_retrieval_alternative_extractions": {"first_answer_sentence_v2": "x"},
+            "no_retrieval_alternative_scores": alternative_scores,
+            "states": [{"state_id": "s1", "prefix_token_ids": [1, 2]}],
+            "queries": [],
+            "actions": [
+                {
+                    "qid": "q0",
+                    "state_id": "s1",
+                    "action_id": "a1",
+                    "action_type": "skip",
+                    "prediction": skip_prediction,
+                    "extracted_answer": "x",
+                    "scores": scores,
+                    "alternative_extractions": {"first_answer_sentence_v2": "x"},
+                    "alternative_scores": alternative_scores,
+                    "status": "complete",
+                    "query_candidate_id": None,
+                    "retrieved_documents": [],
+                    "generation_metadata": {"canonical_skip_reused": True},
+                    "error": None,
+                }
+            ],
+        }
+
+    def test_protocol_audit_accepts_exact_canonical_skip(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bundle.json"
+            path.write_text(json.dumps(self._bundle()), encoding="utf-8")
+            report = build_audit([path])
+        self.assertTrue(report["complete"], report["errors"])
+        self.assertTrue(report["protocol_consistency_complete"])
+
+    def test_protocol_audit_rejects_prediction_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "bundle.json"
+            path.write_text(json.dumps(self._bundle("The answer is y.")), encoding="utf-8")
+            report = build_audit([path])
+        self.assertFalse(report["complete"])
+        self.assertTrue(any("prediction 漂移" in error for error in report["errors"]))
 
 
 if __name__ == "__main__":

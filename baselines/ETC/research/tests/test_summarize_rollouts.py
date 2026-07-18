@@ -32,6 +32,52 @@ class SummarizeTests(unittest.TestCase):
         self.assertEqual(summary["by_query_source"]["question"]["positive_rate"], 1.0)
         self.assertEqual(summary["skip_inconsistency_count"], 0)
 
+    def test_inconsistent_skip_refuses_oracle(self):
+        bundle = {
+            "sample_index": 0,
+            "qid": "q0",
+            "no_retrieval_extracted_answer": "x",
+            "no_retrieval_scores": {"f1": 1.0},
+            "states": [{"state_id": "s1", "checkpoint_type": "first_etc_trigger"}],
+            "queries": [],
+            "actions": [
+                {
+                    "state_id": "s1",
+                    "action_type": "skip",
+                    "extracted_answer": "y",
+                    "scores": {"f1": 0.0, "accuracy": 0},
+                }
+            ],
+        }
+        with self.assertRaisesRegex(ValueError, "拒绝计算 oracle"):
+            summarize_bundles([bundle])
+
+    def test_sensitivity_extractor_uses_parallel_scores(self):
+        version = "first_answer_sentence_v2"
+        bundle = {
+            "sample_index": 0,
+            "qid": "q0",
+            "no_retrieval_extracted_answer": "yes. explanation",
+            "no_retrieval_scores": {"f1": 0.0},
+            "no_retrieval_alternative_extractions": {version: "yes"},
+            "no_retrieval_alternative_scores": {version: {"f1": 1.0}},
+            "states": [{"state_id": "s1", "checkpoint_type": "before_first_answer_marker"}],
+            "queries": [],
+            "actions": [
+                {
+                    "state_id": "s1",
+                    "action_type": "skip",
+                    "extracted_answer": "yes. explanation",
+                    "scores": {"f1": 0.0, "accuracy": 0},
+                    "alternative_extractions": {version: "yes"},
+                    "alternative_scores": {version: {"f1": 1.0, "accuracy": 1}},
+                }
+            ],
+        }
+        summary = summarize_bundles([bundle], extractor_version=version)
+        self.assertEqual(summary["extractor_version"], version)
+        self.assertEqual(summary["skip_inconsistency_count"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

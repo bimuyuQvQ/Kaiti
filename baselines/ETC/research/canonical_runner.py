@@ -11,7 +11,7 @@ import io
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .checkpoints import CheckpointCollector, TraceObservation
-from .extractors import EXTRACTOR_VERSION, extract_answer
+from .extractors import EXTRACTOR_VERSION, SENSITIVITY_EXTRACTOR_VERSION, extract_answer
 from .query_candidates import QueryContext, build_query_candidates, prefix_gap_prompt
 from .retrieval_adapter import MetadataBM25
 from .rollout import make_action_id
@@ -33,6 +33,12 @@ class CanonicalTrajectoryRunner:
         self.max_tokens = int(etc_model.generate_max_length)
         self.max_checkpoints = int(research_config.get("max_checkpoints_per_sample", 3))
         self.extractor = research_config.get("answer_extractor", EXTRACTOR_VERSION)
+        self.sensitivity_extractors = list(
+            research_config.get(
+                "sensitivity_answer_extractors",
+                [SENSITIVITY_EXTRACTOR_VERSION],
+            )
+        )
         self.retriever = MetadataBM25(
             index_name=research_config.get("es_index_name", getattr(etc_model, "es_index_name", "wiki"))
         )
@@ -81,12 +87,15 @@ class CanonicalTrajectoryRunner:
         sample_index: int,
         question: str,
         demo_text: str,
-    ) -> Tuple[str, List[CheckpointState]]:
+    ) -> Tuple[str, List[int], List[CheckpointState]]:
         generated = ""
+        final_generated_token_ids: List[int] = []
         collector = CheckpointCollector(qid, sample_index, self.max_checkpoints)
 
         while self._answer_token_count(generated) < self.max_tokens:
             remaining = max(1, self.max_tokens - self._answer_token_count(generated))
+            existing_tokens = self.generator.tokenize(generated, is_start=False)
+            existing_token_ids = self.tokenizer.convert_tokens_to_ids(existing_tokens)
 
             def observe_without_retrieving(outputs: Any) -> Any:
                 with contextlib.redirect_stdout(io.StringIO()):
@@ -99,10 +108,13 @@ class CanonicalTrajectoryRunner:
                     except (IndexError, RuntimeError, ValueError) as exc:
                         etc_query = None
                 prefix = self._join_prefix(generated, outputs.new_text.strip())
+                new_token_ids = self.tokenizer.convert_tokens_to_ids(outputs.blocks[-1].tokens)
+                prefix_token_ids = list(existing_token_ids) + list(new_token_ids)
                 collector.observe(
                     TraceObservation(
                         generated_prefix=prefix,
-                        token_index=self._answer_token_count(prefix),
+                        token_index=len(prefix_token_ids),
+                        prefix_token_ids=prefix_token_ids,
                         features=self._features(outputs, check_info),
                         etc_triggered=bool(check_info.hallucination),
                         etc_query=etc_query,
@@ -119,40 +131,51 @@ class CanonicalTrajectoryRunner:
                 )
             if outputs.empty:
                 break
+            final_generated_token_ids = list(existing_token_ids) + list(
+                self.tokenizer.convert_tokens_to_ids(outputs.blocks[-1].tokens)
+            )
             updated = self._join_prefix(generated, outputs.new_text.strip())
             if len(updated) <= len(generated):
                 break
             generated = updated
             if outputs.ended:
                 break
-        return generated, collector.finalize()
+        return generated, final_generated_token_ids, collector.finalize()
 
-    def _greedy_completion(self, prompt: str, max_new_tokens: int) -> Tuple[bool, str]:
+    def _generate_from_ids(
+        self,
+        input_token_ids: Sequence[int],
+        max_new_tokens: int,
+        stop_at_newline: bool = False,
+    ) -> Tuple[bool, str, List[int]]:
         if max_new_tokens <= 0:
-            return True, ""
+            return True, "", []
         import torch
 
-        input_ids = self.tokenizer.encode(prompt, return_tensors="pt").to(self.generator.model.device)
-        input_length = input_ids.shape[1]
-        output_ids = self.generator.model.generate(
-            input_ids=input_ids,
-            attention_mask=torch.ones_like(input_ids),
-            max_new_tokens=max_new_tokens,
-            do_sample=False,
-            pad_token_id=self.tokenizer.pad_token_id,
-        )[0, input_length:]
-        ended = bool(len(output_ids) and output_ids[-1].item() == self.tokenizer.eos_token_id)
-        if len(output_ids) and output_ids[0].item() == self.tokenizer.bos_token_id:
+        input_ids = torch.tensor([list(input_token_ids)], device=self.generator.model.device)
+        kwargs: Dict[str, Any] = {
+            "input_ids": input_ids,
+            "attention_mask": torch.ones_like(input_ids),
+            "max_new_tokens": max_new_tokens,
+            "do_sample": False,
+            "pad_token_id": self.tokenizer.pad_token_id,
+        }
+        if stop_at_newline:
+            kwargs.update({"stop_strings": "\n", "tokenizer": self.tokenizer})
+        output_ids = self.generator.model.generate(**kwargs)[0, input_ids.shape[1] :].tolist()
+        if output_ids and output_ids[0] == self.tokenizer.bos_token_id:
             output_ids = output_ids[1:]
+        ended = bool(output_ids and output_ids[-1] == self.tokenizer.eos_token_id)
         if ended:
             output_ids = output_ids[:-1]
-        return ended, self.tokenizer.decode(output_ids)
+        return ended, self.tokenizer.decode(output_ids), output_ids
 
-    def _finish_without_retrieval(self, demo_text: str, question: str, prefix: str) -> str:
-        remaining = max(0, self.max_tokens - self._answer_token_count(prefix))
-        prompt = demo_text + "\nQuestion:" + question + "\nAnswer:" + prefix
-        _, continuation = self._greedy_completion(prompt, remaining)
-        return self._join_prefix(prefix, continuation.strip())
+    def _greedy_completion(self, prompt: str, max_new_tokens: int) -> Tuple[bool, str]:
+        ended, text, _ = self._generate_from_ids(
+            self.tokenizer.encode(prompt),
+            max_new_tokens,
+        )
+        return ended, text
 
     def _prefix_gap_query(self, state: CheckpointState, question: str) -> str:
         config = self.config.get("prefix_gap", {})
@@ -201,6 +224,15 @@ class CanonicalTrajectoryRunner:
         extra_generation_metadata: Optional[Dict[str, Any]] = None,
     ) -> ActionRollout:
         answer = extract_answer(prediction, self.extractor)
+        alternative_extractions = {
+            version: extract_answer(prediction, version)
+            for version in self.sensitivity_extractors
+            if version != self.extractor
+        }
+        alternative_scores = {
+            version: self._score(value, ground_truth, ground_truth_id)
+            for version, value in alternative_extractions.items()
+        }
         candidate_id = candidate.candidate_id if candidate else None
         return ActionRollout(
             qid=state.qid,
@@ -211,9 +243,11 @@ class CanonicalTrajectoryRunner:
             prediction=prediction,
             extracted_answer=answer,
             scores=self._score(answer, ground_truth, ground_truth_id),
+            alternative_extractions=alternative_extractions,
+            alternative_scores=alternative_scores,
             retrieved_documents=list(documents or []),
             generation_metadata={
-                "rollout_version": "single_retrieval_rollout_v1",
+                "rollout_version": "single_retrieval_rollout_v2",
                 "max_answer_tokens": self.max_tokens,
                 "post_action_retrieval": "disabled",
                 **(extra_generation_metadata or {}),
@@ -228,10 +262,20 @@ class CanonicalTrajectoryRunner:
         demo_text: str,
         ground_truth: Any,
         ground_truth_id: Any,
+        canonical_skip_prediction: str,
     ) -> List[ActionRollout]:
-        skip_prediction = self._finish_without_retrieval(demo_text, question, state.prefix_text)
         actions = [
-            self._make_rollout(state, "skip", skip_prediction, ground_truth, ground_truth_id)
+            self._make_rollout(
+                state,
+                "skip",
+                canonical_skip_prediction,
+                ground_truth,
+                ground_truth_id,
+                extra_generation_metadata={
+                    "canonical_skip_reused": True,
+                    "continuation_source": "no_retrieval_trajectory",
+                },
+            )
         ]
         topk = int(self.config.get("retrieve_topk", 3))
         for candidate in candidates:
@@ -240,11 +284,28 @@ class CanonicalTrajectoryRunner:
             for index, document in enumerate(documents, start=1):
                 prompt += f"[{index}] {document.text}\n"
             prompt += "Answer in the same format as before.\n"
-            prompt += "\nQuestion:" + question + "\nAnswer:" + state.prefix_text
-            _, regenerated = self.generator.simply_generate(prompt, max_length=self.max_tokens)
+            prompt += "\nQuestion:" + question + "\nAnswer:"
+            retrieval_input_ids = self.tokenizer.encode(prompt) + list(state.prefix_token_ids)
+            _, regenerated, _ = self._generate_from_ids(
+                retrieval_input_ids,
+                self.max_tokens,
+                stop_at_newline=True,
+            )
             injected_sentence = self.get_top_sentence(regenerated).strip()
-            prefix_after_evidence = self._join_prefix(state.prefix_text, injected_sentence)
-            prediction = self._finish_without_retrieval(demo_text, question, prefix_after_evidence)
+            injected_token_ids = self.tokenizer.encode(
+                (" " if state.prefix_token_ids else "") + injected_sentence,
+                add_special_tokens=False,
+            )
+            answer_token_ids = list(state.prefix_token_ids) + list(injected_token_ids)
+            continuation_input_ids = self.tokenizer.encode(
+                demo_text + "\nQuestion:" + question + "\nAnswer:"
+            ) + answer_token_ids
+            remaining = max(0, self.max_tokens - len(answer_token_ids))
+            _, _, continuation_token_ids = self._generate_from_ids(
+                continuation_input_ids,
+                remaining,
+            )
+            prediction = self.tokenizer.decode(answer_token_ids + continuation_token_ids).strip()
             actions.append(
                 self._make_rollout(
                     state,
@@ -265,7 +326,7 @@ class CanonicalTrajectoryRunner:
     def run_sample(self, entry: Dict[str, Any], sample_index: int) -> Dict[str, Any]:
         demo_text = "\n".join(item["case"] for item in entry["demo"])
         ground_truth_id = entry.get("answer_id")
-        no_retrieval_prediction, states = self.collect_no_retrieval_trace(
+        no_retrieval_prediction, no_retrieval_token_ids, states = self.collect_no_retrieval_trace(
             entry["qid"], sample_index, entry["question"], demo_text
         )
         candidate_rows: List[QueryCandidate] = []
@@ -281,22 +342,31 @@ class CanonicalTrajectoryRunner:
                     demo_text,
                     entry["answer"],
                     ground_truth_id,
+                    no_retrieval_prediction,
                 )
             )
+        no_retrieval_answer = extract_answer(no_retrieval_prediction, self.extractor)
+        no_retrieval_alternative_extractions = {
+            version: extract_answer(no_retrieval_prediction, version)
+            for version in self.sensitivity_extractors
+            if version != self.extractor
+        }
         return {
-            "bundle_version": "cura_sample_bundle_v1",
+            "bundle_version": "cura_sample_bundle_v2",
             "qid": entry["qid"],
             "sample_index": sample_index,
             "question": entry["question"],
             "ground_truth": entry["answer"],
             "ground_truth_id": ground_truth_id,
             "no_retrieval_prediction": no_retrieval_prediction,
-            "no_retrieval_extracted_answer": extract_answer(no_retrieval_prediction, self.extractor),
-            "no_retrieval_scores": self._score(
-                extract_answer(no_retrieval_prediction, self.extractor),
-                entry["answer"],
-                ground_truth_id,
-            ),
+            "no_retrieval_token_ids": no_retrieval_token_ids,
+            "no_retrieval_extracted_answer": no_retrieval_answer,
+            "no_retrieval_scores": self._score(no_retrieval_answer, entry["answer"], ground_truth_id),
+            "no_retrieval_alternative_extractions": no_retrieval_alternative_extractions,
+            "no_retrieval_alternative_scores": {
+                version: self._score(value, entry["answer"], ground_truth_id)
+                for version, value in no_retrieval_alternative_extractions.items()
+            },
             "states": [to_dict(item) for item in states],
             "queries": [to_dict(item) for item in candidate_rows],
             "actions": [to_dict(item) for item in action_rows],

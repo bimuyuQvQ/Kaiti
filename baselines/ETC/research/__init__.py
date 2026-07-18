@@ -4,7 +4,7 @@ This package is intentionally separate from the released ETC baseline.  Importin
 it must not load a language model, CUDA, BEIR, or Elasticsearch.
 """
 
-from .extractors import EXTRACTOR_VERSION, extract_answer
+from .extractors import EXTRACTOR_VERSION, SENSITIVITY_EXTRACTOR_VERSION, extract_answer
 from .schema import (
     ActionRollout,
     CheckpointState,
@@ -15,6 +15,7 @@ from .schema import (
 
 __all__ = [
     "EXTRACTOR_VERSION",
+    "SENSITIVITY_EXTRACTOR_VERSION",
     "ActionRollout",
     "CheckpointState",
     "QueryCandidate",
@@ -22,4 +23,3 @@ __all__ = [
     "RunManifest",
     "extract_answer",
 ]
-

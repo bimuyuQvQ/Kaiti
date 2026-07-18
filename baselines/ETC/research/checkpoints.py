@@ -11,7 +11,7 @@ from .schema import CheckpointState, stable_id
 
 ANSWER_MARKER_RE = re.compile(r"\bthe answer is\b", re.IGNORECASE)
 SENTENCE_BOUNDARY_RE = re.compile(r"[.!?](?:[\"')\]]?)(?:\s|$)")
-CHECKPOINT_VERSION = "checkpoint_selector_v1"
+CHECKPOINT_VERSION = "checkpoint_selector_v2"
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,7 @@ class TraceObservation:
     features: Dict[str, Any] = field(default_factory=dict)
     etc_triggered: bool = False
     etc_query: Optional[str] = None
+    prefix_token_ids: List[int] = field(default_factory=list)
 
 
 class CheckpointCollector:
@@ -33,6 +34,7 @@ class CheckpointCollector:
         self.sample_index = sample_index
         self.max_checkpoints = max_checkpoints
         self._candidates: Dict[str, CheckpointState] = {}
+        self._history: List[TraceObservation] = []
 
     def _add(
         self,
@@ -49,6 +51,7 @@ class CheckpointCollector:
             "sample_index": self.sample_index,
             "checkpoint_type": checkpoint_type,
             "prefix_text": prefix,
+            "prefix_token_ids": observation.prefix_token_ids,
         }
         self._candidates[checkpoint_type] = CheckpointState(
             qid=self.qid,
@@ -56,11 +59,15 @@ class CheckpointCollector:
             checkpoint_index=-1,
             checkpoint_type=checkpoint_type,
             prefix_text=prefix,
+            prefix_token_ids=list(observation.prefix_token_ids),
             state_id=stable_id("state", payload),
             token_index=observation.token_index,
             etc_signal=observation.features.get("etc_signal"),
             features=dict(observation.features),
-            trace_metadata=dict(trace_metadata or {}),
+            trace_metadata={
+                "prefix_token_source": "legacy_generate_online_exact_ids_v2",
+                **dict(trace_metadata or {}),
+            },
         )
 
     def observe(self, observation: TraceObservation) -> None:
@@ -74,13 +81,28 @@ class CheckpointCollector:
             )
         boundary = SENTENCE_BOUNDARY_RE.search(prefix)
         if boundary:
-            self._add("first_sentence_boundary", prefix[: boundary.end()].rstrip(), observation)
+            # 以首次检测到句界时的真实 token 状态为检查点，避免把字符串
+            # 截断到一个无法由原 token 前缀精确表示的位置。
+            self._add("first_sentence_boundary", prefix, observation)
         answer = ANSWER_MARKER_RE.search(prefix)
         if answer:
-            self._add("before_first_answer_marker", prefix[: answer.start()].rstrip(), observation)
+            # 回看逐 token 观测，选择答案标记出现之前最后一个真实状态。
+            prior = [
+                item
+                for item in self._history
+                if len(item.generated_prefix.rstrip()) <= answer.start()
+            ]
+            if prior:
+                previous = prior[-1]
+                self._add(
+                    "before_first_answer_marker",
+                    previous.generated_prefix,
+                    previous,
+                )
+        self._history.append(observation)
 
     def finalize(self) -> List[CheckpointState]:
-        unique_by_prefix: Dict[str, CheckpointState] = {}
+        unique_by_prefix: Dict[tuple[int, ...], CheckpointState] = {}
         priority = {
             "first_etc_trigger": 0,
             "first_sentence_boundary": 1,
@@ -94,7 +116,7 @@ class CheckpointCollector:
             ),
         )
         for state in ordered:
-            unique_by_prefix.setdefault(state.prefix_text, state)
+            unique_by_prefix.setdefault(tuple(state.prefix_token_ids), state)
         selected = list(unique_by_prefix.values())[: self.max_checkpoints]
         return [
             CheckpointState(
@@ -103,6 +125,7 @@ class CheckpointCollector:
                 checkpoint_index=index,
                 checkpoint_type=state.checkpoint_type,
                 prefix_text=state.prefix_text,
+                prefix_token_ids=state.prefix_token_ids,
                 state_id=state.state_id,
                 token_index=state.token_index,
                 etc_signal=state.etc_signal,
@@ -111,4 +134,3 @@ class CheckpointCollector:
             )
             for index, state in enumerate(selected)
         ]
-

@@ -19,6 +19,14 @@ class ExtractorTests(unittest.TestCase):
     def test_missing_marker_is_empty(self):
         self.assertEqual(extract_answer("Only reasoning, no marker."), "")
 
+    def test_sentence_v2_collapses_yes_no_explanation(self):
+        text = "Reasoning. The answer is yes. Both places are in France."
+        self.assertEqual(extract_answer(text, mode="first_answer_sentence_v2"), "yes")
+
+    def test_sentence_v2_keeps_entity_answer(self):
+        text = "Reasoning. The answer is New York City. It is the largest city."
+        self.assertEqual(extract_answer(text, mode="first_answer_sentence_v2"), "New York City")
+
     def test_legacy_requires_explicit_function(self):
         with self.assertRaises(ValueError):
             extract_answer("The answer is x", mode="legacy_original")
@@ -26,4 +34,3 @@ class ExtractorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

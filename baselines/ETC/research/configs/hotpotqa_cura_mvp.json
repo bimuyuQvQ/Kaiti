@@ -4,6 +4,9 @@
   "sample": 100,
   "split_salt": "etc_cura_split_v1",
   "answer_extractor": "first_answer_span_v1",
+  "sensitivity_answer_extractors": [
+    "first_answer_sentence_v2"
+  ],
   "model_max_memory_gib": 14,
   "attention_capture": "last_layer_only_eager_v1",
   "checkpoints": [
@@ -25,7 +28,8 @@
   "retriever": "BM25",
   "es_index_name": "wiki",
   "retrieve_topk": 3,
-  "retrieval_injection": "legacy_etc_one_sentence_v1",
+  "retrieval_injection": "legacy_etc_one_sentence_exact_prefix_v2",
+  "skip_continuation": "reuse_canonical_no_retrieval_v2",
   "post_action_retrieval": "disabled",
   "label_metrics": [
     "f1",

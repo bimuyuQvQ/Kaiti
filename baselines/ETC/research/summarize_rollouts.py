@@ -21,7 +21,30 @@ def _benefit_bucket(value: float, epsilon: float = 1e-12) -> str:
     return "zero"
 
 
-def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> Dict[str, Any]:
+def _scores(row: Dict[str, Any], extractor_version: str | None) -> Dict[str, float]:
+    if extractor_version is None:
+        return row["scores"]
+    try:
+        return row["alternative_scores"][extractor_version]
+    except KeyError as exc:
+        raise ValueError(f"记录缺少敏感性抽取器分数: {extractor_version}") from exc
+
+
+def _baseline_scores(bundle: Dict[str, Any], extractor_version: str | None) -> Dict[str, float]:
+    if extractor_version is None:
+        return bundle["no_retrieval_scores"]
+    try:
+        return bundle["no_retrieval_alternative_scores"][extractor_version]
+    except KeyError as exc:
+        raise ValueError(f"bundle 缺少敏感性抽取器分数: {extractor_version}") from exc
+
+
+def summarize_bundles(
+    bundles: Iterable[Dict[str, Any]],
+    metric: str = "f1",
+    extractor_version: str | None = None,
+    require_skip_consistency: bool = True,
+) -> Dict[str, Any]:
     bundle_list = list(bundles)
     benefits: List[float] = []
     benefits_by_source: Dict[str, List[float]] = defaultdict(list)
@@ -44,27 +67,39 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
             actions_by_state[action["state_id"]].append(action)
         total_states += len(states)
         total_actions += len(bundle["actions"])
-        sample_best = float(bundle["no_retrieval_scores"][metric])
+        baseline_metrics = _baseline_scores(bundle, extractor_version)
+        sample_best = float(baseline_metrics[metric])
 
         for state_id, actions in actions_by_state.items():
             skip_rows = [action for action in actions if action["action_type"] == "skip"]
             if len(skip_rows) != 1:
                 raise ValueError(f"状态 {state_id} 的 skip 数量不是 1")
             skip = skip_rows[0]
-            skip_score = float(skip["scores"][metric])
-            baseline_score = float(bundle["no_retrieval_scores"][metric])
+            skip_metrics = _scores(skip, extractor_version)
+            skip_score = float(skip_metrics[metric])
+            baseline_score = float(baseline_metrics[metric])
             consistency_diff = skip_score - baseline_score
             skip_consistency_diffs.append(consistency_diff)
-            if abs(consistency_diff) > 1e-12 or skip["extracted_answer"] != bundle["no_retrieval_extracted_answer"]:
+            skip_answer = (
+                skip["extracted_answer"]
+                if extractor_version is None
+                else skip["alternative_extractions"][extractor_version]
+            )
+            baseline_answer = (
+                bundle["no_retrieval_extracted_answer"]
+                if extractor_version is None
+                else bundle["no_retrieval_alternative_extractions"][extractor_version]
+            )
+            if abs(consistency_diff) > 1e-12 or skip_answer != baseline_answer:
                 skip_inconsistencies.append(
                     {
                         "sample_index": bundle["sample_index"],
                         "qid": bundle["qid"],
                         "state_id": state_id,
                         "checkpoint_type": states[state_id]["checkpoint_type"],
-                        "no_retrieval_answer": bundle["no_retrieval_extracted_answer"],
+                        "no_retrieval_answer": baseline_answer,
                         "no_retrieval_score": baseline_score,
-                        "skip_answer": skip["extracted_answer"],
+                        "skip_answer": skip_answer,
                         "skip_score": skip_score,
                         "score_diff": consistency_diff,
                     }
@@ -73,7 +108,8 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
             for action in actions:
                 if action["action_type"] != "retrieve":
                     continue
-                score = float(action["scores"][metric])
+                action_metrics = _scores(action, extractor_version)
+                score = float(action_metrics[metric])
                 benefit = score - skip_score
                 benefits.append(benefit)
                 bucket_counts[_benefit_bucket(benefit)] += 1
@@ -89,21 +125,30 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
                             "query_source": query["source"],
                             "query_text": query["text"],
                             "benefit": benefit,
-                            "skip_answer": skip["extracted_answer"],
+                            "skip_answer": skip_answer,
                             "skip_score": skip_score,
-                            "retrieve_answer": action["extracted_answer"],
+                            "retrieve_answer": (
+                                action["extracted_answer"]
+                                if extractor_version is None
+                                else action["alternative_extractions"][extractor_version]
+                            ),
                             "retrieve_score": score,
                             "injected_sentence": action.get("generation_metadata", {}).get("injected_sentence"),
                         }
                     )
-                if skip["scores"]["accuracy"] == 0 and action["scores"]["accuracy"] == 1:
+                if skip_metrics["accuracy"] == 0 and action_metrics["accuracy"] == 1:
                     flips["wrong_to_correct"] += 1
-                if skip["scores"]["accuracy"] == 1 and action["scores"]["accuracy"] == 0:
+                if skip_metrics["accuracy"] == 1 and action_metrics["accuracy"] == 0:
                     flips["correct_to_wrong"] += 1
                 state_best = max(state_best, score)
                 sample_best = max(sample_best, score)
             state_oracle_gains.append(state_best - skip_score)
-        sample_oracle_gains.append(sample_best - float(bundle["no_retrieval_scores"][metric]))
+        sample_oracle_gains.append(sample_best - float(baseline_metrics[metric]))
+
+    if require_skip_consistency and skip_inconsistencies:
+        raise ValueError(
+            f"检测到 {len(skip_inconsistencies)} 个 skip/canonical 不一致状态；拒绝计算 oracle"
+        )
 
     def grouped(values: Dict[str, List[float]]) -> Dict[str, Any]:
         return {
@@ -118,6 +163,7 @@ def summarize_bundles(bundles: Iterable[Dict[str, Any]], metric: str = "f1") -> 
 
     return {
         "metric": metric,
+        "extractor_version": extractor_version or "primary",
         "samples": len(bundle_list),
         "states": total_states,
         "actions": total_actions,
@@ -152,9 +198,16 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run_dir", required=True)
     parser.add_argument("--metric", default="f1")
+    parser.add_argument("--extractor_version", default=None)
+    parser.add_argument("--allow_skip_inconsistency", action="store_true")
     parser.add_argument("--output", default=None)
     args = parser.parse_args()
-    summary = summarize_bundles(load_bundles(args.run_dir), args.metric)
+    summary = summarize_bundles(
+        load_bundles(args.run_dir),
+        args.metric,
+        extractor_version=args.extractor_version,
+        require_skip_consistency=not args.allow_skip_inconsistency,
+    )
     text = json.dumps(summary, ensure_ascii=False, indent=2)
     print(text)
     if args.output:
