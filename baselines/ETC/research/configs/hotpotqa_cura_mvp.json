@@ -1,0 +1,39 @@
+{
+  "method": "cura_pre_v1",
+  "dataset": "hotpotqa",
+  "sample": 100,
+  "split_salt": "etc_cura_split_v1",
+  "answer_extractor": "first_answer_span_v1",
+  "checkpoints": [
+    "first_etc_trigger",
+    "first_sentence_boundary",
+    "before_first_answer_marker"
+  ],
+  "max_checkpoints_per_sample": 3,
+  "query_candidates": [
+    "question",
+    "etc_qfs",
+    "prefix_gap_v1"
+  ],
+  "prefix_gap": {
+    "max_new_tokens": 24,
+    "do_sample": false,
+    "prompt_version": "prefix_gap_prompt_v1"
+  },
+  "retriever": "BM25",
+  "es_index_name": "wiki",
+  "retrieve_topk": 3,
+  "retrieval_injection": "legacy_etc_one_sentence_v1",
+  "post_action_retrieval": "disabled",
+  "label_metrics": [
+    "f1",
+    "accuracy"
+  ],
+  "required_policies": [
+    "etc_baseline",
+    "always_retrieve",
+    "cura_pre",
+    "cura_post"
+  ]
+}
+

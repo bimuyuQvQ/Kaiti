@@ -6,6 +6,25 @@
 
 ---
 
+## 🆕 ETC/CURA 近邻工作（2026-07-17，当前主线）
+
+> 以下论文已通过官方会议页、OpenReview 或作者 arXiv 页面核对；本轮用于新颖性边界，不代表均已下载 PDF。详细方法定位见 `08-etc-cura.md`。
+
+- **ETC**：*Modeling Uncertainty Trends for Timely Retrieval in Dynamic RAG*（AAAI 2026）。当前底座；论文公式与开源代码存在差异，alpha 按数据集调节。
+- **DRAGIN**：*Dynamic Retrieval Augmented Generation based on the Real-time Information Needs of Large Language Models*（ACL 2024）。已讨论动态 when/what，查询使用注意力 QFS；ETC 查询机制主要沿用它。
+- **SKR**：*Self-Knowledge Guided Retrieval Augmentation for Large Language Models*（Findings of EMNLP 2023）。明确观察到检索知识有时会降低原回答质量；问题级 knowledge boundary 不是新空白。
+- **Self-RAG**：*Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection*（ICLR 2024）。已联合学习 Retrieve、Relevant、Supported、Useful 等反思信号。
+- **CRAG**：*Corrective Retrieval Augmented Generation*（arXiv:2401.15884）。检索后质量评估、纠正和无关内容过滤；普通 post-retrieval filter 不能作为主要创新。
+- **Adaptive Retrieval Without Self-Knowledge?**（ACL 2025）。系统比较 35 种自适应检索/不确定性方法，指出检索可能引入无关信息，同时强调效率评测。
+- **Pandora’s Box or Aladdin’s Lamp**（ACL 2025）。构建 RAG 噪声分析，显示噪声有有益与有害类型；不能把“噪声”简单等同于负效应。
+- **D²-RAG**：*Dual-Decision Retrieval-Augmented Generation via Multi-Dimensional Uncertainty and Utility-Aware Decoding*（Findings of ACL 2026）。已做是否检索与噪声上下文处理的双决策，构成直接新颖性威胁。
+- **S2G-RAG**：*Structured Sufficiency and Gap Judging for Iterative Retrieval-Augmented QA*（ACL 2026）。已做证据充分性、结构化 gap 和下一查询，且压缩多轮噪声；“gap query”不能单独作为贡献。
+- **QuCo-RAG**：*Quantifying Uncertainty from the Pre-training Corpus for Dynamic Retrieval-Augmented Generation*（Findings of ACL 2026）。直接批评 entropy/logit 等内部信号因失校准和自信错误而不可靠，是 ETC 代理信号诊断的重要强基线。
+- **CUE-R**：*Beyond the Final Answer in Retrieval-Augmented Generation*（arXiv:2604.05467）。通过 REMOVE/REPLACE/DUPLICATE 干预研究单条证据效用；CURA 必须突出生成中间状态、skip/多查询动作和跨时间校准，而非泛称“首次反事实效用”。
+- **GRIP**（ACL 2026）与 **ReaLM-Retrieve**（SIGIR 2026 接收预印本）：已分别通过控制 token、上下文 bandit/QueryGen 联合何时与查询；CURA 不能声称首次联合 when/what。
+
+---
+
 ## 🆕 agent 自演进 / PRM 方向论文池（2026-06-10 新增，对应新主候选研究内容二）
 
 > 用 2026-06 web 检索核到，未精读。研究内容二（步骤级归因/PRM）的起点。

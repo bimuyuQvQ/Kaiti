@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-07-17 ETC/CURA 当前待办（最高优先级）
+
+- [x] 完成 ETC 论文、开源代码、配置、评测器和已有结果的静态审计。
+- [x] 确认论文方法与论文开源代码存在差异。
+- [x] 完成 HotpotQA alpha=1.0、1000 条在线并行运行及两种答案抽取分析。
+- [x] 将 CURA 动机从“成本加权净效用”修订为“状态依赖的反事实检索收益 + 查询就绪窗口 + 有害证据风险”。
+- [x] 补充调研 SKR、Self-RAG、CRAG、D²-RAG、S2G-RAG、QuCo-RAG、CUE-R 和 RAG 噪声分析，明确新颖性边界。
+- [x] 已形成可审核的具体实现方案 v1，包括模块边界、状态/动作定义、离线配对数据、收益标签、校准、日志、最小实验和 go/no-go 门槛；详见 `08-etc-cura.md` 第 10 节。
+- [x] 用户已审核并确认实现方案，2026-07-17 开始按增量方式编码。
+- [x] 冻结修正版答案抽取协议为 `first_answer_span_v1`，精确复刻当前评测器，并补齐重复答案、问题尾部和特殊结束符单测；原始口径继续并列报告。
+- [x] P0 研究基础层已新增到 `baselines/ETC/research/`，未修改 legacy ETC 文件；14 个 CPU 单元测试通过。
+- [ ] P1 接入 canonical trajectory runner：采集无检索轨迹、最多 3 个检查点，以及同状态 skip/多查询配对 rollout。
+- [ ] 先在 Linux 双 GPU 环境运行 20 条 smoke 并通过配对完整性审计，不直接跑完整评测。
+- [ ] 第一阶段必须同时实现或保留以下基线：`ETC-release`、`ETC-online`、`Cal-ETC`、`Always-Retrieve + Filter`、CURA。
+- [ ] 第一批科学诊断：ETC 信号与真实 `B_t(q)` 的相关性、不同生成位置的收益曲线、查询候选 oracle 上界、负收益检索率。
+
+---
+
 ## 2026-07-11 ETC HotpotQA 在线评测续跑
 
 - 运行目录：`baselines/ETC/result/hotpotqa_online_alpha1_parallel`
