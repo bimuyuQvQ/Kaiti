@@ -1,0 +1,19 @@
+{
+  "method": "retrieved_evidence_local_revision_v1",
+  "dataset": "hotpotqa",
+  "answer_extractor": "first_answer_span_v1",
+  "sensitivity_answer_extractors": [
+    "first_answer_sentence_v2"
+  ],
+  "model_max_memory_gib": 14,
+  "attention_capture": "last_layer_only_eager_v1",
+  "timing": "first_etc_trigger_from_source_bundle",
+  "rollback": "nearest_strictly_prior_saved_sentence_boundary_or_answer_start",
+  "queries": "reuse_question_etc_qfs_prefix_gap_from_source_bundle",
+  "documents": "reuse_exact_bm25_top3_from_source_actions",
+  "intervention": "evidence_conditioned_regeneration_from_rollback_prefix_v1",
+  "skip_continuation": "reuse_source_canonical_no_retrieval_v2",
+  "post_action_retrieval": "disabled",
+  "deployment_available": true,
+  "purpose": "compare_keep_append_local_revision_full_restart"
+}
