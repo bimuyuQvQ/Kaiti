@@ -140,6 +140,28 @@ class CheckpointTests(unittest.TestCase):
         self.assertIn("before_first_answer_marker", [state.checkpoint_type for state in states])
         self.assertEqual([state.checkpoint_index for state in states], [0, 1, 2])
 
+    def test_first_etc_only_policy_emits_no_other_state(self):
+        collector = CheckpointCollector(
+            "q1",
+            0,
+            max_checkpoints=1,
+            timing_config={
+                "mode": "dense_timing_v1",
+                "include_etc_trigger": True,
+                "include_sentence_boundaries": False,
+                "include_before_answer": False,
+                "token_stride": 1000000,
+                "max_token_grid_checkpoints": 0,
+                "max_candidates_per_sample": 1,
+            },
+        )
+        for observation in self._dense_observations():
+            collector.observe(observation)
+        states = collector.finalize()
+        self.assertEqual(len(states), 1)
+        self.assertEqual(states[0].checkpoint_type, "first_etc_trigger")
+        self.assertEqual(states[0].token_index, 10)
+
 
 if __name__ == "__main__":
     unittest.main()
