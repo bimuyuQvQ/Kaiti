@@ -79,6 +79,49 @@ class CompareInterventionsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "检索文档不匹配"):
             compare_bundle_sets([source], [restart])
 
+    def test_stratifies_true_local_revision(self):
+        source = {
+            "sample_index": 0,
+            "qid": "q0",
+            "queries": [{"candidate_id": "q1", "source": "question", "text": "query"}],
+            "actions": [
+                action("keep", "skip", 0.0, 0.0),
+                action("append", "retrieve", 0.5, 0.0, query_id="q1"),
+            ],
+        }
+        restart = {
+            "sample_index": 0,
+            "qid": "q0",
+            "queries": [],
+            "actions": [
+                action("keep", "skip", 0.0, 0.0),
+                action("restart", "retrieve", 1.0, 1.0, metadata={"original_action_id": "append"}),
+            ],
+        }
+        revision = {
+            "sample_index": 0,
+            "qid": "q0",
+            "queries": [],
+            "actions": [
+                action("keep", "skip", 0.0, 0.0),
+                action(
+                    "revision",
+                    "retrieve",
+                    0.75,
+                    0.0,
+                    metadata={
+                        "original_action_id": "append",
+                        "fallback_to_full_restart": False,
+                        "rollback_token_index": 9,
+                    },
+                ),
+            ],
+        }
+        report = compare_bundle_sets([source], [restart], [revision], bootstrap_samples=20)
+        self.assertEqual(report["mean_scores"]["revision"], 0.75)
+        self.assertEqual(report["revision_strata"]["true_local_revision"]["actions"], 1)
+        self.assertEqual(report["revision_strata"]["fallback_to_full_restart"]["actions"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
