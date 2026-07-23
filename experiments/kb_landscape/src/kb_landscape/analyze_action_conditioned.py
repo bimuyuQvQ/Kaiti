@@ -24,6 +24,11 @@ STRATEGIES = (
     "query_action_landscape",
     "oracle",
 )
+CALIBRATED_STRATEGIES = (
+    "query_action_calibrated",
+    "action_landscape_calibrated",
+    "query_action_landscape_calibrated",
+)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -168,6 +173,74 @@ def _folds(
     return splits
 
 
+def _to_wide_predictions(
+    long_frame: pd.DataFrame,
+    values: np.ndarray,
+    *,
+    row_ids: np.ndarray,
+    action_count: int,
+) -> np.ndarray:
+    positions = {
+        (int(row_id), int(action_index)): position
+        for position, (row_id, action_index) in enumerate(
+            zip(long_frame["_row_id"], long_frame["action_index"])
+        )
+    }
+    output = np.empty((len(row_ids), action_count), dtype=np.float64)
+    for local_index, row_id in enumerate(row_ids):
+        for action_index in range(action_count):
+            output[local_index, action_index] = values[positions[(int(row_id), action_index)]]
+    return output
+
+
+def _tune_threshold(
+    predictions: np.ndarray,
+    rewards: np.ndarray,
+    *,
+    keep_index: int,
+) -> tuple[float, float]:
+    alternative_indices = [index for index in range(predictions.shape[1]) if index != keep_index]
+    best_alternative = predictions[:, alternative_indices].max(axis=1)
+    positive = best_alternative[best_alternative > 0]
+    candidates = {0.0, 0.005, 0.01, 0.02, 0.03, 0.05, 0.075, 0.1}
+    if len(positive):
+        candidates.update(float(value) for value in np.quantile(
+            positive,
+            [0.25, 0.5, 0.75, 0.9, 0.95, 0.975],
+        ))
+
+    best_threshold = 0.0
+    best_reward = -np.inf
+    for threshold in sorted(candidates):
+        choices = np.full(len(predictions), keep_index, dtype=np.int64)
+        alternative_local = np.argmax(predictions[:, alternative_indices], axis=1)
+        use_alternative = best_alternative > threshold
+        choices[use_alternative] = np.asarray(alternative_indices)[
+            alternative_local[use_alternative]
+        ]
+        selected = rewards[np.arange(len(rewards)), choices]
+        mean_reward = float(selected.mean())
+        if mean_reward > best_reward + 1e-12 or (
+            abs(mean_reward - best_reward) <= 1e-12 and threshold > best_threshold
+        ):
+            best_reward = mean_reward
+            best_threshold = float(threshold)
+    return best_threshold, best_reward
+
+
+def _apply_threshold(
+    predictions: np.ndarray,
+    *,
+    keep_index: int,
+    threshold: float,
+) -> np.ndarray:
+    adjusted = predictions.copy()
+    alternative_indices = [index for index in range(predictions.shape[1]) if index != keep_index]
+    adjusted[:, alternative_indices] -= threshold + 1e-12
+    adjusted[:, keep_index] = 0.0
+    return adjusted
+
+
 def analyze(
     frame: pd.DataFrame,
     *,
@@ -200,9 +273,12 @@ def analyze(
         if column.startswith(("abs__", "delta__", "static__"))
     )
 
+    strategies = list(STRATEGIES)
+    if protocol == "loco":
+        strategies.extend(CALIBRATED_STRATEGIES)
     prediction_columns = {
         strategy: np.full((len(frame), len(actions)), np.nan, dtype=np.float64)
-        for strategy in STRATEGIES
+        for strategy in strategies
     }
     rewards = frame[action_columns].to_numpy(dtype=np.float64)
     keep_index = actions.index("keep")
@@ -211,6 +287,7 @@ def analyze(
     prediction_columns["oracle"] = rewards.copy()
 
     fold_labels = np.full(len(frame), "", dtype=object)
+    threshold_records: list[dict[str, float | str]] = []
     for fold_index, (fold_label, train_indices, test_indices) in enumerate(
         _folds(frame, protocol=protocol, folds=folds, seed=seed)
     ):
@@ -231,20 +308,85 @@ def analyze(
         prediction_columns["global_best"][test_indices, :] = -np.inf
         prediction_columns["global_best"][test_indices, global_choice] = 0.0
 
-        test_order = {
-            (int(row_id), int(action_index)): position
-            for position, (row_id, action_index) in enumerate(
-                zip(test_long["_row_id"], test_long["action_index"])
-            )
-        }
         for strategy, values in predicted.items():
-            for wide_index in test_indices:
-                row_id = int(frame.iloc[wide_index]["_row_id"])
-                for action_index in range(len(actions)):
-                    prediction_columns[strategy][wide_index, action_index] = values[
-                        test_order[(row_id, action_index)]
-                    ]
+            prediction_columns[strategy][test_indices] = _to_wide_predictions(
+                test_long,
+                values,
+                row_ids=frame.iloc[test_indices]["_row_id"].to_numpy(dtype=np.int64),
+                action_count=len(actions),
+            )
             prediction_columns[strategy][test_indices, keep_index] = 0.0
+
+        if protocol == "loco":
+            inner_predictions = {
+                strategy: np.full((len(train_indices), len(actions)), np.nan, dtype=np.float64)
+                for strategy in predicted
+            }
+            train_positions = {
+                int(row_id): position
+                for position, row_id in enumerate(
+                    frame.iloc[train_indices]["_row_id"].to_numpy(dtype=np.int64)
+                )
+            }
+            train_corpora = frame.iloc[train_indices]["corpus"].to_numpy()
+            for inner_index, validation_corpus in enumerate(sorted(set(train_corpora))):
+                validation_mask = train_corpora == validation_corpus
+                inner_validation_indices = train_indices[validation_mask]
+                inner_train_indices = train_indices[~validation_mask]
+                inner_train_ids = set(frame.iloc[inner_train_indices]["_row_id"].astype(int))
+                inner_validation_ids = set(
+                    frame.iloc[inner_validation_indices]["_row_id"].astype(int)
+                )
+                inner_train_long = long_frame[
+                    long_frame["_row_id"].astype(int).isin(inner_train_ids)
+                ].copy()
+                inner_validation_long = long_frame[
+                    long_frame["_row_id"].astype(int).isin(inner_validation_ids)
+                ].copy()
+                inner_predicted = _fit_predict(
+                    inner_train_long,
+                    inner_validation_long,
+                    numeric_columns=numeric_columns,
+                    seed=seed + fold_index * 100 + inner_index,
+                )
+                inner_wide_positions = np.asarray(
+                    [train_positions[int(row_id)] for row_id in inner_validation_indices],
+                    dtype=np.int64,
+                )
+                for strategy, values in inner_predicted.items():
+                    inner_predictions[strategy][inner_wide_positions] = _to_wide_predictions(
+                        inner_validation_long,
+                        values,
+                        row_ids=frame.iloc[inner_validation_indices]["_row_id"].to_numpy(
+                            dtype=np.int64
+                        ),
+                        action_count=len(actions),
+                    )
+                    inner_predictions[strategy][inner_wide_positions, keep_index] = 0.0
+
+            train_rewards = rewards[train_indices]
+            for strategy, values in inner_predictions.items():
+                if np.isnan(values).any():
+                    raise RuntimeError(f"{fold_label} 的训练内校准预测不完整：{strategy}")
+                threshold, calibration_reward = _tune_threshold(
+                    values,
+                    train_rewards,
+                    keep_index=keep_index,
+                )
+                calibrated_strategy = f"{strategy}_calibrated"
+                prediction_columns[calibrated_strategy][test_indices] = _apply_threshold(
+                    prediction_columns[strategy][test_indices],
+                    keep_index=keep_index,
+                    threshold=threshold,
+                )
+                threshold_records.append(
+                    {
+                        "fold": fold_label,
+                        "strategy": calibrated_strategy,
+                        "threshold": threshold,
+                        "inner_validation_mean_ndcg": calibration_reward,
+                    }
+                )
 
     if any(np.isnan(values).any() for values in prediction_columns.values()):
         raise RuntimeError("存在未填充的折外预测")
@@ -279,8 +421,13 @@ def analyze(
 
     result = pd.DataFrame(records)
     comparisons: dict[str, dict[str, float]] = {}
+    compared_strategies = ["action_landscape", "query_action_landscape"]
+    if protocol == "loco":
+        compared_strategies.extend(
+            ["action_landscape_calibrated", "query_action_landscape_calibrated"]
+        )
     for baseline in ("global_best", "query_action", "keep"):
-        for offset, strategy in enumerate(("action_landscape", "query_action_landscape")):
+        for offset, strategy in enumerate(compared_strategies):
             comparisons[f"{strategy}_vs_{baseline}"] = _bootstrap_difference(
                 output[f"selected_ndcg__{strategy}"].to_numpy(),
                 output[f"selected_ndcg__{baseline}"].to_numpy(),
@@ -294,6 +441,7 @@ def analyze(
         "actions": actions,
         "action_features": action_features,
         "numeric_feature_count": len(numeric_columns) + len(actions),
+        "calibration_thresholds": threshold_records,
         "macro_mean_ndcg": result.groupby("strategy")["mean_ndcg"].mean().to_dict(),
         "macro_oracle_regret": result.groupby("strategy")["oracle_regret"].mean().to_dict(),
         "comparisons": comparisons,

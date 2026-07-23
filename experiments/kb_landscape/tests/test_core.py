@@ -9,7 +9,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from kb_landscape.analyze_action_conditioned import analyze as analyze_action_conditioned
+from kb_landscape.analyze_action_conditioned import (
+    _tune_threshold,
+    analyze as analyze_action_conditioned,
+)
 from kb_landscape.analyze_within_corpus import analyze as analyze_within_corpus
 from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
@@ -238,6 +241,29 @@ class DiagnosticTest(unittest.TestCase):
         self.assertFalse(per_query.filter(like="selected_ndcg__").isna().any().any())
         self.assertIn("action_landscape", set(result["strategy"]))
         self.assertEqual(summary["queries"], 24)
+
+    def test_threshold_calibration_can_prefer_conservative_routing(self) -> None:
+        predictions = pd.DataFrame(
+            [
+                [0.04, 0.0, 0.03],
+                [0.03, 0.0, 0.02],
+                [0.08, 0.0, 0.01],
+            ]
+        ).to_numpy()
+        rewards = pd.DataFrame(
+            [
+                [0.1, 0.8, 0.2],
+                [0.2, 0.8, 0.3],
+                [0.9, 0.2, 0.1],
+            ]
+        ).to_numpy()
+        threshold, calibrated_reward = _tune_threshold(
+            predictions,
+            rewards,
+            keep_index=1,
+        )
+        self.assertGreater(threshold, 0.04)
+        self.assertAlmostEqual(calibrated_reward, (0.8 + 0.8 + 0.9) / 3)
 
 
 if __name__ == "__main__":
