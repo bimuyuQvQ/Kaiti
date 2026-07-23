@@ -61,6 +61,26 @@ python -m kb_landscape.analyze_diagnostic \
   --output-dir experiments/kb_landscape/output/analysis
 ```
 
+MTRAG 还提供 rewrite、lastturn 和 questions 三种共享查询 ID 的官方表示。可以将
+lastturn 与 questions 构造成外部候选，并仅保留作为基准的 `keep`；此时 `keep`
+表示输入目录中的官方 rewrite：
+
+```bash
+PYTHONPATH=experiments/kb_landscape/src \
+python -m kb_landscape.prepare_mtrag_candidates \
+  --candidate lastturn=/path/to/fiqa_lastturn.jsonl \
+  --candidate all_questions=/path/to/fiqa_questions.jsonl \
+  --output experiments/kb_landscape/output/fiqa_official_candidates.jsonl
+
+PYTHONPATH=experiments/kb_landscape/src \
+python -m kb_landscape.run_diagnostic \
+  --dataset /path/to/fiqa/beir \
+  --corpus-name mtrag_fiqa \
+  --output-dir experiments/kb_landscape/output/fiqa_natural \
+  --actions keep \
+  --external-candidates experiments/kb_landscape/output/fiqa_official_candidates.jsonl
+```
+
 ## 当前查询操作
 
 - `keep`：保留原查询。

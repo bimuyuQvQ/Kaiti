@@ -87,13 +87,18 @@ def generate_candidates(
     raw_result: SearchResult,
     corpus_tokens: list[list[str]],
     external: dict[str, str] | None = None,
+    actions: tuple[str, ...] = DEFAULT_ACTIONS,
 ) -> dict[str, str]:
-    candidates = {
+    available = {
         "keep": query,
         "keywords": keywords(query, index),
         "prf_expand": prf_expand(query, index, raw_result, corpus_tokens),
         "prf_reduce": prf_reduce(query, index, raw_result, corpus_tokens),
     }
+    unknown = sorted(set(actions) - set(available))
+    if unknown:
+        raise ValueError(f"未知的内置查询操作：{', '.join(unknown)}")
+    candidates = {action: available[action] for action in actions}
     if external:
         for action, text in external.items():
             cleaned = str(text).strip()

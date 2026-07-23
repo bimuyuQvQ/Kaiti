@@ -11,6 +11,7 @@ from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
 from kb_landscape.metrics import mrr_at_k, ndcg_at_k, recall_at_k
 from kb_landscape.prepare_hotpotqa import convert
+from kb_landscape.prepare_mtrag_candidates import build_candidates
 from kb_landscape.run_diagnostic import run
 
 
@@ -77,12 +78,34 @@ class DiagnosticTest(unittest.TestCase):
                 max_queries=None,
                 seed=7,
                 external_candidates=None,
+                actions=["keep", "keywords", "prf_expand", "prf_reduce"],
             )
             frame, summary = run(args)
             self.assertEqual(len(frame), 2)
             self.assertIn("feat_score_margin12", frame.columns)
             self.assertIn("ndcg__prf_expand", frame.columns)
             self.assertEqual(summary["queries"], 2)
+
+    def test_mtrag_candidate_alignment(self) -> None:
+        rows = [
+            {"_id": "q1", "text": "first"},
+            {"_id": "q2", "text": "second"},
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            left = root / "left.jsonl"
+            right = root / "right.jsonl"
+            left.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+            right.write_text(
+                "\n".join(json.dumps({"_id": row["_id"], "text": row["text"] + " alt"}) for row in rows)
+                + "\n",
+                encoding="utf-8",
+            )
+            output = root / "candidates.jsonl"
+            summary = build_candidates([f"left={left}", f"right={right}"], output)
+            self.assertEqual(summary["queries"], 2)
+            self.assertEqual(summary["rows"], 4)
+            self.assertEqual(len(output.read_text(encoding="utf-8").splitlines()), 4)
 
     def test_hotpotqa_conversion(self) -> None:
         row = {

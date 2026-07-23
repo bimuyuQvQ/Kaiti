@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from .actions import generate_candidates
+from .actions import DEFAULT_ACTIONS, generate_candidates
 from .bm25 import BM25Index
 from .features import probe_stability_features, raw_landscape_features
 from .io import load_beir_dataset, load_external_candidates
@@ -27,6 +27,13 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--max-queries", type=int)
     parser.add_argument("--seed", type=int, default=20260723)
     parser.add_argument("--external-candidates", help="可选的外部查询候选 JSONL")
+    parser.add_argument(
+        "--actions",
+        nargs="+",
+        default=list(DEFAULT_ACTIONS),
+        choices=list(DEFAULT_ACTIONS),
+        help="启用的内置查询操作；外部候选不受此参数影响",
+    )
     return parser.parse_args()
 
 
@@ -53,6 +60,7 @@ def run(args: argparse.Namespace) -> tuple[pd.DataFrame, dict]:
             raw_result,
             corpus_tokens,
             external=external.get(query.query_id),
+            actions=tuple(args.actions),
         )
         results = {action: index.search(text, top_k=args.top_k) for action, text in candidates.items()}
         qrels = dataset.qrels[query.query_id]
