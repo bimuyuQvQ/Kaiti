@@ -25,25 +25,29 @@ def _iter_rows(input_path: Path) -> Iterable[dict]:
     with input_path.open("r", encoding="utf-8") as handle:
         first_character = handle.read(1)
         handle.seek(0)
-        if first_character == "{":
-            payload = json.load(handle)
-            if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
-                for item in payload["rows"]:
-                    row = item.get("row") if isinstance(item, dict) else None
-                    if not isinstance(row, dict):
-                        raise ValueError("Hugging Face rows 中存在缺少 row 对象的记录")
-                    yield row
-                return
-            raise ValueError("不支持的 JSON 对象格式；预期包含 rows[].row")
-        if first_character == "[":
-            payload = json.load(handle)
-            if not isinstance(payload, list):
-                raise ValueError("JSON 顶层必须是列表")
-            for row in payload:
-                if not isinstance(row, dict):
-                    raise ValueError("JSON 列表中存在非对象记录")
-                yield row
-            return
+        if first_character in {"{", "["}:
+            try:
+                payload = json.load(handle)
+            except json.JSONDecodeError:
+                handle.seek(0)
+            else:
+                if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
+                    for item in payload["rows"]:
+                        row = item.get("row") if isinstance(item, dict) else None
+                        if not isinstance(row, dict):
+                            raise ValueError("Hugging Face rows 中存在缺少 row 对象的记录")
+                        yield row
+                    return
+                if isinstance(payload, dict) and "id" in payload and "question" in payload:
+                    yield payload
+                    return
+                if isinstance(payload, list):
+                    for row in payload:
+                        if not isinstance(row, dict):
+                            raise ValueError("JSON 列表中存在非对象记录")
+                        yield row
+                    return
+                raise ValueError("不支持的完整 JSON 格式")
         for raw_line in handle:
             if raw_line.strip():
                 row = json.loads(raw_line)
