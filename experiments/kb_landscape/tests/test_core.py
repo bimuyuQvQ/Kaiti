@@ -1,0 +1,80 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+from kb_landscape.io import load_beir_dataset
+from kb_landscape.metrics import mrr_at_k, ndcg_at_k, recall_at_k
+from kb_landscape.run_diagnostic import run
+
+
+def _write_fixture(root: Path, *, suffix: str = "") -> None:
+    corpus = [
+        {"_id": f"d1{suffix}", "title": "Alpha", "text": "rarealpha fruit vitamin nutrition"},
+        {"_id": f"d2{suffix}", "title": "Beta", "text": "common fruit recipe kitchen"},
+        {"_id": f"d3{suffix}", "title": "Gamma", "text": "cloud storage object bucket technical"},
+        {"_id": f"d4{suffix}", "title": "Delta", "text": "cloud compute virtual machine technical"},
+    ]
+    queries = [
+        {"_id": f"q1{suffix}", "text": "which rarealpha fruit has vitamin nutrition"},
+        {"_id": f"q2{suffix}", "text": "cloud object bucket storage"},
+    ]
+    qrels = [
+        ["query-id", "corpus-id", "score"],
+        [f"q1{suffix}", f"d1{suffix}", "1"],
+        [f"q2{suffix}", f"d3{suffix}", "1"],
+    ]
+    root.mkdir(parents=True)
+    (root / "qrels").mkdir()
+    with (root / "corpus.jsonl").open("w", encoding="utf-8") as handle:
+        for row in corpus:
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+    with (root / "queries.jsonl").open("w", encoding="utf-8") as handle:
+        for row in queries:
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+    with (root / "qrels" / "test.tsv").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle, delimiter="\t")
+        writer.writerows(qrels)
+
+
+class MetricsTest(unittest.TestCase):
+    def test_binary_metrics(self) -> None:
+        qrels = {"d1": 1.0, "d2": 1.0}
+        retrieved = ["d3", "d1", "d4", "d2"]
+        self.assertGreater(ndcg_at_k(retrieved, qrels, 4), 0.0)
+        self.assertAlmostEqual(recall_at_k(retrieved, qrels, 3), 0.5)
+        self.assertAlmostEqual(mrr_at_k(retrieved, qrels, 4), 0.5)
+
+
+class DiagnosticTest(unittest.TestCase):
+    def test_beir_loading_and_diagnostic(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "toy"
+            _write_fixture(root)
+            dataset = load_beir_dataset(root)
+            self.assertEqual(len(dataset.documents), 4)
+            self.assertEqual(len(dataset.queries), 2)
+
+            args = argparse.Namespace(
+                dataset=str(root),
+                corpus_name="toy",
+                output_dir=str(Path(temporary) / "output"),
+                split="test",
+                top_k=3,
+                max_queries=None,
+                seed=7,
+                external_candidates=None,
+            )
+            frame, summary = run(args)
+            self.assertEqual(len(frame), 2)
+            self.assertIn("feat_score_margin12", frame.columns)
+            self.assertIn("ndcg__prf_expand", frame.columns)
+            self.assertEqual(summary["queries"], 2)
+
+
+if __name__ == "__main__":
+    unittest.main()
