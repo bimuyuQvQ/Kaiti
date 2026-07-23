@@ -72,7 +72,7 @@ class BM25Index:
             )
         query_counts.data = np.ones_like(query_counts.data, dtype=np.float32)
         query_weights = query_counts.multiply(self.idf)
-        scores = np.asarray(self.doc_weights @ query_weights.T).ravel()
+        scores = (self.doc_weights @ query_weights.T).toarray().ravel()
         size = min(top_k, scores.size)
         if size == scores.size:
             indices = np.argsort(-scores, kind="stable")

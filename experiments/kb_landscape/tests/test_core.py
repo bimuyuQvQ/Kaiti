@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
 from kb_landscape.metrics import mrr_at_k, ndcg_at_k, recall_at_k
 from kb_landscape.run_diagnostic import run
@@ -51,6 +52,13 @@ class MetricsTest(unittest.TestCase):
 
 
 class DiagnosticTest(unittest.TestCase):
+    def test_bm25_returns_numeric_ranked_scores(self) -> None:
+        index = BM25Index().fit(["alpha beta", "beta gamma", "delta"])
+        result = index.search("alpha", top_k=2)
+        self.assertEqual(result.indices.tolist()[0], 0)
+        self.assertEqual(result.scores.dtype.kind, "f")
+        self.assertGreater(float(result.scores[0]), float(result.scores[1]))
+
     def test_beir_loading_and_diagnostic(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "toy"
