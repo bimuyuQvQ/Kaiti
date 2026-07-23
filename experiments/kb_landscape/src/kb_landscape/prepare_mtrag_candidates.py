@@ -15,6 +15,7 @@ def _parse_args() -> argparse.Namespace:
         required=True,
         help="候选名=queries.jsonl 路径；可重复提供",
     )
+    parser.add_argument("--reference", help="只用于校验 ID 集合的基准 queries.jsonl")
     parser.add_argument("--output", required=True)
     return parser.parse_args()
 
@@ -30,12 +31,20 @@ def _parse_candidate_spec(spec: str) -> tuple[str, Path]:
     return name, path
 
 
-def build_candidates(specs: list[str], output: str | Path) -> dict:
+def build_candidates(
+    specs: list[str],
+    output: str | Path,
+    reference: str | Path | None = None,
+) -> dict:
     if len(specs) < 1:
         raise ValueError("至少需要一个候选查询文件")
     tables: dict[str, dict[str, str]] = {}
     ordered_ids: list[str] | None = None
     reference_ids: set[str] | None = None
+    if reference is not None:
+        reference_queries = load_queries(Path(reference))
+        ordered_ids = [query.query_id for query in reference_queries]
+        reference_ids = set(ordered_ids)
     for spec in specs:
         name, path = _parse_candidate_spec(spec)
         if name in tables:
@@ -79,7 +88,7 @@ def build_candidates(specs: list[str], output: str | Path) -> dict:
 
 def main() -> None:
     args = _parse_args()
-    summary = build_candidates(args.candidate, args.output)
+    summary = build_candidates(args.candidate, args.output, reference=args.reference)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 

@@ -68,6 +68,7 @@ lastturn 与 questions 构造成外部候选，并仅保留作为基准的 `keep
 ```bash
 PYTHONPATH=experiments/kb_landscape/src \
 python -m kb_landscape.prepare_mtrag_candidates \
+  --reference /path/to/beir/queries.jsonl \
   --candidate lastturn=/path/to/fiqa_lastturn.jsonl \
   --candidate all_questions=/path/to/fiqa_questions.jsonl \
   --output experiments/kb_landscape/output/fiqa_official_candidates.jsonl

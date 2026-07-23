@@ -102,7 +102,7 @@ class DiagnosticTest(unittest.TestCase):
                 encoding="utf-8",
             )
             output = root / "candidates.jsonl"
-            summary = build_candidates([f"left={left}", f"right={right}"], output)
+            summary = build_candidates([f"left={left}", f"right={right}"], output, reference=left)
             self.assertEqual(summary["queries"], 2)
             self.assertEqual(summary["rows"], 4)
             self.assertEqual(len(output.read_text(encoding="utf-8").splitlines()), 4)
