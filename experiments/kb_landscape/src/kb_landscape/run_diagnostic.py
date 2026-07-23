@@ -12,7 +12,7 @@ import pandas as pd
 
 from .actions import DEFAULT_ACTIONS, generate_candidates
 from .bm25 import BM25Index
-from .features import probe_stability_features, raw_landscape_features
+from .features import action_relative_features, probe_stability_features, raw_landscape_features
 from .io import load_beir_dataset, load_external_candidates
 from .metrics import mrr_at_k, ndcg_at_k, recall_at_k
 
@@ -71,6 +71,26 @@ def run(args: argparse.Namespace) -> tuple[pd.DataFrame, dict]:
         }
         row.update(raw_landscape_features(query.text, index, raw_result, corpus_tokens))
         row.update(probe_stability_features(results))
+        keep_result = results["keep"]
+        for action, result in results.items():
+            action_features = raw_landscape_features(
+                candidates[action],
+                index,
+                result,
+                corpus_tokens,
+            )
+            relative_features = action_relative_features(
+                candidates["keep"],
+                candidates[action],
+                keep_result,
+                result,
+                index,
+            )
+            for feature_name, value in action_features.items():
+                clean_name = feature_name.removeprefix("feat_")
+                row[f"action_feat__{action}__{clean_name}"] = value
+            for feature_name, value in relative_features.items():
+                row[f"action_feat__{action}__relative_{feature_name}"] = value
 
         action_scores: dict[str, float] = {}
         for action, result in results.items():

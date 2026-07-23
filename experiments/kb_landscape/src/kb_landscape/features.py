@@ -92,3 +92,39 @@ def probe_stability_features(results: dict[str, SearchResult]) -> dict[str, floa
         "feat_probe_union_size": float(len(union)),
         "feat_probe_top1_consensus": top1_consensus / len(top1_values) if top1_values else 0.0,
     }
+
+
+def action_relative_features(
+    keep_query: str,
+    candidate_query: str,
+    keep_result: SearchResult,
+    candidate_result: SearchResult,
+    index: BM25Index,
+) -> dict[str, float]:
+    keep_tokens = set(index.tokenize(keep_query))
+    candidate_tokens = set(index.tokenize(candidate_query))
+    token_intersection = keep_tokens & candidate_tokens
+    keep_docs = set(keep_result.indices.tolist())
+    candidate_docs = set(candidate_result.indices.tolist())
+
+    top3_keep = set(keep_result.indices[:3].tolist())
+    top3_candidate = set(candidate_result.indices[:3].tolist())
+    return {
+        "query_token_jaccard_keep": _jaccard(keep_tokens, candidate_tokens),
+        "query_token_retention_keep": (
+            len(token_intersection) / len(keep_tokens) if keep_tokens else 1.0
+        ),
+        "query_token_novelty_ratio": (
+            len(candidate_tokens - keep_tokens) / len(candidate_tokens) if candidate_tokens else 0.0
+        ),
+        "query_unique_length_ratio_keep": (
+            len(candidate_tokens) / len(keep_tokens) if keep_tokens else float(bool(candidate_tokens))
+        ),
+        "result_jaccard_keep": _jaccard(keep_docs, candidate_docs),
+        "result_top3_jaccard_keep": _jaccard(top3_keep, top3_candidate),
+        "result_top1_same_keep": float(
+            len(keep_result.indices) > 0
+            and len(candidate_result.indices) > 0
+            and int(keep_result.indices[0]) == int(candidate_result.indices[0])
+        ),
+    }

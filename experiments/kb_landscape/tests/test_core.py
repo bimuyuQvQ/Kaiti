@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from kb_landscape.analyze_action_conditioned import analyze as analyze_action_conditioned
 from kb_landscape.analyze_within_corpus import analyze as analyze_within_corpus
 from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
@@ -87,6 +88,11 @@ class DiagnosticTest(unittest.TestCase):
             self.assertEqual(len(frame), 2)
             self.assertIn("feat_score_margin12", frame.columns)
             self.assertIn("ndcg__prf_expand", frame.columns)
+            self.assertIn("action_feat__keep__score_margin12", frame.columns)
+            self.assertIn(
+                "action_feat__prf_expand__relative_result_jaccard_keep",
+                frame.columns,
+            )
             self.assertEqual(summary["queries"], 2)
 
     def test_mtrag_candidate_alignment(self) -> None:
@@ -189,6 +195,48 @@ class DiagnosticTest(unittest.TestCase):
             "query_landscape",
             "oracle",
         })
+        self.assertEqual(summary["queries"], 24)
+
+    def test_action_conditioned_analysis_produces_out_of_fold_predictions(self) -> None:
+        rows = []
+        for corpus in ("left", "right"):
+            for query_index in range(12):
+                prefer_alternative = query_index % 3 == 0
+                keep_score = 0.2 if prefer_alternative else 0.8
+                rewrite_score = 0.8 if prefer_alternative else 0.2
+                rows.append(
+                    {
+                        "corpus": corpus,
+                        "query_id": f"{corpus}-{query_index}",
+                        "query": f"base query {query_index}",
+                        "query__keep": f"base query {query_index}",
+                        "query__rewrite": (
+                            f"alternative evidence query {query_index}"
+                            if prefer_alternative
+                            else f"noisy rewrite query {query_index}"
+                        ),
+                        "feat_score_top1": keep_score,
+                        "feat_score_entropy": float(query_index % 4),
+                        "ndcg__keep": keep_score,
+                        "ndcg__rewrite": rewrite_score,
+                        "action_feat__keep__score_top1": keep_score,
+                        "action_feat__rewrite__score_top1": rewrite_score,
+                        "action_feat__keep__score_entropy": 0.5,
+                        "action_feat__rewrite__score_entropy": (
+                            0.1 if prefer_alternative else 0.9
+                        ),
+                    }
+                )
+        result, per_query, summary = analyze_action_conditioned(
+            pd.DataFrame(rows),
+            protocol="within",
+            folds=3,
+            seed=7,
+            bootstrap_samples=100,
+        )
+        self.assertEqual(len(per_query), 24)
+        self.assertFalse(per_query.filter(like="selected_ndcg__").isna().any().any())
+        self.assertIn("action_landscape", set(result["strategy"]))
         self.assertEqual(summary["queries"], 24)
 
 
