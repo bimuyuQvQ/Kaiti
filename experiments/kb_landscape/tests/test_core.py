@@ -10,6 +10,7 @@ from pathlib import Path
 from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
 from kb_landscape.metrics import mrr_at_k, ndcg_at_k, recall_at_k
+from kb_landscape.prepare_hotpotqa import convert
 from kb_landscape.run_diagnostic import run
 
 
@@ -82,6 +83,29 @@ class DiagnosticTest(unittest.TestCase):
             self.assertIn("feat_score_margin12", frame.columns)
             self.assertIn("ndcg__prf_expand", frame.columns)
             self.assertEqual(summary["queries"], 2)
+
+    def test_hotpotqa_conversion(self) -> None:
+        row = {
+            "id": "q-hotpot",
+            "question": "Which document is relevant?",
+            "metadata": {
+                "supporting_facts": {"title": ["Relevant"], "sent_id": [0]},
+                "context": {
+                    "title": ["Relevant", "Distractor"],
+                    "sentences": [["relevant evidence"], ["unrelated text"]],
+                },
+            },
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            input_path = root / "dev.jsonl"
+            input_path.write_text(json.dumps(row) + "\n", encoding="utf-8")
+            output = root / "beir"
+            summary = convert(input_path, output, max_queries=1)
+            dataset = load_beir_dataset(output)
+            self.assertEqual(summary["queries"], 1)
+            self.assertEqual(summary["documents"], 2)
+            self.assertEqual(len(dataset.qrels["q-hotpot"]), 1)
 
 
 if __name__ == "__main__":

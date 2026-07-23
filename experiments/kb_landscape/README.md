@@ -26,6 +26,18 @@ dataset/
 
 ## 运行
 
+可以先把服务器已有的 ReasonRAG HotpotQA dev 转成真实数据冒烟集：
+
+```bash
+PYTHONPATH=experiments/kb_landscape/src \
+python -m kb_landscape.prepare_hotpotqa \
+  --input baselines/ReasonRAG-main/dataset/hotpotqa/dev.jsonl \
+  --output-dir experiments/kb_landscape/output/hotpotqa_smoke_data \
+  --max-queries 100
+```
+
+随后运行诊断：
+
 ```bash
 cd /data1/home/lmy/Kaiti
 PYTHONPATH=experiments/kb_landscape/src \
