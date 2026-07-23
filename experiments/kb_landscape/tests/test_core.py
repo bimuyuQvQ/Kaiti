@@ -7,6 +7,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pandas as pd
+
+from kb_landscape.analyze_within_corpus import analyze as analyze_within_corpus
 from kb_landscape.bm25 import BM25Index
 from kb_landscape.io import load_beir_dataset
 from kb_landscape.metrics import mrr_at_k, ndcg_at_k, recall_at_k
@@ -149,6 +152,44 @@ class DiagnosticTest(unittest.TestCase):
             summary = convert(input_path, output, max_queries=1)
             self.assertEqual(summary["queries"], 1)
             self.assertEqual(len(load_beir_dataset(output).qrels["q-hf"]), 1)
+
+    def test_within_corpus_analysis_produces_out_of_fold_predictions(self) -> None:
+        rows = []
+        for corpus_index, corpus in enumerate(("left", "right")):
+            for query_index in range(12):
+                prefer_alternative = query_index % 3 == 0
+                rows.append(
+                    {
+                        "corpus": corpus,
+                        "query_id": f"{corpus}-{query_index}",
+                        "query": (
+                            f"alternative signal topic {query_index}"
+                            if prefer_alternative
+                            else f"keep signal subject {query_index}"
+                        ),
+                        "feat_score_top1": float(prefer_alternative),
+                        "feat_score_entropy": float(query_index % 4),
+                        "ndcg__keep": 0.2 if prefer_alternative else 0.8,
+                        "ndcg__rewrite": 0.8 if prefer_alternative else 0.2,
+                    }
+                )
+        result, per_query, summary = analyze_within_corpus(
+            pd.DataFrame(rows),
+            folds=3,
+            seed=7,
+            bootstrap_samples=100,
+        )
+        self.assertEqual(len(per_query), 24)
+        self.assertTrue((per_query["fold"] >= 0).all())
+        self.assertEqual(set(result["strategy"]), {
+            "keep",
+            "global_best",
+            "query_only",
+            "landscape_only",
+            "query_landscape",
+            "oracle",
+        })
+        self.assertEqual(summary["queries"], 24)
 
 
 if __name__ == "__main__":
