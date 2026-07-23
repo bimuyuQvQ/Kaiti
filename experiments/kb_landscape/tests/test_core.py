@@ -107,6 +107,26 @@ class DiagnosticTest(unittest.TestCase):
             self.assertEqual(summary["documents"], 2)
             self.assertEqual(len(dataset.qrels["q-hotpot"]), 1)
 
+    def test_hotpotqa_huggingface_rows_conversion(self) -> None:
+        row = {
+            "id": "q-hf",
+            "question": "Which document is relevant?",
+            "supporting_facts": {"title": ["Relevant"], "sent_id": [0]},
+            "context": {
+                "title": ["Relevant", "Distractor"],
+                "sentences": [["relevant evidence"], ["unrelated text"]],
+            },
+        }
+        payload = {"rows": [{"row_idx": 0, "row": row, "truncated_cells": []}], "partial": False}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            input_path = root / "hf.json"
+            input_path.write_text(json.dumps(payload), encoding="utf-8")
+            output = root / "beir"
+            summary = convert(input_path, output, max_queries=1)
+            self.assertEqual(summary["queries"], 1)
+            self.assertEqual(len(load_beir_dataset(output).qrels["q-hf"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

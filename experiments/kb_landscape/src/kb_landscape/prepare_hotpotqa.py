@@ -5,11 +5,12 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+from typing import Iterable
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="将 ReasonRAG HotpotQA dev 转为 BEIR 冒烟集")
-    parser.add_argument("--input", required=True, help="ReasonRAG dev.jsonl")
+    parser = argparse.ArgumentParser(description="将 HotpotQA context 数据转为 BEIR 冒烟集")
+    parser.add_argument("--input", required=True, help="JSONL、JSON 列表或 Hugging Face rows 导出文件")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--max-queries", type=int, default=100)
     return parser.parse_args()
@@ -20,6 +21,37 @@ def _doc_id(title: str, text: str) -> str:
     return f"hotpot-{digest}"
 
 
+def _iter_rows(input_path: Path) -> Iterable[dict]:
+    with input_path.open("r", encoding="utf-8") as handle:
+        first_character = handle.read(1)
+        handle.seek(0)
+        if first_character == "{":
+            payload = json.load(handle)
+            if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
+                for item in payload["rows"]:
+                    row = item.get("row") if isinstance(item, dict) else None
+                    if not isinstance(row, dict):
+                        raise ValueError("Hugging Face rows 中存在缺少 row 对象的记录")
+                    yield row
+                return
+            raise ValueError("不支持的 JSON 对象格式；预期包含 rows[].row")
+        if first_character == "[":
+            payload = json.load(handle)
+            if not isinstance(payload, list):
+                raise ValueError("JSON 顶层必须是列表")
+            for row in payload:
+                if not isinstance(row, dict):
+                    raise ValueError("JSON 列表中存在非对象记录")
+                yield row
+            return
+        for raw_line in handle:
+            if raw_line.strip():
+                row = json.loads(raw_line)
+                if not isinstance(row, dict):
+                    raise ValueError("JSONL 中存在非对象记录")
+                yield row
+
+
 def convert(input_path: str | Path, output_dir: str | Path, max_queries: int) -> dict:
     if max_queries <= 0:
         raise ValueError("max_queries 必须大于 0")
@@ -28,43 +60,39 @@ def convert(input_path: str | Path, output_dir: str | Path, max_queries: int) ->
     qrels: list[tuple[str, str, int]] = []
     missing_supporting_titles: list[tuple[str, str]] = []
 
-    with Path(input_path).open("r", encoding="utf-8") as handle:
-        for raw_line in handle:
-            if len(queries) >= max_queries:
-                break
-            if not raw_line.strip():
+    for row in _iter_rows(Path(input_path)):
+        if len(queries) >= max_queries:
+            break
+        query_id = str(row["id"])
+        query_text = str(row["question"])
+        metadata = row.get("metadata", row)
+        context = metadata["context"]
+        titles = context["title"]
+        sentences = context["sentences"]
+        if len(titles) != len(sentences):
+            raise ValueError(f"{query_id} 的 context.title 与 context.sentences 长度不同")
+
+        current_title_to_ids: dict[str, list[str]] = {}
+        for title, sentence_list in zip(titles, sentences):
+            title_text = str(title)
+            body = " ".join(str(sentence).strip() for sentence in sentence_list if str(sentence).strip())
+            document_id = _doc_id(title_text, body)
+            documents.setdefault(
+                document_id,
+                {"_id": document_id, "title": title_text, "text": body},
+            )
+            current_title_to_ids.setdefault(title_text, []).append(document_id)
+
+        supporting = metadata["supporting_facts"]
+        supporting_titles = list(dict.fromkeys(str(title) for title in supporting["title"]))
+        for title in supporting_titles:
+            document_ids = current_title_to_ids.get(title, [])
+            if not document_ids:
+                missing_supporting_titles.append((query_id, title))
                 continue
-            row = json.loads(raw_line)
-            query_id = str(row["id"])
-            query_text = str(row["question"])
-            metadata = row["metadata"]
-            context = metadata["context"]
-            titles = context["title"]
-            sentences = context["sentences"]
-            if len(titles) != len(sentences):
-                raise ValueError(f"{query_id} 的 context.title 与 context.sentences 长度不同")
-
-            current_title_to_ids: dict[str, list[str]] = {}
-            for title, sentence_list in zip(titles, sentences):
-                title_text = str(title)
-                body = " ".join(str(sentence).strip() for sentence in sentence_list if str(sentence).strip())
-                document_id = _doc_id(title_text, body)
-                documents.setdefault(
-                    document_id,
-                    {"_id": document_id, "title": title_text, "text": body},
-                )
-                current_title_to_ids.setdefault(title_text, []).append(document_id)
-
-            supporting = metadata["supporting_facts"]
-            supporting_titles = list(dict.fromkeys(str(title) for title in supporting["title"]))
-            for title in supporting_titles:
-                document_ids = current_title_to_ids.get(title, [])
-                if not document_ids:
-                    missing_supporting_titles.append((query_id, title))
-                    continue
-                for document_id in document_ids:
-                    qrels.append((query_id, document_id, 1))
-            queries.append({"_id": query_id, "text": query_text})
+            for document_id in document_ids:
+                qrels.append((query_id, document_id, 1))
+        queries.append({"_id": query_id, "text": query_text})
 
     if missing_supporting_titles:
         preview = ", ".join(f"{query_id}:{title}" for query_id, title in missing_supporting_titles[:5])
