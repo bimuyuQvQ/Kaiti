@@ -164,7 +164,7 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[
             "BAAI/bge-base-en-v1.5",
-            "reasonrag/Qwen2.5-7B-Instruct-ReasonRAG",
+            "bmbgsj/ProRAG",
         ],
     )
     return parser.parse_args()
