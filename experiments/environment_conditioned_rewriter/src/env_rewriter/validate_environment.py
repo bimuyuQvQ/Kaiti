@@ -48,6 +48,22 @@ def inspect_model_cache(cache_root: Path, model_id: str) -> dict[str, Any]:
     }
 
 
+def inspect_local_model(model_dir: Path) -> dict[str, Any]:
+    required_metadata = ("config.json", "tokenizer_config.json", "tokenizer.json")
+    index_file = model_dir / "model.safetensors.index.json"
+    shards = sorted(model_dir.glob("model-*.safetensors"))
+    return {
+        "model_dir": str(model_dir),
+        "exists": model_dir.is_dir(),
+        "metadata_files": [
+            name for name in required_metadata if (model_dir / name).exists()
+        ],
+        "has_weight_index": index_file.exists(),
+        "weight_shards": [shard.name for shard in shards],
+        "weight_size_gib": round(sum(shard.stat().st_size for shard in shards) / 1024**3, 2),
+    }
+
+
 def inspect_cuda(matrix_size: int) -> dict[str, Any]:
     try:
         import torch
@@ -116,6 +132,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         inspect_model_cache(args.hf_cache, model_id)
         for model_id in args.required_model
     ]
+    local_models = [inspect_local_model(path) for path in args.required_local_model]
     hard_failures = []
     if gate_missing:
         hard_failures.append(f"门槛实验缺少依赖: {', '.join(gate_missing)}")
@@ -124,6 +141,14 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     for model in models:
         if not model["exists"] or not model["snapshot_count"]:
             hard_failures.append(f"模型缓存不完整: {model['model_id']}")
+    for model in local_models:
+        if (
+            not model["exists"]
+            or len(model["metadata_files"]) < 3
+            or not model["has_weight_index"]
+            or not model["weight_shards"]
+        ):
+            hard_failures.append(f"本地模型不完整: {model['model_dir']}")
 
     return {
         "schema_version": 1,
@@ -143,6 +168,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
         "sft_missing_packages": sft_missing,
         "cuda": cuda,
         "models": models,
+        "local_models": local_models,
         "hard_failures": hard_failures,
         "ready_for_gate": not hard_failures,
         "ready_for_sft": not hard_failures and not sft_missing,
@@ -164,8 +190,13 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[
             "BAAI/bge-base-en-v1.5",
-            "bmbgsj/ProRAG",
         ],
+    )
+    parser.add_argument(
+        "--required-local-model",
+        type=Path,
+        action="append",
+        default=[Path("/data1/home/lmy/models/Qwen2.5-7B-Instruct")],
     )
     return parser.parse_args()
 

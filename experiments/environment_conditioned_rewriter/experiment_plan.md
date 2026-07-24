@@ -296,11 +296,14 @@ experiments/environment_conditioned_rewriter/data/probes/probes_v1.jsonl
 - 2 个文档式或陈述式改写；
 - 2 个基于初检 Top-5 标题/短片段的反馈改写。
 
-生成模型优先使用服务器已缓存的：
+生成模型固定使用服务器已有的原始指令模型：
 
 ```text
-reasonrag/Qwen2.5-7B-Instruct-ReasonRAG
+/data1/home/lmy/models/Qwen2.5-7B-Instruct
 ```
+
+不得使用 ReasonRAG、ProRAG 或其他经过 RAG 专项训练的模型生成正式候选或充当学生基座，
+以免将专项训练先验误归因为知识库环境反馈。它们只允许作为附加外部基线。
 
 采样配置：
 
@@ -428,7 +431,7 @@ artifacts/initial_queries/<split>.jsonl
 - `torch.cuda.is_available() == True`；
 - PyTorch 可见 8 张 GPU；
 - 已缓存 `BAAI/bge-base-en-v1.5`；
-- 已缓存 `reasonrag/Qwen2.5-7B-Instruct-ReasonRAG`；
+- 已有完整原始模型 `/data1/home/lmy/models/Qwen2.5-7B-Instruct`；
 - `/data1` 约剩余 2.8 TB。
 
 异常：
@@ -440,7 +443,7 @@ artifacts/initial_queries/<split>.jsonl
 ### 7.2 QLoRA 配置
 
 ```yaml
-model: reasonrag/Qwen2.5-7B-Instruct-ReasonRAG
+model: /data1/home/lmy/models/Qwen2.5-7B-Instruct
 quantization: nf4
 compute_dtype: bfloat16
 double_quant: true
@@ -585,7 +588,7 @@ python -m env_rewriter.build_bm25 \
 PYTHONPATH=experiments/environment_conditioned_rewriter/src \
 CUDA_VISIBLE_DEVICES=0 python -m env_rewriter.generate_initial_queries \
 --manifest experiments/environment_conditioned_rewriter/artifacts/data_manifest.json \
---model reasonrag/Qwen2.5-7B-Instruct-ReasonRAG \
+--model /data1/home/lmy/models/Qwen2.5-7B-Instruct \
 --local-files-only \
 --temperature 0 \
 --output-root experiments/environment_conditioned_rewriter/artifacts/initial_queries
