@@ -1,0 +1,9 @@
+# Step 0--4：环境检查、RAGBench 转换、BM25 和 best-of-8 门槛
+datasets>=3.0
+numpy>=1.24
+pyarrow>=15
+PyYAML>=6
+rank-bm25>=0.2.2
+torch>=2.1
+transformers>=4.44
+tqdm>=4.66
