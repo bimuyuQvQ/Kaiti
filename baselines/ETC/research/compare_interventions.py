@@ -12,7 +12,7 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 from .summarize_rollouts import _scores, load_bundle_sets
 
 
-COMPARISON_VERSION = "matched_keep_append_restart_revision_v3"
+COMPARISON_VERSION = "matched_keep_append_restart_revision_v4"
 
 
 def _document_signature(action: Mapping[str, Any]) -> List[Tuple[str, int, str]]:
@@ -248,6 +248,31 @@ def compare_bundle_sets(
     strict_wins = Counter(
         row["best_operators"][0] for row in rows if len(row["best_operators"]) == 1
     )
+    strict_win_qids: Dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        if len(row["best_operators"]) == 1:
+            strict_win_qids[row["best_operators"][0]].add(str(row["qid"]))
+    strict_best_qids_by_operator = {
+        operator: sorted(strict_win_qids.get(operator, set())) for operator in operators
+    }
+    harm_rows = {
+        operator: [
+            {
+                "sample_index": row["sample_index"],
+                "qid": row["qid"],
+                "state_id": row["state_id"],
+                "query_source": row["query_source"],
+                "query_text": row["query_text"],
+                "document_ids": row["document_ids"],
+                "keep_score": row["keep_score"],
+                f"{operator}_score": row[f"{operator}_score"],
+            }
+            for row in rows
+            if row[f"{operator}_accuracy_flip"] == "correct_to_wrong"
+        ]
+        for operator in operators
+        if operator != "keep"
+    }
     report = {
         "comparison_version": COMPARISON_VERSION,
         "metric": metric,
@@ -282,6 +307,10 @@ def compare_bundle_sets(
         },
         "best_operator_counts_with_ties": dict(sorted(wins.items())),
         "strict_best_operator_counts": dict(sorted(strict_wins.items())),
+        "strict_best_qids_by_operator": strict_best_qids_by_operator,
+        "strict_best_qid_counts": {
+            operator: len(qids) for operator, qids in strict_best_qids_by_operator.items()
+        },
         "strict_preference_actions": sum(strict_wins.values()),
         "tied_preference_actions": len(rows) - sum(strict_wins.values()),
         "restart_vs_append": dict(sorted(preference.items())),
@@ -294,6 +323,7 @@ def compare_bundle_sets(
                 else {}
             ),
         },
+        "correct_to_wrong_rows": harm_rows,
         "rows": rows,
         "interpretation_caveat": (
             "置信区间按样本聚类后重采样；同一样本的多个查询动作不是独立样本。"
@@ -335,12 +365,15 @@ def main() -> None:
     parser.add_argument("--bootstrap_samples", type=int, default=10_000)
     parser.add_argument("--output", default=None)
     args = parser.parse_args()
+    extractor_version = (
+        None if str(args.extractor_version).strip().lower() == "primary" else args.extractor_version
+    )
     report = compare_bundle_sets(
         load_bundle_sets(args.source_run_dir),
         load_bundle_sets(args.restart_run_dir),
         load_bundle_sets(args.revision_run_dir) if args.revision_run_dir else None,
         metric=args.metric,
-        extractor_version=args.extractor_version,
+        extractor_version=extractor_version,
         bootstrap_samples=args.bootstrap_samples,
     )
     rendered = json.dumps(report, ensure_ascii=False, indent=2)

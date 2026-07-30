@@ -59,6 +59,10 @@ class CompareInterventionsTests(unittest.TestCase):
         self.assertEqual(report["best_fixed_reference_operator"], "keep")
         self.assertEqual(report["operator_oracle"]["mean_score"], 1.0)
         self.assertEqual(report["tied_preference_actions"], 1)
+        self.assertEqual(report["strict_best_qid_counts"]["keep"], 0)
+        self.assertEqual(report["strict_best_qid_counts"]["restart"], 0)
+        self.assertEqual(len(report["correct_to_wrong_rows"]["append"]), 1)
+        self.assertEqual(report["correct_to_wrong_rows"]["append"][0]["qid"], "q0")
 
     def test_rejects_document_mismatch(self):
         source = {
@@ -125,6 +129,8 @@ class CompareInterventionsTests(unittest.TestCase):
         self.assertEqual(report["mean_scores"]["revision"], 0.75)
         self.assertEqual(report["revision_strata"]["true_local_revision"]["actions"], 1)
         self.assertEqual(report["revision_strata"]["fallback_to_full_restart"]["actions"], 0)
+        self.assertEqual(report["strict_best_qid_counts"]["restart"], 1)
+        self.assertEqual(report["strict_best_qids_by_operator"]["restart"], ["q0"])
 
 
 if __name__ == "__main__":
