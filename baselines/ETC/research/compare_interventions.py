@@ -12,7 +12,7 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 from .summarize_rollouts import _scores, load_bundle_sets
 
 
-COMPARISON_VERSION = "matched_keep_append_restart_revision_v2"
+COMPARISON_VERSION = "matched_keep_append_restart_revision_v3"
 
 
 def _document_signature(action: Mapping[str, Any]) -> List[Tuple[str, int, str]]:
@@ -226,6 +226,28 @@ def compare_bundle_sets(
                 "revision_gain_over_restart",
             ]
         )
+    mean_scores = {
+        operator: sum(float(row[f"{operator}_score"]) for row in rows) / len(rows)
+        for operator in operators
+    }
+    best_fixed_score = max(mean_scores.values())
+    best_fixed_operators = sorted(
+        operator for operator, score in mean_scores.items() if score == best_fixed_score
+    )
+    best_fixed_reference = best_fixed_operators[0]
+    # 仅作可学习空间上界：逐动作 oracle 使用同一行可见的干预结果，
+    # 而 best fixed 仍是在整批诊断样本上选出的固定算子。
+    for row in rows:
+        row["operator_oracle_score"] = max(
+            float(row[f"{operator}_score"]) for operator in operators
+        )
+        row["operator_oracle_gain_over_best_fixed"] = (
+            row["operator_oracle_score"] - float(row[f"{best_fixed_reference}_score"])
+        )
+
+    strict_wins = Counter(
+        row["best_operators"][0] for row in rows if len(row["best_operators"]) == 1
+    )
     report = {
         "comparison_version": COMPARISON_VERSION,
         "metric": metric,
@@ -239,15 +261,29 @@ def compare_bundle_sets(
             "same_query": True,
             "same_retrieved_documents": True,
         },
-        "mean_scores": {
-            operator: sum(float(row[f"{operator}_score"]) for row in rows) / len(rows)
-            for operator in operators
+        "mean_scores": mean_scores,
+        "best_fixed_operators": best_fixed_operators,
+        "best_fixed_reference_operator": best_fixed_reference,
+        "operator_oracle": {
+            "mean_score": sum(float(row["operator_oracle_score"]) for row in rows) / len(rows),
+            "gain_over_best_fixed": _cluster_bootstrap_ci(
+                rows,
+                "operator_oracle_gain_over_best_fixed",
+                samples=bootstrap_samples,
+            ),
+            "selection_note": (
+                "该 oracle 逐行查看所有动作结果，仅表示动作选择上界；"
+                "最佳固定算子也由同一诊断集选出，不能当作独立测试集性能。"
+            ),
         },
         "paired_deltas": {
             key: _cluster_bootstrap_ci(rows, key, samples=bootstrap_samples)
             for key in delta_keys
         },
         "best_operator_counts_with_ties": dict(sorted(wins.items())),
+        "strict_best_operator_counts": dict(sorted(strict_wins.items())),
+        "strict_preference_actions": sum(strict_wins.values()),
+        "tied_preference_actions": len(rows) - sum(strict_wins.values()),
         "restart_vs_append": dict(sorted(preference.items())),
         "accuracy_flips": {
             "append": dict(sorted(append_flips.items())),

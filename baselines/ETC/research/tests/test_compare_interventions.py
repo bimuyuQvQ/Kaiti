@@ -55,6 +55,10 @@ class CompareInterventionsTests(unittest.TestCase):
         self.assertEqual(report["accuracy_flips"]["append"]["correct_to_wrong"], 1)
         self.assertEqual(report["accuracy_flips"]["restart"]["unchanged"], 1)
         self.assertTrue(report["protocol_checks"]["same_retrieved_documents"])
+        self.assertEqual(report["best_fixed_operators"], ["keep", "restart"])
+        self.assertEqual(report["best_fixed_reference_operator"], "keep")
+        self.assertEqual(report["operator_oracle"]["mean_score"], 1.0)
+        self.assertEqual(report["tied_preference_actions"], 1)
 
     def test_rejects_document_mismatch(self):
         source = {
